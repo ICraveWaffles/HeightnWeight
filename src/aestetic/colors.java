@@ -11,7 +11,7 @@ public class colors {
     }
 
     public void instanceColors(PApplet p5) {
-        colors = new int[8];
+        colors = new int[9];
         colors[0] = p5.color(0XFF414141);
         colors[1] = p5.color(0XFF534559);
         colors[2] = p5.color(0XFFF4F0F7);
@@ -20,6 +20,7 @@ public class colors {
         colors[5] = p5.color(0XFFEED6FF);
         colors[6] = p5.color(0XFF000000);
         colors[7] = p5.color(0XFFFFFFFF);
+        colors[8] = p5.color(0XFFFF0000);
     }
 
     public int getThisColor(int i){
