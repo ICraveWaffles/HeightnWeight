@@ -3,24 +3,23 @@ import processing.core.PApplet;
 
 public class Main extends PApplet {
 
-
-
     Fonts fonts;
     GUI gui;
     float scaleFactor;
     int baseWidth = 1920;
     int baseHeight = 1080;
 
-
-
     public static void main(String[]args){
         PApplet.main("Main");
     }
 
     public void settings() {
+
+        fullScreen();
+
         float screenRatio = (float) displayWidth / displayHeight;
         float targetRatio = (float) baseWidth / baseHeight;
-        fullScreen(P2D,1920);
+
 
         int newWidth, newHeight;
 
@@ -32,20 +31,20 @@ public class Main extends PApplet {
             newHeight = (int) (newWidth / targetRatio);
         }
 
-        size(newWidth, newHeight);
-        smooth(6);
+
+
+        smooth(10);
         scaleFactor = (float) newWidth / baseWidth;
     }
 
     public void setup(){
         fonts = new Fonts(this);
         gui = new GUI(this);
+        println(width, height);
     }
 
 
     public void draw(){
-        background (127);
-        scale(scaleFactor);
         textFont(fonts.getThisFont(0));
         text("BigText test, say hello to the camera", 20, 30);
         textFont(fonts.getThisFont(1));
@@ -55,12 +54,12 @@ public class Main extends PApplet {
 
         switch (gui.currentScreen){
             case PRELOGIN: gui.drawPRELOGIN(this); break;
-            case LOGIN: break;
-            case SIGNUP: break;
-            case MAIN: break;
-            case QNA: break;
-            case SCENESELECTOR: break;
-            case SCENEEDITOR: break;
+            case LOGIN: gui.drawLOGIN(this); break;
+            case SIGNUP: gui.drawSIGNUP(this); break;
+            case MAIN: gui.drawMAIN(this); break;
+            case QNA: gui.drawQNA(this); break;
+            case SCENESELECTOR: gui.drawSCENESELECTOR(this); break;
+            case SCENEEDITOR: gui.drawSCENEEDITOR(this);break;
             case OCVIEWER: break;
         }
     }

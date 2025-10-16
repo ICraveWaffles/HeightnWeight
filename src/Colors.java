@@ -8,7 +8,7 @@ public class Colors {
         colors = new int[9];
         colors[0] = p5.color(0xFF414141);
         colors[1] = p5.color(0xFF534559);
-        colors[2] = p5.color(0xFFF4F0F7);
+        colors[2] = p5.color(0xFFD9D9D9);
         colors[3] = p5.color(0xFF440D6E);
         colors[4] = p5.color(0xFF7D67E3);
         colors[5] = p5.color(0xFFEED6FF);
