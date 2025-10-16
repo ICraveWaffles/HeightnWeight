@@ -3,6 +3,10 @@ import processing.core.PFont;
 
 public class GUI {
 
+    Button plog1, plog2;
+
+
+
     public enum SCREEN { PRELOGIN, LOGIN, SIGNUP, MAIN, QNA, SCENESELECTOR, SCENEEDITOR, OCVIEWER }
 
     public SCREEN currentScreen;
@@ -10,6 +14,9 @@ public class GUI {
     public GUI(PApplet p5) {
         currentScreen = SCREEN.PRELOGIN;
         Colors.instanceColors(p5);
+
+        plog1 = new Button(p5, "Iniciar sesión", 640, 440, 600, 70, 3, 7, 6);
+        plog2 = new Button(p5, "No tienes cuenta? Crear cuenta", 640, 540, 600, 70, 3, 7, 6);
     }
 
     public void drawLogo(PApplet p5, int y) {
@@ -119,8 +126,8 @@ public class GUI {
 
         p5.background(Colors.getThisColor(2));
         drawLogo(p5, 260);
-        drawStartButton(p5, 640, 440, "Iniciar sesión");
-        drawStartButton(p5, 640, 540, "No tienes una cuenta? Crear cuenta");
+        plog1.display(p5);
+        plog2.display(p5);
 
         p5.popStyle();
 
@@ -305,8 +312,6 @@ public class GUI {
         p5.pushStyle();
 
         p5.background(Colors.getThisColor(1));
-
-
 
         p5.popStyle();
     }

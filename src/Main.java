@@ -31,9 +31,7 @@ public class Main extends PApplet {
             newHeight = (int) (newWidth / targetRatio);
         }
 
-
-
-        smooth(10);
+        smooth(100);
         scaleFactor = (float) newWidth / baseWidth;
     }
 
