@@ -1,15 +1,16 @@
 import processing.core.PApplet;
 
-public class Button {
+public class rButton {
 
 
     float x, y, w, h;
     int fillColor, strokeColor;
     int fillColorOver, fillColorDisabled;
     String bText;
+    int cText;
     public boolean enabled;
 
-    public Button(PApplet p5, String text, float x, float y, float w, float h, int f, int s, int t){
+    public rButton(PApplet p5, String text, float x, float y, float w, float h, int f, int s, int t){
         this.bText = text;
         this.x = x;
         this.y = y;
@@ -20,13 +21,12 @@ public class Button {
         this.fillColorOver = Colors.getThisColor(f+1);
         this.fillColorDisabled = Colors.getThisColor(0);
         this.strokeColor = Colors.getThisColor(s);
+        this.cText = Colors.getThisColor(t);
     }
 
     public void setEnabled(boolean b){
         this.enabled = b;
     }
-
-    public void setbText(String t){ this.bText = t; }
 
     public void setColors(int cFill, int cStroke, int cOver, int cDisabled){
         this.fillColor = cFill;
@@ -55,11 +55,13 @@ public class Button {
         else{
             p5.fill(fillColor);
         }
-        p5.stroke(strokeColor); p5.strokeWeight(2);
+        p5.stroke(strokeColor);
+        p5.strokeWeight(2);
         p5.rect(this.x, this.y, this.w, this.h, 10);
 
 
-        p5.fill(Colors.getThisColor(7)); p5.textFont(Fonts.getThisFont(1));
+        p5.fill(cText);
+        p5.textFont(Fonts.getThisFont(1));
         p5.text(bText, this.x , this.y);
         p5.popStyle();
     }
@@ -67,6 +69,7 @@ public class Button {
     public boolean mouseOverButton(PApplet p5){
         return (p5.mouseX >= this.x-this.w/2) && (p5.mouseX <= this.x + this.w/2) &&
                 (p5.mouseY >= this.y-this.h/2) && (p5.mouseY <= this.y + this.h/2);
+
     }
 
     // Indica si cal posar el cursor a HAND

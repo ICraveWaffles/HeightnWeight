@@ -8,6 +8,7 @@ public class Main extends PApplet {
     float scaleFactor;
     int baseWidth = 1920;
     int baseHeight = 1080;
+    TextField selectedtf;
 
     public static void main(String[]args){
         PApplet.main("Main");
@@ -58,11 +59,13 @@ public class Main extends PApplet {
             case QNA: gui.drawQNA(this); break;
             case SCENESELECTOR: gui.drawSCENESELECTOR(this); break;
             case SCENEEDITOR: gui.drawSCENEEDITOR(this);break;
-            case OCVIEWER: break;
+            case OCVIEWER: gui.drawOCVIEWER(this);break;
         }
+        noFill();
+        rect(0, 0, 1280, 720);
     }
 
-    public void keyPressed(){
+    /*public void keyPressed(){
         if (key == '0'){
             gui.currentScreen = GUI.SCREEN.PRELOGIN;
         } else if(key == '1'){
@@ -80,5 +83,124 @@ public class Main extends PApplet {
         } else if(key == '7'){
             gui.currentScreen = GUI.SCREEN.OCVIEWER;
         }
+    } */
+
+    public void mousePressed() {
+
+        if (gui.currentScreen == GUI.SCREEN.PRELOGIN) {
+            if (gui.plog1.mouseOverButton(this)){
+                gui.currentScreen = GUI.SCREEN.LOGIN;
+            }
+            if (gui.plog2.mouseOverButton(this)){
+                gui.currentScreen = GUI.SCREEN.SIGNUP;
+            }
+            if (gui.exit.mouseOverButton(this)){
+                exit();
+            }
+
+        } else if (gui.currentScreen == GUI.SCREEN.LOGIN) {
+            if (gui.exit.mouseOverButton(this)){
+                gui.currentScreen = GUI.SCREEN.PRELOGIN;
+            }
+            if (gui.login.mouseOverButton(this)){
+                gui.currentScreen = GUI.SCREEN.MAIN;
+            }
+
+            gui.tflogin1.isPressed(this);
+            gui.tflogin2.isPressed(this);
+
+        } else if (gui.currentScreen == GUI.SCREEN.SIGNUP) {
+
+            if (gui.exit.mouseOverButton(this)){
+                gui.currentScreen = GUI.SCREEN.PRELOGIN;
+            }
+            if (gui.signup.mouseOverButton(this)){
+                gui.currentScreen = GUI.SCREEN.MAIN;
+            }
+            gui.tfsignup1.isPressed(this);
+            gui.tfsignup2.isPressed(this);
+            gui.tfsignup3.isPressed(this);
+            gui.tfsignup4.isPressed(this);
+
+        } else if (gui.currentScreen == GUI.SCREEN.MAIN) {
+
+            if (gui.q1.mouseOverButton(this)){
+                gui.currentScreen = GUI.SCREEN.QNA;
+            }
+            if (gui.m1.mouseOverButton(this)){
+                gui.currentScreen = GUI.SCREEN.SCENESELECTOR;
+            }
+            if (gui.m2.mouseOverButton(this)){
+                gui.currentScreen = GUI.SCREEN.OCVIEWER;
+            }
+            if (gui.m3.mouseOverButton(this)){
+                gui.currentScreen = GUI.SCREEN.PRELOGIN;
+            }
+
+        } else if (gui.currentScreen == GUI.SCREEN.QNA) {
+
+            if (gui.exit.mouseOverButton(this)){
+                gui.currentScreen = GUI.SCREEN.MAIN;
+            }
+
+        } else if (gui.currentScreen == GUI.SCREEN.SCENESELECTOR) {
+
+            if (gui.exit.mouseOverButton(this)){
+                gui.currentScreen = GUI.SCREEN.MAIN;
+                gui.page = 0;
+            }
+            if (gui.nav1.mouseOverButton(this)){
+                gui.page = 0;
+            }
+            if (gui.nav2.mouseOverButton(this)&& gui.page!=0){
+                gui.page--;
+            }
+            if (gui.nav3.mouseOverButton(this) && gui.page !=9){
+                gui.page++;
+            }
+            if (gui.nav4.mouseOverButton(this)){
+                gui.page=9;
+            }
+            for (int i = 0; i < gui.scenes.length; i++){
+                if (gui.scenes[i].mouseOverButton(this)){
+                    gui.currentScreen = GUI.SCREEN.SCENEEDITOR;
+                }
+            }
+
+        } else if (gui.currentScreen == GUI.SCREEN.SCENEEDITOR) {
+            if (gui.exit.mouseOverButton(this)){
+                gui.currentScreen = GUI.SCREEN.SCENESELECTOR;
+            }
+
+        } else if (gui.currentScreen == GUI.SCREEN.OCVIEWER) {
+            if (gui.exit.mouseOverButton(this)){
+                gui.currentScreen = GUI.SCREEN.MAIN;
+            }
+        }
     }
+
+    public void keyPressed(){
+        if (gui.currentScreen == GUI.SCREEN.PRELOGIN) {
+
+        } else if (gui.currentScreen == GUI.SCREEN.LOGIN) {
+            gui.tflogin1.keyPressed(key, keyCode, false);
+            gui.tflogin2.keyPressed(key, keyCode, false);
+        } else if (gui.currentScreen == GUI.SCREEN.SIGNUP) {
+            gui.tfsignup1.keyPressed(key, keyCode, false);
+            gui.tfsignup2.keyPressed(key, keyCode, false);
+            gui.tfsignup3.keyPressed(key, keyCode, false);
+            gui.tfsignup4.keyPressed(key, keyCode, false);
+        } else if (gui.currentScreen == GUI.SCREEN.MAIN) {
+
+        } else if (gui.currentScreen == GUI.SCREEN.QNA) {
+
+        } else if (gui.currentScreen == GUI.SCREEN.SCENESELECTOR) {
+
+        } else if (gui.currentScreen == GUI.SCREEN.SCENEEDITOR) {
+
+        } else if (gui.currentScreen == GUI.SCREEN.OCVIEWER) {
+
+        }
+    }
+
 }
