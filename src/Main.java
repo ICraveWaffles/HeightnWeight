@@ -171,6 +171,47 @@ public class Main extends PApplet {
             if (gui.exit.mouseOverButton(this)){
                 gui.currentScreen = GUI.SCREEN.SCENESELECTOR;
             }
+            if (gui.rsced1.mouseOverButton(this)){
+                gui.gridon = !gui.gridon;
+            }
+
+            for (int i = 0; i < 10; i++){
+                if (!gui.lbsced[i].isLocked()) {
+                    gui.tfsced[i].isPressed(this);
+                }
+                if (gui.lbsced[i].mouseOverButton(this)){
+
+                    gui.lbsced[i].mousePressed(this);
+                    if (!gui.lbsced[1].isLocked() && !gui.lbsced[2].isLocked() && !gui.lbsced[3].isLocked()){
+                        if (i == 1){
+                            gui.lbsced[3].changeLock();
+                        } else if (i == 2){
+                            gui.lbsced[3].changeLock();
+                        } else if (i == 3){
+                            gui.lbsced[2].changeLock();
+                        }
+
+                    }
+                    if (!gui.lbsced[1].isLocked() && !gui.lbsced[3].isLocked() && !gui.lbsced[4].isLocked()){
+                        if (i == 1){
+                            gui.lbsced[4].changeLock();
+                        } else if (i == 3){
+                            gui.lbsced[4].changeLock();
+                        } else if (i == 4){
+                            gui.lbsced[3].changeLock();
+                        }
+                    }
+                    if (!gui.lbsced[5].isLocked() && !gui.lbsced[6].isLocked()){
+                        if (i == 5){
+                            gui.lbsced[6].changeLock();
+                        } else if (i == 6){
+                            gui.lbsced[5].changeLock();
+                        }
+                    }
+
+                }
+            }
+
 
         } else if (gui.currentScreen == GUI.SCREEN.OCVIEWER) {
             if (gui.exit.mouseOverButton(this)){
@@ -197,7 +238,10 @@ public class Main extends PApplet {
         } else if (gui.currentScreen == GUI.SCREEN.SCENESELECTOR) {
 
         } else if (gui.currentScreen == GUI.SCREEN.SCENEEDITOR) {
-
+            gui.tfsced[0].keyPressed(key, keyCode, false);
+            for (int i = 1; i < 10; i++){
+                gui.tfsced[i].keyPressed(key, keyCode, true );
+            }
         } else if (gui.currentScreen == GUI.SCREEN.OCVIEWER) {
 
         }

@@ -63,7 +63,7 @@ public class cButton {
 
         p5.fill(cText);
         p5.textFont(Fonts.getThisFont(0));
-        p5.text(bText, this.x , this.y);
+        p5.text(bText, this.x , this.y-2);
         p5.popStyle();
     }
 
