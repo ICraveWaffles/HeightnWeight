@@ -59,8 +59,8 @@ public class GUI {
         tfsignup3 = new TextField(p5, "Contraseña (primera vez)", 640, 360, 540, 60);
         tfsignup4 = new TextField(p5, "Contraseña (segunda vez)", 640, 440, 540, 60);
 
-        tflogin1 = new TextField(p5, "Nombre de usuario", 640, 230, 540, 60);
-        tflogin2 = new TextField(p5, "Contraseña", 640, 310, 540, 60);
+        tflogin1 = new TextField(p5, "Nombre [de] usuario", 640, 230, 540, 60);
+        tflogin2 = new TextField(p5, "Contra{se}ña", 640, 310, 540, 60);
 
         tfName = new TextField(p5,"Nombre", 150, 80, 250, 30);
         tfHeight = new TextField(p5,"Altura", 150, 130, 250, 20);
