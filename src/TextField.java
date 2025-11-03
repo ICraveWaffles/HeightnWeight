@@ -101,7 +101,9 @@ public class TextField {
         }
         if (mouseOverTextField(p5)) {
             selected = true;
-            if (text.equals(trueText)) text = "";
+            if (intOnly || text.equals(trueText)) {
+                text = "";
+            }
         } else {
             selected = false;
             if (text.equals("")) text = trueText;
@@ -109,7 +111,7 @@ public class TextField {
         }
     }
 
-    public void setEnabled(boolean e) {
+        public void setEnabled(boolean e) {
         enabled = e;
         if (!e) selected = false;
     }

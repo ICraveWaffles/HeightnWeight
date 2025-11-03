@@ -20,9 +20,9 @@ public class GUI {
     TextField tflogin1, tflogin2;
     TextField tfName, tfHeight, tfWeight, tfBMI, tfWidth, tfBHRatio, tfAge, tfRed, tfGreen, tfBlue;
     TextField[] tfsced = new TextField[10];
-    lButton[] lbsced = new lButton[10];
 
-    lButton lbName, lbHeight, lbWeight, lbBMI, lbWidth, lbBHRatio, lbAge, lbRed, lbGreen, lbBlue;
+
+
 
     Slider slZero, slHeight, slWeight, slBMI, slWidth,slBHRatio,slAge, slRed, slGreen, slBlue;
     Slider slSced[] = new Slider[10];
@@ -67,36 +67,26 @@ public class GUI {
 
         tfName = new TextField(p5, "Nombre", 150, 80, 250, 30, false);
         tfHeight = new TextField(p5, "Altura", 220, 130, 110, 20, true);
-        tfWeight = new TextField(p5, "Peso", 220, 190, 110, 20, true);
+        tfWeight = new TextField(p5, "Peso", 220, 200, 110, 20, true);
         tfBMI = new TextField(p5, "IMC", 220, 250, 110, 20, true);
-        tfWidth = new TextField(p5, "Anchura", 220, 310, 110, 20, true);
+        tfWidth = new TextField(p5, "Anchura", 220, 320, 110, 20, true);
         tfBHRatio = new TextField(p5, "Proporción C/C", 220, 400, 110, 20, true);
         tfAge = new TextField(p5, "Edad estimada", 220, 460, 110, 20, true);
         tfRed = new TextField(p5, "R", 220, 550, 110, 20, true);
         tfGreen = new TextField(p5, "G", 220, 610, 110, 20, true);
         tfBlue = new TextField(p5, "B", 220, 670, 110, 20, true);
 
-        lbName = new lButton(p5, false, "", 316, 80, 16, 7, 5, 5);
-        lbHeight = new lButton(p5, false, "", 316, 130, 16, 7, 5, 5);
-        lbWeight = new lButton(p5, true,  "", 316, 190, 16, 7, 5, 5);
-        lbBMI = new lButton(p5, false,  "", 316, 250, 16, 7, 5, 5);
-        lbWidth = new lButton(p5, true, "", 316, 310, 16, 7, 5, 5);
-        lbBHRatio = new lButton(p5, false, "", 316, 400, 16, 7, 5, 5);
-        lbAge = new lButton(p5, true, "", 316, 460, 16, 7, 5, 5);
-        lbRed = new lButton(p5, false, "", 316, 550, 16, 7, 5, 5);
-        lbGreen = new lButton(p5, false, "", 316, 610, 16, 7, 5, 5);
-        lbBlue = new lButton(p5, false, "", 316, 670, 16, 7, 5, 5);
 
         slZero = new Slider (p5, "Cosa", 160,360, 250, 10, 2, 10 , 5);
-        slHeight = new Slider (p5, "Altura", 150,160, 250, 15, 0.01f, 10 , 1.83f);
+        slHeight = new Slider (p5, "Altura(m)", 150,160, 250, 15, 0.01f, 10 , 1.83f);
         slWeight = new Slider (p5, "Peso", 150,220, 250, 15, 0.01f, 25000 , 83.7f);
         slBMI = new Slider (p5, "IMC", 150,280, 250, 15, 1, 250 , 25);
         slWidth = new Slider (p5, "Anchura", 150,340, 250, 15, 2, 10 , 5);
-        slBHRatio = new Slider (p5, "Cabeza/Cuerpo", 150,430, 250, 15, 2, 10 , 5);
-        slAge = new Slider (p5, "Edad", 150,490, 250, 15, 2, 10 , 5);
-        slRed = new Slider (p5, "R", 150,580, 250, 15, 2, 10 , 5);
-        slGreen = new Slider (p5, "G", 150,640, 250, 15, 2, 10 , 5);
-        slBlue = new Slider (p5, "B", 150,700, 250, 15, 2, 10 , 5);
+        slBHRatio = new Slider (p5, "Ratio C/C", 150,430, 250, 15, 0.125f, 0.25f , 0.15f);
+        slAge = new Slider (p5, "Edad", 150,490, 250, 15, 0, 80 , 20);
+        slRed = new Slider (p5, "R", 150,580, 250, 15, 0, 255 , 127);
+        slGreen = new Slider (p5, "G", 150,640, 250, 15, 0, 255 , 127);
+        slBlue = new Slider (p5, "B", 150,700, 250, 15, 0, 255 , 127);
 
         int buttonIndex = 0;
         for (int h = 0; h < 10; h++) {
@@ -115,8 +105,6 @@ public class GUI {
         tfsced[0] = tfName; tfsced[1] = tfHeight; tfsced[2] = tfWeight; tfsced[3] = tfBMI; tfsced[4] = tfWidth;
         tfsced[5] = tfBHRatio; tfsced[6] = tfAge; tfsced[7] = tfRed; tfsced[8] = tfGreen; tfsced[9] = tfBlue;
 
-        lbsced[0] = lbName; lbsced[1] = lbHeight; lbsced[2] = lbWeight; lbsced[3] = lbBMI; lbsced[4] = lbWidth;
-        lbsced[5] = lbBHRatio; lbsced[6] = lbAge; lbsced[7] = lbRed; lbsced[8] = lbGreen; lbsced[9] = lbBlue;
 
         slSced[1]=slHeight; slSced[2]=slWeight; slSced[3]=slBMI; slSced[4]=slWidth;
         slSced[5]=slBHRatio; slSced[6]=slAge; slSced[7]=slRed; slSced[8]=slGreen; slSced[9]=slBlue;
@@ -386,11 +374,14 @@ public class GUI {
 
         for (int i = 0; i < 10; i++){
             tfsced[i].display(p5);
-            lbsced[i].display(p5);
-            if (i != 0) {
+        }
+        for (int i = 5; i < 10; i++){
+            if (slSced[i]!= null){
                 slSced[i].display(p5);
             }
         }
+        slSced[1].display(p5);
+        slSced[3].display(p5);
 
         p5.fill(Colors.getThisColor(7));
         p5.rect(354, 114, 920, 600);
@@ -414,29 +405,32 @@ public class GUI {
 
         p5.fill(Colors.getThisColor(6));
 
-        /*
-        //p5.text("Name: []",10, 80 );
-        //p5.text("Height: []",10, 130);
-        p5.text("0.1 <===O===> 20",10, 155);
-        //p5.text("Weight: []",10, 190);
-        p5.text("0.1 <===O===> 20",10, 215);
-        //p5.text("IMC: []",10, 250);
-        p5.text("0.1 <===O===> 20",10, 275);
-        //p5.text("Width: []",10, 310);
-        p5.text("0.1 <===O===> 20",10, 335);
 
-        //p5.text("Head/Body Ratio: []",10, 400);
+        //p5.text("Name: []",10, 80 );
+        // p5.text("Height: []",10, 130);
+        //p5.text("0.1 <===O===> 20",10, 155);
+        p5.text("Peso(kg): ",25, 200);
+        // p5.text("0.1 <===O===> 20",10, 215);
+        //p5.text("IMC: ",10, 250);
+        //p5.text("0.1 <===O===> 20",10, 275);
+        p5.text("Ancho(m): ",25, 320);
+        /*p5.text("0.1 <===O===> 20",10, 335);
+
+
+        p5.text("Head/Body Ratio: []",10, 400);
         p5.text("0.1 <===O===> 20",10, 425);
-        //p5.text("Estimated age: []",10, 460);
+        p5.text("Estimated age: []",10, 460);
         p5.text("0.1 <===O===> 20",10, 485);
 
-        //p5.text("R: []", 10, 550);
+        p5.text("R: []", 10, 550);
         p5.text("0 <===O===> 255", 10, 575);
-        //p5.text("G: []", 10, 610);
+        p5.text("G: []", 10, 610);
         p5.text("0 <===O===> 255", 10, 635);
-        //p5.text("B: []", 10, 670);
+        p5.text("B: []", 10, 670);
         p5.text("0 <===O===> 255", 10, 695);
+
         */
+
         p5.popStyle();
     }
 
