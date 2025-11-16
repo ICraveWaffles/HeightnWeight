@@ -47,16 +47,16 @@ public class Slider {
     }
 
     public boolean mouseOnSlider(PApplet p5) {
-        return p5.mouseX > x - w / 2 && p5.mouseX < x + w / 2 && p5.mouseY > y - h && p5.mouseY < y + h;
+        return p5.mouseX > x - w / 2f && p5.mouseX < x + w / 2f && p5.mouseY > y - h && p5.mouseY < y + h;
     }
 
     public boolean mouseDraggingOnSlider(PApplet p5) {
-        return p5.mousePressed && p5.mouseX > x - w / 2 && p5.mouseX < x + w / 2 && p5.mouseY > y - h * 2 && p5.mouseY < y + h * 2;
+        return p5.mousePressed && p5.mouseX > x - w / 2f-20 && p5.mouseX < x + w / 2 +20 && p5.mouseY > y - h * 2f - 20 && p5.mouseY < y + h * 2 + 20;
     }
 
     public void updateSlider(PApplet p5) {
         if (!enabled) return;
-        v = p5.map(p5.mouseX, x - w / 2, x + w / 2, minV, maxV);
+        v = p5.map(p5.mouseX, x - w / 2f + 1, x + w / 2f - 1, minV, maxV);
         v = PApplet.constrain(v, minV, maxV);
         v = Math.round(v * 100.0f) / 100.0f;
     }

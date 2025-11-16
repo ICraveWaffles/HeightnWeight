@@ -56,7 +56,7 @@ public class TextField {
         }
         boolean isLetter = (key >= 'A' && key <= 'Z') || (key >= 'a' && key <= 'z');
         boolean isNumber = (key >= '0' && key <= '9');
-        boolean isSymbol = "!@#$%^&*()-_+=[]{};:'\"\\|,.<>/?`~".indexOf(key) >= 0;
+        boolean isSymbol = "!@#$%^&*()-_+=[]{};:'\"\\|,.<>/?`~·".indexOf(key) >= 0;
         if (intOnly) {
             if (isNumber || key == '.' || key == ',') addText(key);
         } else {

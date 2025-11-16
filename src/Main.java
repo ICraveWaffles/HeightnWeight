@@ -1,13 +1,16 @@
 import processing.core.PApplet;
+import processing.core.PImage;
 
 public class Main extends PApplet {
 
     Fonts fonts;
     GUI gui;
-    float scaleFactor;
-    int baseWidth = 1920, baseHeight = 1080;
-    TextField selectedtf;
     boolean sceneEditorInitialized = false;
+
+    Stand[] furniture;
+    Stand banana, cabinet, door;
+    Scene scene;
+
 
     public static void main(String[] args) {
         PApplet.main("Main");
@@ -16,6 +19,16 @@ public class Main extends PApplet {
     public void settings() {
         fullScreen();
         smooth(100);
+
+
+        PImage bananaPic = loadImage("data/Bananana.png");
+        PImage gabinett = loadImage("data/gabinett.png");
+        PImage dooor = loadImage("data/door.jpg");
+        banana = new Stand ("Plátano", 0.2f, 0.07f, bananaPic );
+        cabinet = new Stand ("Gabinete", 0.5f, 0.8f, gabinett);
+        door = new Stand("Puerta", 0.6f , 2, dooor);
+        scene = new Scene(1);
+
     }
 
     public void setup() {
@@ -25,6 +38,7 @@ public class Main extends PApplet {
         gui.tfsced[4].setEnabled(false);
         gui.slSced[2].setEnabled(false);
         gui.slSced[4].setEnabled(false);
+
     }
 
     public void draw() {
@@ -36,7 +50,7 @@ public class Main extends PApplet {
             case QNA: gui.drawQNA(this); break;
             case SCENESELECTOR: gui.drawSCENESELECTOR(this); break;
             case SCENEEDITOR:
-                gui.drawSCENEEDITOR(this);
+                gui.drawSCENEEDITOR(this, scene);
                 if (!sceneEditorInitialized) {
                     initializeSceneEditorValues();
                     sceneEditorInitialized = true;
@@ -44,8 +58,10 @@ public class Main extends PApplet {
                 break;
             case OCVIEWER: gui.drawOCVIEWER(this); break;
         }
+
         noFill();
         rect(0, 0, 1280, 720);
+        scene.designLayout();
     }
 
     public void initializeSceneEditorValues() {
@@ -109,6 +125,12 @@ public class Main extends PApplet {
                     gui.tfsced[i].setText(String.format("%.2f", gui.slSced[i].v));
                 }
             }
+            if (gui.sced2.mouseOverButton(this)){
+                scene.addObject(banana);
+                scene.addObject(cabinet);
+                scene.addObject(door);
+                print("Object has been added!");
+            }
             updateCalculatedValues();
         } else if (gui.currentScreen == GUI.SCREEN.OCVIEWER) {
             if (gui.exit.mouseOverButton(this)) gui.currentScreen = GUI.SCREEN.MAIN;
@@ -155,7 +177,7 @@ public class Main extends PApplet {
                     if (i == 6) {
                         float age = gui.slSced[6].v;
                         gui.slSced[5].v = 0.125f + 0.125f * (float) Math.exp(-0.0741f * age);
-                        gui.tfsced[5].setText(String.format("%.2f", gui.slSced[5].v));
+                        gui.tfsced[5].setText(String.format("%.3f", gui.slSced[5].v));
                     } else if (i == 5) {
                         float ratio = gui.slSced[5].v;
                         gui.slSced[6].v = -(1 / 0.0741f) * (float) Math.log((ratio - 0.125f) / 0.125f);
@@ -182,5 +204,11 @@ public class Main extends PApplet {
         gui.slSced[4].v = constrain((float) (altura * pow(bmi, 0.7979f) / 81.906), gui.slSced[4].minV, gui.slSced[4].maxV);
         gui.tfsced[2].setText(String.format("%.2f", gui.slSced[2].v));
         gui.tfsced[4].setText(String.format("%.2f", gui.slSced[4].v));
+        gui.tfsced[6].setText(String.format("%.0f", gui.slSced[6].v));
+        for (int i = 7; i < 10; i++){
+            gui.slSced[i].v = (int) gui.slSced[i].v;
+            gui.tfsced[i].setText(String.format("%.0f", gui.slSced[i].v));
+        }
+
     }
 }

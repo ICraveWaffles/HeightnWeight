@@ -337,7 +337,7 @@ public class GUI {
         p5.strokeWeight(4);
         p5.textFont(Fonts.getThisFont(1));
 
-        for (int i = 0+(page*15); i < (page+1)*15; i++){
+        for (int i = (page*15); i < (page+1)*15; i++){
             scenes[i].display(p5);
         }
 
@@ -349,7 +349,7 @@ public class GUI {
         p5.popStyle();
     }
 
-    public void drawSCENEEDITOR(PApplet p5){
+    public void drawSCENEEDITOR(PApplet p5, Scene scene){
         p5.pushStyle();
 
         p5.textAlign(p5.LEFT, p5.CENTER);
@@ -430,6 +430,10 @@ public class GUI {
         p5.text("0 <===O===> 255", 10, 695);
 
         */
+
+        for (int i = 0; i < scene.nObjects;i++){
+            scene.stands[i].display(p5);
+        }
 
         p5.popStyle();
     }
