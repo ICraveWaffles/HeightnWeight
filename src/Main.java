@@ -55,6 +55,13 @@ public class Main extends PApplet {
                     initializeSceneEditorValues();
                     sceneEditorInitialized = true;
                 }
+                if (scene.nObjects<2) {
+                    gui.sced3.setEnabled(false);
+                    gui.sced4.setEnabled(false);
+                } else {
+                    gui.sced3.setEnabled(true);
+                    gui.sced4.setEnabled(true);
+                }
                 break;
             case OCVIEWER: gui.drawOCVIEWER(this); break;
         }
@@ -130,6 +137,38 @@ public class Main extends PApplet {
                 scene.addObject(cabinet);
                 scene.addObject(door);
                 print("Object has been added!");
+            }
+            if (gui.sced4.enabled) {
+                if (gui.sced4.mouseOverButton(this)) {
+                    if (scene.nObjects == 0) {
+                        scene.currentObject = -1;
+                    } else {
+                        if (scene.currentObject >= scene.nObjects - 1) {
+                            scene.currentObject = 0;
+                        } else {
+                            scene.currentObject++;
+                        }
+                    }
+                }
+            }
+
+            if (gui.sced3.enabled) {
+                if (gui.sced3.mouseOverButton(this)) {
+                    if (scene.nObjects == 0) {
+                        scene.currentObject = -1;
+                    } else {
+                        if (scene.currentObject <= 0) {
+                            scene.currentObject = scene.nObjects - 1;
+                        } else {
+                            scene.currentObject--;
+                        }
+                    }
+                }
+            }
+
+            if (gui.sced5.mouseOverButton(this)) {
+                scene.deleteObject(scene.currentObject);
+                print("Object has been deleted!");
             }
             updateCalculatedValues();
         } else if (gui.currentScreen == GUI.SCREEN.OCVIEWER) {

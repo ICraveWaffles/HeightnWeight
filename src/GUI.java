@@ -435,6 +435,17 @@ public class GUI {
             scene.stands[i].display(p5);
         }
 
+        if (scene.nObjects>0) {
+            p5.noFill();
+            p5.stroke(255, 0, 0);
+            p5.strokeWeight(5);
+            p5.rectMode(p5.CORNER);
+            p5.rect(scene.stands[scene.currentObject].x - 5,
+                    scene.stands[scene.currentObject].y - 5,
+                    scene.stands[scene.currentObject].width + 5,
+                    scene.stands[scene.currentObject].height + 5);
+        }
+
         p5.popStyle();
     }
 
