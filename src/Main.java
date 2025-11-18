@@ -11,7 +11,6 @@ public class Main extends PApplet {
     Stand banana, cabinet, door;
     Scene scene;
 
-
     public static void main(String[] args) {
         PApplet.main("Main");
     }
@@ -20,15 +19,13 @@ public class Main extends PApplet {
         fullScreen();
         smooth(100);
 
-
         PImage bananaPic = loadImage("data/Bananana.png");
         PImage gabinett = loadImage("data/gabinett.png");
         PImage dooor = loadImage("data/door.jpg");
-        banana = new Stand ("Plátano", 0.2f, 0.07f, bananaPic );
-        cabinet = new Stand ("Gabinete", 0.5f, 0.8f, gabinett);
-        door = new Stand("Puerta", 0.6f , 2, dooor);
+        banana = new Stand("Plátano", 0.2f, 0.07f, bananaPic);
+        cabinet = new Stand("Gabinete", 0.5f, 0.8f, gabinett);
+        door = new Stand("Puerta", 0.6f, 2f, dooor);
         scene = new Scene(1);
-
     }
 
     public void setup() {
@@ -38,7 +35,6 @@ public class Main extends PApplet {
         gui.tfsced[4].setEnabled(false);
         gui.slSced[2].setEnabled(false);
         gui.slSced[4].setEnabled(false);
-
     }
 
     public void draw() {
@@ -55,7 +51,7 @@ public class Main extends PApplet {
                     initializeSceneEditorValues();
                     sceneEditorInitialized = true;
                 }
-                if (scene.nObjects<2) {
+                if (scene.nObjects < 2) {
                     gui.sced3.setEnabled(false);
                     gui.sced4.setEnabled(false);
                 } else {
@@ -65,7 +61,6 @@ public class Main extends PApplet {
                 break;
             case OCVIEWER: gui.drawOCVIEWER(this); break;
         }
-
         noFill();
         rect(0, 0, 1280, 720);
         scene.designLayout();
@@ -74,7 +69,12 @@ public class Main extends PApplet {
     public void initializeSceneEditorValues() {
         for (int i = 0; i < gui.slSced.length; i++) {
             if (gui.slSced[i] != null && gui.tfsced[i] != null) {
-                gui.tfsced[i].setText(String.format("%.2f", gui.slSced[i].v));
+                if (i >= 7 && i < 10) {
+                    gui.slSced[i].v = (int) gui.slSced[i].v;
+                    gui.tfsced[i].setText(String.valueOf((int) gui.slSced[i].v));
+                } else {
+                    gui.tfsced[i].setText(String.format("%.2f", gui.slSced[i].v));
+                }
             }
         }
         updateCalculatedValues();
@@ -129,43 +129,28 @@ public class Main extends PApplet {
                 if (i == 2 || i == 4) continue;
                 if (gui.slSced[i].mouseOnSlider(this)) {
                     gui.slSced[i].checkSlider(this);
-                    gui.tfsced[i].setText(String.format("%.2f", gui.slSced[i].v));
+                    if (i >= 7 && i < 10) {
+                        gui.slSced[i].v = (int) gui.slSced[i].v;
+                        gui.tfsced[i].setText(String.valueOf((int) gui.slSced[i].v));
+                    } else {
+                        gui.tfsced[i].setText(String.format("%.2f", gui.slSced[i].v));
+                    }
                 }
             }
-            if (gui.sced2.mouseOverButton(this)){
+            if (gui.sced2.mouseOverButton(this)) {
                 scene.addObject(banana);
                 scene.addObject(cabinet);
                 scene.addObject(door);
                 print("Object has been added!");
             }
-            if (gui.sced4.enabled) {
-                if (gui.sced4.mouseOverButton(this)) {
-                    if (scene.nObjects == 0) {
-                        scene.currentObject = -1;
-                    } else {
-                        if (scene.currentObject >= scene.nObjects - 1) {
-                            scene.currentObject = 0;
-                        } else {
-                            scene.currentObject++;
-                        }
-                    }
-                }
+            if (gui.sced4.enabled && gui.sced4.mouseOverButton(this)) {
+                if (scene.nObjects == 0) scene.currentObject = -1;
+                else scene.currentObject = (scene.currentObject >= scene.nObjects - 1) ? 0 : scene.currentObject + 1;
             }
-
-            if (gui.sced3.enabled) {
-                if (gui.sced3.mouseOverButton(this)) {
-                    if (scene.nObjects == 0) {
-                        scene.currentObject = -1;
-                    } else {
-                        if (scene.currentObject <= 0) {
-                            scene.currentObject = scene.nObjects - 1;
-                        } else {
-                            scene.currentObject--;
-                        }
-                    }
-                }
+            if (gui.sced3.enabled && gui.sced3.mouseOverButton(this)) {
+                if (scene.nObjects == 0) scene.currentObject = -1;
+                else scene.currentObject = (scene.currentObject <= 0) ? scene.nObjects - 1 : scene.currentObject - 1;
             }
-
             if (gui.sced5.mouseOverButton(this)) {
                 scene.deleteObject(scene.currentObject);
                 print("Object has been deleted!");
@@ -192,10 +177,17 @@ public class Main extends PApplet {
                 if (gui.tfsced[i].selected && keyCode == ENTER) {
                     String txt = gui.tfsced[i].getText().replace(',', '.');
                     if (txt.matches("\\d*(\\.\\d{0,2})?") && !txt.isEmpty()) {
-                        float value = Float.parseFloat(txt);
-                        value = constrain(value, gui.slSced[i].minV, gui.slSced[i].maxV);
-                        gui.slSced[i].v = value;
-                        gui.tfsced[i].setText(String.format("%.2f", value));
+                        if (i >= 7 && i < 10) {
+                            int value = (int) Float.parseFloat(txt);
+                            value = (int) constrain(value, gui.slSced[i].minV, gui.slSced[i].maxV);
+                            gui.slSced[i].v = value;
+                            gui.tfsced[i].setText(String.valueOf(value));
+                        } else {
+                            float value = Float.parseFloat(txt);
+                            value = constrain(value, gui.slSced[i].minV, gui.slSced[i].maxV);
+                            gui.slSced[i].v = value;
+                            gui.tfsced[i].setText(String.format("%.2f", value));
+                        }
                     }
                 }
             }
@@ -212,7 +204,12 @@ public class Main extends PApplet {
                 if (i == 2 || i == 4) continue;
                 if (gui.slSced[i] != null && gui.slSced[i].mouseDraggingOnSlider(this)) {
                     gui.slSced[i].checkSlider(this);
-                    gui.tfsced[i].setText(String.format("%.2f", gui.slSced[i].v));
+                    if (i >= 7 && i < 10) {
+                        gui.slSced[i].v = (int) gui.slSced[i].v;
+                        gui.tfsced[i].setText(String.valueOf((int) gui.slSced[i].v));
+                    } else {
+                        gui.tfsced[i].setText(String.format("%.2f", gui.slSced[i].v));
+                    }
                     if (i == 6) {
                         float age = gui.slSced[6].v;
                         gui.slSced[5].v = 0.125f + 0.125f * (float) Math.exp(-0.0741f * age);
@@ -235,19 +232,16 @@ public class Main extends PApplet {
     public void updateCalculatedValues() {
         float altura = gui.slSced[1].v;
         float bmi = gui.slSced[3].v;
-        gui.slSced[2].minV = pow(altura, 2);
-        gui.slSced[2].maxV = 250 * pow(altura, 2);
-        gui.slSced[2].v = constrain(bmi * pow(altura, 2), gui.slSced[2].minV, gui.slSced[2].maxV);
-        gui.slSced[4].minV = (float) (altura * pow(1, 0.7979f) / 81.906);
-        gui.slSced[4].maxV = (float) (altura * pow(250, 0.7979f) / 81.906);
-        gui.slSced[4].v = constrain((float) (altura * pow(bmi, 0.7979f) / 81.906), gui.slSced[4].minV, gui.slSced[4].maxV);
+        gui.slSced[2].minV = (float) Math.pow(altura, 2);
+        gui.slSced[2].maxV = 250 * (float) Math.pow(altura, 2);
+        gui.slSced[2].v = constrain(bmi * (float) Math.pow(altura, 2), gui.slSced[2].minV, gui.slSced[2].maxV);
+        gui.slSced[4].minV = (float) (altura * Math.pow(1, 0.7979f) / 81.906);
+        gui.slSced[4].maxV = (float) (altura * Math.pow(250, 0.7979f) / 81.906);
+        gui.slSced[4].v = constrain((float) (altura * Math.pow(bmi, 0.7979f) / 81.906),
+                gui.slSced[4].minV, gui.slSced[4].maxV);
         gui.tfsced[2].setText(String.format("%.2f", gui.slSced[2].v));
         gui.tfsced[4].setText(String.format("%.2f", gui.slSced[4].v));
         gui.tfsced[6].setText(String.format("%.0f", gui.slSced[6].v));
-        for (int i = 7; i < 10; i++){
-            gui.slSced[i].v = (int) gui.slSced[i].v;
-            gui.tfsced[i].setText(String.format("%.0f", gui.slSced[i].v));
-        }
-
     }
 }
+

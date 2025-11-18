@@ -47,11 +47,11 @@ public class Slider {
     }
 
     public boolean mouseOnSlider(PApplet p5) {
-        return p5.mouseX > x - w / 2f && p5.mouseX < x + w / 2f && p5.mouseY > y - h && p5.mouseY < y + h;
+        return p5.mouseX > x - w / 2f-20 && p5.mouseX < x + w / 2f+5 && p5.mouseY > y - h-5 && p5.mouseY < y + h+5;
     }
 
     public boolean mouseDraggingOnSlider(PApplet p5) {
-        return p5.mousePressed && p5.mouseX > x - w / 2f-20 && p5.mouseX < x + w / 2 +20 && p5.mouseY > y - h * 2f - 20 && p5.mouseY < y + h * 2 + 20;
+        return p5.mousePressed && p5.mouseX > x - w / 2f-20 && p5.mouseX < x + w / 2 +20 && p5.mouseY > y - h * 2f - 5 && p5.mouseY < y + h * 2 +   5;
     }
 
     public void updateSlider(PApplet p5) {
