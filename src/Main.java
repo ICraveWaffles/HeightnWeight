@@ -6,9 +6,11 @@ public class Main extends PApplet {
     Fonts fonts;
     GUI gui;
     boolean sceneEditorInitialized = false;
+    public Slider selectedSl;
 
-    Stand[] furniture;
+
     Stand banana, cabinet, door;
+    Scene[] scenes = new Scene[150];
     Scene scene;
 
     public static void main(String[] args) {
@@ -25,7 +27,10 @@ public class Main extends PApplet {
         banana = new Stand("Plátano", 0.2f, 0.07f, bananaPic);
         cabinet = new Stand("Gabinete", 0.5f, 0.8f, gabinett);
         door = new Stand("Puerta", 0.6f, 2f, dooor);
-        scene = new Scene(1);
+        for (int i = 0; i < scenes.length;i++){
+            scenes[i] = new Scene(i);
+        }
+
     }
 
     public void setup() {
@@ -63,7 +68,9 @@ public class Main extends PApplet {
         }
         noFill();
         rect(0, 0, 1280, 720);
-        scene.designLayout();
+        if (scene != null) {
+            scene.designLayout();
+        }
     }
 
     public void initializeSceneEditorValues() {
@@ -115,12 +122,16 @@ public class Main extends PApplet {
             if (gui.nav4.mouseOverButton(this)) gui.page = 9;
             for (int i = 0; i < gui.scenes.length; i++) {
                 if (gui.scenes[i].mouseOverButton(this)) {
+                    scene = scenes[i];
                     gui.currentScreen = GUI.SCREEN.SCENEEDITOR;
                     sceneEditorInitialized = false;
                 }
             }
         } else if (gui.currentScreen == GUI.SCREEN.SCENEEDITOR) {
-            if (gui.exit.mouseOverButton(this)) gui.currentScreen = GUI.SCREEN.SCENESELECTOR;
+            if (gui.exit.mouseOverButton(this)) {
+                gui.currentScreen = GUI.SCREEN.SCENESELECTOR;
+                scene = null;
+            }
             if (gui.rsced1.mouseOverButton(this)) gui.gridon = !gui.gridon;
             for (int i = 0; i < gui.tfsced.length; i++) {
                 if (i != 2 && i != 4) gui.tfsced[i].isPressed(this);
@@ -129,6 +140,7 @@ public class Main extends PApplet {
                 if (i == 2 || i == 4) continue;
                 if (gui.slSced[i].mouseOnSlider(this)) {
                     gui.slSced[i].checkSlider(this);
+                    selectedSl=gui.slSced[i];
                     if (i >= 7 && i < 10) {
                         gui.slSced[i].v = (int) gui.slSced[i].v;
                         gui.tfsced[i].setText(String.valueOf((int) gui.slSced[i].v));
@@ -177,7 +189,7 @@ public class Main extends PApplet {
                 if (gui.tfsced[i].selected && keyCode == ENTER) {
                     String txt = gui.tfsced[i].getText().replace(',', '.');
                     if (txt.matches("\\d*(\\.\\d{0,2})?") && !txt.isEmpty()) {
-                        if (i >= 7 && i < 10) {
+                        if (i >=6 && i < 10) {
                             int value = (int) Float.parseFloat(txt);
                             value = (int) constrain(value, gui.slSced[i].minV, gui.slSced[i].maxV);
                             gui.slSced[i].v = value;
@@ -210,15 +222,6 @@ public class Main extends PApplet {
                     } else {
                         gui.tfsced[i].setText(String.format("%.2f", gui.slSced[i].v));
                     }
-                    if (i == 6) {
-                        float age = gui.slSced[6].v;
-                        gui.slSced[5].v = 0.125f + 0.125f * (float) Math.exp(-0.0741f * age);
-                        gui.tfsced[5].setText(String.format("%.3f", gui.slSced[5].v));
-                    } else if (i == 5) {
-                        float ratio = gui.slSced[5].v;
-                        gui.slSced[6].v = -(1 / 0.0741f) * (float) Math.log((ratio - 0.125f) / 0.125f);
-                        gui.tfsced[6].setText(String.format("%.0f", gui.slSced[6].v));
-                    }
                 }
             }
             updateCalculatedValues();
@@ -242,6 +245,22 @@ public class Main extends PApplet {
         gui.tfsced[2].setText(String.format("%.2f", gui.slSced[2].v));
         gui.tfsced[4].setText(String.format("%.2f", gui.slSced[4].v));
         gui.tfsced[6].setText(String.format("%.0f", gui.slSced[6].v));
+        if (selectedSl == gui.slSced[5]){
+            gui.tfsced[5].setEnabled(true);
+            gui.tfsced[6].setEnabled(false);
+            float ratio = gui.slSced[5].v;
+            gui.slSced[6].v = Math.abs(-(1 / 0.0741f) * (float) Math.log((ratio - 0.125f) / 0.125f));
+            gui.tfsced[6].setText(String.format("%.0f", gui.slSced[6].v));
+            gui.slSced[6].v = constrain(gui.slSced[6].v,0, 80);
+        } else if (selectedSl == gui.slSced[6]){
+            gui.tfsced[5].setEnabled(false);
+            gui.tfsced[6].setEnabled(true);
+            float age = gui.slSced[6].v;
+            gui.slSced[5].v = 0.125f + 0.125f * (float) Math.exp(-0.0741f * age);
+            gui.tfsced[5].setText(String.format("%.3f", gui.slSced[5].v));
+        }
+        gui.slSced[6].v = constrain(gui.slSced[6].v,0, 80);
+        gui.slSced[5].v = constrain(gui.slSced[5].v,0.125f, 0.25f);
     }
 }
 

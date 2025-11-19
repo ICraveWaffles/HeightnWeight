@@ -16,7 +16,7 @@ public class Stand {
         this.pic = pic;
     }
 
-    public void updatePos(){
+    public Stand() {
 
     }
 
