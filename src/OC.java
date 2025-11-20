@@ -1,4 +1,4 @@
-
+import processing.core.PApplet;
 
 public class OC extends Stand{
 
@@ -8,12 +8,11 @@ public class OC extends Stand{
     float bhratio;
     float age;
 
-    byte r;
-    byte g;
-    byte b;
+    int r;
+    int g;
+    int b;
 
     public OC() {
-
         this.name = "Zwolf";
         this.tHeight = 1.828f;
         this.BMI = 25;
@@ -26,5 +25,23 @@ public class OC extends Stand{
         this.r = 127;
         this.g = 127;
         this.b = 127;
+    }
+
+    public void display(PApplet p5){
+        p5.pushMatrix();
+
+        p5.rectMode(p5.CORNER);
+        p5.stroke(255);
+        p5.strokeWeight(3);
+        p5.fill(r & 0xFF,g & 0xFF,b & 0xFF);
+        p5.rect(x, y+(height*bhratio), width, height*(1-bhratio), 10);
+        if (width > height*bhratio){
+            p5.ellipse(x+width / 2, y + (height*bhratio)/2, height*bhratio, height*bhratio);
+        } else {
+            p5.ellipse(x+width / 2, y + (height*bhratio)/2, width, height*bhratio);
+        }
+
+
+        p5.popMatrix();
     }
 }
