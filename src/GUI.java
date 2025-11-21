@@ -371,17 +371,22 @@ public class GUI {
         sced3.display(p5);
         sced4.display(p5);
         sced5.display(p5);
-
-        for (int i = 0; i < 10; i++){
-            tfsced[i].display(p5);
-        }
-        for (int i = 5; i < 10; i++){
-            if (slSced[i]!= null){
-                slSced[i].display(p5);
+        if (scene.nObjects != 0) {
+            if (scene.stands[scene.currentObject] instanceof OC) {
+                for (int i = 0; i < 10; i++) {
+                    tfsced[i].display(p5);
+                }
+                for (int i = 5; i < 10; i++) {
+                    if (slSced[i] != null) {
+                        slSced[i].display(p5);
+                    }
+                }
+                slSced[1].display(p5);
+                slSced[3].display(p5);
+                p5.text("Peso(kg): ", 25, 200);
+                p5.text("Ancho(m): ", 25, 320);
             }
         }
-        slSced[1].display(p5);
-        slSced[3].display(p5);
 
         p5.fill(Colors.getThisColor(7));
         p5.rect(354, 114, 920, 600);
@@ -409,13 +414,10 @@ public class GUI {
         //p5.text("Name: []",10, 80 );
         // p5.text("Height: []",10, 130);
         //p5.text("0.1 <===O===> 20",10, 155);
-        p5.text("Peso(kg): ",25, 200);
         // p5.text("0.1 <===O===> 20",10, 215);
         //p5.text("IMC: ",10, 250);
         //p5.text("0.1 <===O===> 20",10, 275);
-        p5.text("Ancho(m): ",25, 320);
         /*p5.text("0.1 <===O===> 20",10, 335);
-
 
         p5.text("Head/Body Ratio: []",10, 400);
         p5.text("0.1 <===O===> 20",10, 425);
@@ -443,7 +445,7 @@ public class GUI {
             p5.strokeWeight(2);
             p5.rectMode(p5.CORNER);
 
-            if (scene.stands[scene.currentObject] instanceof Stand && !(scene.stands[scene.currentObject] instanceof OC)) {
+            if (scene.stands[scene.currentObject] != null && !(scene.stands[scene.currentObject] instanceof OC)) {
                 p5.rect(scene.stands[scene.currentObject].x - 5,
                         scene.stands[scene.currentObject].y - 5,
                         scene.stands[scene.currentObject].width + 10,

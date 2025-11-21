@@ -58,7 +58,7 @@ public class Slider {
         if (!enabled) return;
         v = p5.map(p5.mouseX, x - w / 2f + 1, x + w / 2f - 1, minV, maxV);
         v = PApplet.constrain(v, minV, maxV);
-        v = Math.round(v * 100.0f) / 100.0f;
+        v = Math.round(v * 1000.0f) / 1000.0f;
     }
 
     public void checkSlider(PApplet p5) {
