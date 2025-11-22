@@ -119,7 +119,7 @@ public class GUI {
         sced4 = new cButton(p5,">",210, 28, 50, 3,7,7);
         sced5 = new cButton(p5,"X",270, 28, 50, 3,7,7);
 
-        exit = new rButton(p5, "SALIR", 1178, 34, 200, 60, 3, 7,7 );
+        exit = new rButton(p5, "SALIR", 1178, 34, 196, 60, 3, 7,7 );
 
         page = 0; gridon = true;
     }
