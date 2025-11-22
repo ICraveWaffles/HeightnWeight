@@ -66,13 +66,42 @@ public class rButton {
         p5.popStyle();
     }
 
+    public void display(PApplet p5, float x){
+        p5.pushStyle();
+
+        p5.rectMode(p5.CENTER);
+        p5.textAlign(p5.CENTER, p5.CENTER);
+
+        if(!enabled){
+            p5.fill(fillColorDisabled);
+        }
+        else if(mouseOverButton(p5)){
+            p5.fill(fillColorOver);
+        }
+        else{
+            p5.fill(fillColor);
+        }
+        p5.stroke(strokeColor);
+        p5.strokeWeight(2);
+
+
+
+        p5.rect(x+30+this.w/2, this.y, this.w, this.h, 10);
+
+
+        p5.fill(cText);
+        p5.textFont(Fonts.getThisFont(1));
+        p5.text(bText, x+30+this.w/2 , this.y);
+        p5.popStyle();
+    }
+
     public boolean mouseOverButton(PApplet p5){
         return (p5.mouseX >= this.x-this.w/2) && (p5.mouseX <= this.x + this.w/2) &&
                 (p5.mouseY >= this.y-this.h/2) && (p5.mouseY <= this.y + this.h/2);
 
     }
 
-    // Indica si cal posar el cursor a HAND
+
     public boolean updateHandCursor(PApplet p5){
         return mouseOverButton(p5) && enabled;
     }

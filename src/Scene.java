@@ -38,6 +38,7 @@ public class Scene {
         if (nObjects == 0) currentObject = -1;
     }
 
+
     public float[] getTallestObject() {
         if (nObjects == 0) return new float[]{-1, 0};
 
