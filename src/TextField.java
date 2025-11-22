@@ -67,8 +67,10 @@ public class TextField {
     }
 
     public void addText(char c) {
-        if (c == ',') c = '.';
-        if (text.length() < (w / (textSize * 0.6))) text += c;
+        if (text.length()!=18) {
+            if (c == ',' && this.intOnly) c = '.';
+            if (text.length() < (w / (textSize * 0.6))) text += c;
+        }
     }
 
     public void removeText() {

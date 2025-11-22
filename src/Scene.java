@@ -7,7 +7,7 @@ public class Scene {
     public Scene(int n) {
         this.stands = new Stand[n];
         this.nObjects = 0;
-        this.currentObject = 0;
+        this.currentObject = -1;
     }
 
     public void addObject(Stand s) {
@@ -29,15 +29,9 @@ public class Scene {
         stands[nObjects - 1] = null;
         nObjects--;
 
-        if (currentObject == index) {
-            currentObject = Math.min(index, nObjects - 1);
-        } else if (currentObject > index) {
-            currentObject--;
-        }
-
+        if (currentObject >= nObjects) currentObject = nObjects - 1;
         if (nObjects == 0) currentObject = -1;
     }
-
 
     public float[] getTallestObject() {
         if (nObjects == 0) return new float[]{-1, 0};
@@ -66,7 +60,6 @@ public class Scene {
         }
 
         totalWidth += (nObjects - 1) * 0.5f;
-
         float scaleW = totalWidth / 900f;
         float scaleH = tallest / 600f;
         float pixelSize = Math.max(scaleW, scaleH);
@@ -77,10 +70,8 @@ public class Scene {
         for (int i = 0; i < nObjects; i++) {
             stands[i].width = stands[i].tWidth / pixelSize;
             stands[i].height = stands[i].tHeight / pixelSize;
-
             stands[i].x = currentX;
             stands[i].y = baseY + (600f - stands[i].height);
-
             currentX += stands[i].width + 0.5f / pixelSize;
         }
     }

@@ -67,8 +67,9 @@ public class rButton {
     }
 
     public void display(PApplet p5, float x){
-        p5.pushStyle();
+        this.x = x + 30 + this.w / 2;
 
+        p5.pushStyle();
         p5.rectMode(p5.CENTER);
         p5.textAlign(p5.CENTER, p5.CENTER);
 
@@ -81,17 +82,15 @@ public class rButton {
         else{
             p5.fill(fillColor);
         }
+
         p5.stroke(strokeColor);
         p5.strokeWeight(2);
-
-
-
-        p5.rect(x+30+this.w/2, this.y, this.w, this.h, 10);
-
+        p5.rect(this.x, this.y, this.w, this.h, 10);
 
         p5.fill(cText);
         p5.textFont(Fonts.getThisFont(1));
-        p5.text(bText, x+30+this.w/2 , this.y);
+        p5.text(bText, this.x, this.y);
+
         p5.popStyle();
     }
 

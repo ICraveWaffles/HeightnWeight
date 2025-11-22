@@ -10,7 +10,7 @@ public class Main extends PApplet {
     public int page = 0;
 
     Stand banana, cabinet, door;
-    Scene[] scenes = new Scene[150];
+    public Scene[] scenes = new Scene[150];
     Scene scene;
     Stand[] allStands = new Stand[3];
     OC[] allOCs;
@@ -188,6 +188,11 @@ public class Main extends PApplet {
             if (gui.nav3.mouseOverButton(this) && page < (slabs.length - 1) / 5) page++;
             if (gui.nav4.mouseOverButton(this)) page = (slabs.length - 1) / 5;
             if (gui.exit.mouseOverButton(this)) gui.currentScreen = GUI.SCREEN.MAIN;
+            for (int i = 0; i < nAllOCs;i++){
+                if (slabs[i].delete.mouseOverButton(this)){
+                    deleteOCfromBase(allOCs[i]);
+                }
+            }
         }
     }
 
@@ -257,13 +262,53 @@ public class Main extends PApplet {
 
     public void addNewOCtoBase(OC oc) {
         allOCs = java.util.Arrays.copyOf(allOCs, nAllOCs + 1);
-        slabs  = java.util.Arrays.copyOf(slabs,  nAllOCs + 1);
+        slabs  = java.util.Arrays.copyOf(slabs, nAllOCs + 1);
 
+        oc.ID = nAllOCs;
+        oc.uniqueID = (int) System.nanoTime();
+
+        allOCs[nAllOCs] = oc;
+        slabs[nAllOCs]  = new InfoSlab(nAllOCs, oc, this);
         nAllOCs++;
-
-        allOCs[nAllOCs - 1] = oc;
-        slabs[nAllOCs - 1]  = new InfoSlab(nAllOCs, oc, this);
     }
+
+    public void deleteOCfromBase(OC oc) {
+        long neededID = oc.uniqueID;
+
+        int index = -1;
+        for (int i = 0; i < nAllOCs; i++) {
+            if (allOCs[i].uniqueID == neededID) {
+                index = i;
+                break;
+            }
+        }
+        if (index == -1) return;
+
+        for (int i = index; i < nAllOCs - 1; i++) {
+            allOCs[i] = allOCs[i + 1];
+            allOCs[i].ID = i;
+            slabs[i] = slabs[i + 1];
+        }
+
+        allOCs[nAllOCs - 1] = null;
+        slabs[nAllOCs - 1] = null;
+        nAllOCs--;
+
+        allOCs = java.util.Arrays.copyOf(allOCs, nAllOCs);
+        slabs  = java.util.Arrays.copyOf(slabs, nAllOCs);
+
+        for (int i = 0; i < scenes.length; i++) {
+            Scene s = scenes[i];
+            for (int j = s.nObjects - 1; j >= 0; j--) {
+                Stand st = s.stands[j];
+                if (st instanceof OC oc2 && oc2.uniqueID == neededID) {
+                    s.deleteObject(j);
+                }
+            }
+        }
+    }
+
+
 
 
     public void updateCalculatedValues() {
@@ -333,7 +378,7 @@ public class Main extends PApplet {
     }
 
     public void instanceOC() {
-        OC pHolder = new OC();
+        OC pHolder = new OC(nAllOCs);
 
         gui.slSced[1].v = 1.83f;
         gui.slSced[2].v = (float) Math.pow(1.83f, 2) * 25;
