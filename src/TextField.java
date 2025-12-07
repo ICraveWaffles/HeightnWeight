@@ -46,7 +46,7 @@ public class TextField {
 
     public void keyPressed(char key, int keyCode) {
         if (!enabled || !selected) return;
-        if (keyCode == (int) BACKSPACE) {
+        if (keyCode == BACKSPACE) {
             removeText();
             return;
         }
@@ -62,15 +62,11 @@ public class TextField {
         } else {
             if (isLetter || isNumber || isSymbol) addText(key);
         }
-        if (keyCode == 128) addText('[');
-        if (keyCode == 129) addText('{');
     }
 
     public void addText(char c) {
-        if (text.length()!=18) {
-            if (c == ',' && this.intOnly) c = '.';
-            if (text.length() < (w / (textSize * 0.6))) text += c;
-        }
+        if (c == ',') c = '.';
+        if (text.length() < (w / (textSize * 0.6))) text += c;
     }
 
     public void removeText() {
@@ -103,17 +99,12 @@ public class TextField {
         }
         if (mouseOverTextField(p5)) {
             selected = true;
-            if (intOnly || text.equals(trueText)) {
-                text = "";
-            }
         } else {
             selected = false;
-            if (text.equals("")) text = trueText;
-            else if (intOnly) trueText = text;
         }
     }
 
-        public void setEnabled(boolean e) {
+    public void setEnabled(boolean e) {
         enabled = e;
         if (!e) selected = false;
     }
@@ -128,5 +119,9 @@ public class TextField {
 
     public boolean isIntOnly() {
         return intOnly;
+    }
+
+    public boolean isEditing() {
+        return selected;
     }
 }
