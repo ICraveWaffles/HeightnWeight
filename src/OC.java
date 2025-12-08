@@ -3,7 +3,7 @@ import processing.core.PApplet;
 public class OC extends Stand {
 
     public int ID;
-    public int uniqueID;
+    public long uniqueID;
     private static int nextUID = 0;
 
     float weight;

@@ -4,11 +4,12 @@ public class InfoSlab {
     int page;
     OC oc;
     rButton delete;
-    public InfoSlab(int ID, OC oc, PApplet p5){
+    public InfoSlab(OC oc, PApplet p5){
 
-        this.page = (ID - 1) / 5;
+
         this.oc = oc;
-        this.delete = new rButton(p5, "OUT", 350 + ((ID - 1)  * 200), 560, 120, 40, 7,6,6);
+        this.page = (oc.ID - 1) / 5;
+        this.delete = new rButton(p5, "OUT", 350 + ((oc.ID - 1)  * 200), 560, 120, 40, 7,6,6);
     }
 
 

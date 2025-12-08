@@ -3,11 +3,16 @@ public class Scene {
     Stand[] stands;
     int nObjects;
     int currentObject;
+    enum scInstance {DISPLAY, OCSELECT}
+    scInstance sel;
+    int selPage = 0;
 
     public Scene(int n) {
         this.stands = new Stand[n];
         this.nObjects = 0;
         this.currentObject = -1;
+        this.sel = Scene.scInstance.DISPLAY;
+        this.selPage = 0;
     }
 
     public void addObject(Stand s) {
