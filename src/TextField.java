@@ -70,7 +70,7 @@ public class TextField {
     }
 
     public void removeText() {
-        if (text.length() > 0) text = text.substring(0, text.length() - 1);
+        if (!text.isEmpty()) text = text.substring(0, text.length() - 1);
     }
 
     public void removeAllText() {
@@ -99,6 +99,9 @@ public class TextField {
         }
         if (mouseOverTextField(p5)) {
             selected = true;
+            if (this.text == trueText){
+                this.text = "";
+            }
         } else {
             selected = false;
         }

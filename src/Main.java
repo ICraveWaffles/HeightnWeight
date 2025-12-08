@@ -159,6 +159,22 @@ public class Main extends PApplet {
                     selectedSl = gui.slSced[i];
                     if (i >= 7 && i < 10) gui.tfsced[i].setText(String.valueOf((int) gui.slSced[i].v));
                     else gui.tfsced[i].setText(String.format("%.2f", gui.slSced[i].v));
+                } else {
+                    String txt = gui.tfsced[i].getText().replace(',', '.');
+                    if (txt.matches("\\d*(\\.\\d{0,2})?") && !txt.isEmpty()) {
+                        if (i >= 6 && i < 10) {
+                            int value = (int) Float.parseFloat(txt);
+                            value = (int) constrain(value, gui.slSced[i].minV, gui.slSced[i].maxV);
+                            gui.slSced[i].v = value;
+                            gui.tfsced[i].setText(String.valueOf(value));
+                        } else {
+                            float value = Float.parseFloat(txt);
+                            value = constrain(value, gui.slSced[i].minV, gui.slSced[i].maxV);
+                            gui.slSced[i].v = value;
+                            gui.tfsced[i].setText(String.format("%.2f", value));
+                        }
+                    }
+                    updateCalculatedValues();
                 }
             }
             if (gui.sced1.mouseOverButton(this)) instanceOC();
@@ -178,6 +194,7 @@ public class Main extends PApplet {
                 if (scene.currentObject >= 0 && scene.stands[scene.currentObject] instanceof OC pHolder) changeTFValues(pHolder);
             }
             if (gui.sced5.mouseOverButton(this)) scene.deleteObject(scene.currentObject);
+
             if (scene != null) updateCalculatedValues();
         } else if (gui.currentScreen == GUI.SCREEN.OCVIEWER) {
             if (gui.nav1.mouseOverButton(this)) page = 0;
