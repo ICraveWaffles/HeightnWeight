@@ -3,8 +3,10 @@ import processing.core.PApplet;
 public class SelectSlab {
 
     OC oc;
+    boolean isEnabled;
 
     public SelectSlab(PApplet p5, OC oc) {
+        this.isEnabled = true;
         this.oc = oc;
     }
 
@@ -26,17 +28,25 @@ public class SelectSlab {
             p5.fill(255);
         }
 
-        p5.text(oc.name, 15, y + 25);
+        if (this.isEnabled) {
+            p5.text(oc.name, 15, y + 25);
+        } else {
+            p5.text("[["+oc.name+"]]", 15, y + 25);
+        }
         p5.textFont(Fonts.getThisFont(1));
         p5.popMatrix();
     }
 
     public boolean mouseOverButton(PApplet p5) {
         int y = 132 + (oc.ID % 10) * 66;
-        return
-                p5.mouseX >= 10 &&
-                        p5.mouseX <= 290 &&
-                        p5.mouseY >= y &&
-                        p5.mouseY <= y + 50;
+        if (this.isEnabled) {
+            return p5.mouseX >= 10 &&
+                    p5.mouseX <= 290 &&
+                    p5.mouseY >= y &&
+                    p5.mouseY <= y + 50;
+        }
+        return false;
     }
+
+
 }

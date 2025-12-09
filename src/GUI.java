@@ -372,19 +372,21 @@ public class GUI {
         sced4.display(p5);
         sced5.display(p5);
         if (scene.nObjects != 0) {
-            if (scene.stands[scene.currentObject] instanceof OC) {
-                for (int i = 0; i < 10; i++) {
-                    tfsced[i].display(p5);
-                }
-                for (int i = 5; i < 10; i++) {
-                    if (slSced[i] != null) {
-                        slSced[i].display(p5);
+            if (scene.sel != Scene.scInstance.OCSELECT) {
+                if (scene.stands[scene.currentObject] instanceof OC) {
+                    for (int i = 0; i < 10; i++) {
+                        tfsced[i].display(p5);
                     }
+                    for (int i = 5; i < 10; i++) {
+                        if (slSced[i] != null) {
+                            slSced[i].display(p5);
+                        }
+                    }
+                    slSced[1].display(p5);
+                    slSced[3].display(p5);
+                    p5.text("Peso(kg): ", 25, 200);
+                    p5.text("Ancho(m): ", 25, 320);
                 }
-                slSced[1].display(p5);
-                slSced[3].display(p5);
-                p5.text("Peso(kg): ", 25, 200);
-                p5.text("Ancho(m): ", 25, 320);
             }
         }
 

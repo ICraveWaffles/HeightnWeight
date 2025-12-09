@@ -150,13 +150,16 @@ public class Main extends PApplet {
                 }
             }
         } else if (gui.currentScreen == GUI.SCREEN.SCENEEDITOR) {
-            int start = scene.selPage * 10;
-            int end = Math.min(selects.length, start + 10);
-            for (int i = start; i < end; i++) {
-                if (selects[i].mouseOverButton(this)){
-                    addThisOC(selects[i].oc);
+            if (scene.sel != Scene.scInstance.DISPLAY) {
+                int start = scene.selPage * 10;
+                int end = Math.min(selects.length, start + 10);
+                for (int i = start; i < end; i++) {
+                    if (selects[i].mouseOverButton(this)) {
+                        addThisOC(selects[i].oc);
+                    }
                 }
-            }
+        }
+
             if (gui.exit.mouseOverButton(this)) {
                 scene.sel = Scene.scInstance.DISPLAY;
                 scene.selPage = 0;
@@ -170,29 +173,31 @@ public class Main extends PApplet {
                     if (!gui.tfsced[i].mouseOverTextField(this) && gui.tfsced[i].selected) gui.tfsced[i].keyPressed('0', ENTER);
                 }
             }
-            for (int i = 1; i < gui.slSced.length; i++) {
-                if (i == 2 || i == 4) continue;
-                if (gui.slSced[i].mouseOnSlider(this)) {
-                    gui.slSced[i].checkSlider(this);
-                    selectedSl = gui.slSced[i];
-                    if (i >= 7 && i < 10) gui.tfsced[i].setText(String.valueOf((int) gui.slSced[i].v));
-                    else gui.tfsced[i].setText(String.format("%.2f", gui.slSced[i].v));
-                } else {
-                    String txt = gui.tfsced[i].getText().replace(',', '.');
-                    if (txt.matches("\\d*(\\.\\d{0,2})?") && !txt.isEmpty()) {
-                        if (i >= 6 && i < 10) {
-                            int value = (int) Float.parseFloat(txt);
-                            value = (int) constrain(value, gui.slSced[i].minV, gui.slSced[i].maxV);
-                            gui.slSced[i].v = value;
-                            gui.tfsced[i].setText(String.valueOf(value));
-                        } else {
-                            float value = Float.parseFloat(txt);
-                            value = constrain(value, gui.slSced[i].minV, gui.slSced[i].maxV);
-                            gui.slSced[i].v = value;
-                            gui.tfsced[i].setText(String.format("%.2f", value));
+            if (scene.sel != Scene.scInstance.OCSELECT) {
+                for (int i = 1; i < gui.slSced.length; i++) {
+                    if (i == 2 || i == 4) continue;
+                    if (gui.slSced[i].mouseOnSlider(this, scene)) {
+                        gui.slSced[i].checkSlider(this, scene);
+                        selectedSl = gui.slSced[i];
+                        if (i >= 7 && i < 10) gui.tfsced[i].setText(String.valueOf((int) gui.slSced[i].v));
+                        else gui.tfsced[i].setText(String.format("%.2f", gui.slSced[i].v));
+                    } else {
+                        String txt = gui.tfsced[i].getText().replace(',', '.');
+                        if (txt.matches("\\d*(\\.\\d{0,2})?") && !txt.isEmpty()) {
+                            if (i >= 6 && i < 10) {
+                                int value = (int) Float.parseFloat(txt);
+                                value = (int) constrain(value, gui.slSced[i].minV, gui.slSced[i].maxV);
+                                gui.slSced[i].v = value;
+                                gui.tfsced[i].setText(String.valueOf(value));
+                            } else {
+                                float value = Float.parseFloat(txt);
+                                value = constrain(value, gui.slSced[i].minV, gui.slSced[i].maxV);
+                                gui.slSced[i].v = value;
+                                gui.tfsced[i].setText(String.format("%.2f", value));
+                            }
                         }
+                        updateCalculatedValues();
                     }
-                    updateCalculatedValues();
                 }
             }
             if (gui.sced1.mouseOverButton(this)) instanceOC();
@@ -266,8 +271,6 @@ public class Main extends PApplet {
         }
     }
 
-
-
     public void keyPressed() {
         if (gui.currentScreen == GUI.SCREEN.LOGIN) {
             gui.tflogin1.keyPressed(key, keyCode);
@@ -278,27 +281,29 @@ public class Main extends PApplet {
             gui.tfsignup3.keyPressed(key, keyCode);
             gui.tfsignup4.keyPressed(key, keyCode);
         } else if (gui.currentScreen == GUI.SCREEN.SCENEEDITOR) {
-            for (int i = 0; i < gui.tfsced.length; i++) {
-                if (i == 2 || i == 4) continue;
-                gui.tfsced[i].keyPressed(key, keyCode);
-                if (gui.tfsced[i].selected && keyCode == ENTER) {
-                    String txt = gui.tfsced[i].getText().replace(',', '.');
-                    if (txt.matches("\\d*(\\.\\d{0,3})?") && !txt.isEmpty()) {
-                        if (i >= 6 && i < 10) {
-                            int value = (int) Float.parseFloat(txt);
-                            value = (int) constrain(value, gui.slSced[i].minV, gui.slSced[i].maxV);
-                            gui.slSced[i].v = value;
-                            gui.tfsced[i].setText(String.valueOf(value));
-                        } else {
-                            float value = Float.parseFloat(txt);
-                            value = constrain(value, gui.slSced[i].minV, gui.slSced[i].maxV);
-                            gui.slSced[i].v = value;
-                            gui.tfsced[i].setText(String.format("%.3f", value));
+            if (scene.sel != Scene.scInstance.OCSELECT) {
+                for (int i = 0; i < gui.tfsced.length; i++) {
+                    if (i == 2 || i == 4) continue;
+                    gui.tfsced[i].keyPressed(key, keyCode);
+                    if (gui.tfsced[i].selected && keyCode == ENTER) {
+                        String txt = gui.tfsced[i].getText().replace(',', '.');
+                        if (txt.matches("\\d*(\\.\\d{0,3})?") && !txt.isEmpty()) {
+                            if (i >= 6 && i < 10) {
+                                int value = (int) Float.parseFloat(txt);
+                                value = (int) constrain(value, gui.slSced[i].minV, gui.slSced[i].maxV);
+                                gui.slSced[i].v = value;
+                                gui.tfsced[i].setText(String.valueOf(value));
+                            } else {
+                                float value = Float.parseFloat(txt);
+                                value = constrain(value, gui.slSced[i].minV, gui.slSced[i].maxV);
+                                gui.slSced[i].v = value;
+                                gui.tfsced[i].setText(String.format("%.3f", value));
+                            }
                         }
                     }
                 }
+                updateCalculatedValues();
             }
-            updateCalculatedValues();
         }
         if (key == 'z' || key == 'Z') {
             if (scene != null) for (int i = 0; i < 21; i++) instanceOC();
@@ -307,13 +312,13 @@ public class Main extends PApplet {
 
     public void mouseDragged() {
         if (gui.currentScreen == GUI.SCREEN.PRELOGIN) {
-            if (gui.slZero.mouseDraggingOnSlider(this)) gui.slZero.checkSlider(this);
+            if (gui.slZero.mouseDraggingOnSlider(this)) gui.slZero.checkSlider(this, scene);
         }
         if (gui.currentScreen == GUI.SCREEN.SCENEEDITOR) {
             for (int i = 0; i < gui.slSced.length; i++) {
                 if (i == 2 || i == 4) continue;
                 if (gui.slSced[i] != null && gui.slSced[i].mouseDraggingOnSlider(this)) {
-                    gui.slSced[i].checkSlider(this);
+                    gui.slSced[i].checkSlider(this, scene);
                     if (i >= 7 && i < 10) gui.tfsced[i].setText(String.valueOf((int) gui.slSced[i].v));
                     else gui.tfsced[i].setText(String.format("%.2f", gui.slSced[i].v));
                 }

@@ -80,4 +80,18 @@ public class Scene {
             currentX += stands[i].width + 0.5f / pixelSize;
         }
     }
+
+    public void updateSelectSlabs(SelectSlab[] selects) {
+        for (SelectSlab s : selects) {
+            boolean existsInThisScene = false;
+            for (int i = 0; i < nObjects; i++) {
+                if (stands[i] instanceof OC oc && oc.ID == s.oc.ID) {
+                    existsInThisScene = true;
+                    break;
+                }
+            }
+            s.isEnabled = !existsInThisScene;
+        }
+    }
+
 }

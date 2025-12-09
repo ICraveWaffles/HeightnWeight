@@ -86,10 +86,11 @@ public class TextField {
     }
 
     public boolean mouseOverTextField(PApplet p5) {
-        return (p5.mouseX >= x - w / 2f &&
-                p5.mouseX <= x + w / 2f &&
-                p5.mouseY >= y - h / 2f &&
-                p5.mouseY <= y + h / 2f);
+            return (p5.mouseX >= x - w / 2f &&
+                    p5.mouseX <= x + w / 2f &&
+                    p5.mouseY >= y - h / 2f &&
+                    p5.mouseY <= y + h / 2f);
+
     }
 
     public void isPressed(PApplet p5) {
@@ -99,13 +100,17 @@ public class TextField {
         }
         if (mouseOverTextField(p5)) {
             selected = true;
-            if (this.text == trueText){
+            if (this.text.equals(trueText)) {
                 this.text = "";
             }
         } else {
             selected = false;
+            if (this.text.isEmpty()) {
+                this.text = trueText;
+            }
         }
     }
+
 
     public void setEnabled(boolean e) {
         enabled = e;
@@ -116,15 +121,4 @@ public class TextField {
         return enabled;
     }
 
-    public void setIntOnly(boolean state) {
-        intOnly = state;
-    }
-
-    public boolean isIntOnly() {
-        return intOnly;
-    }
-
-    public boolean isEditing() {
-        return selected;
-    }
 }

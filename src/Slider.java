@@ -46,8 +46,11 @@ public class Slider {
         p5.popStyle();
     }
 
-    public boolean mouseOnSlider(PApplet p5) {
-        return p5.mouseX > x - w / 2f-20 && p5.mouseX < x + w / 2f+5 && p5.mouseY > y - h-5 && p5.mouseY < y + h+5;
+    public boolean mouseOnSlider(PApplet p5, Scene scene) {
+        if (scene.sel != Scene.scInstance.OCSELECT) {
+            return p5.mouseX > x - w / 2f - 20 && p5.mouseX < x + w / 2f + 5 && p5.mouseY > y - h - 5 && p5.mouseY < y + h + 5;
+        }
+        else return false;
     }
 
     public boolean mouseDraggingOnSlider(PApplet p5) {
@@ -61,8 +64,8 @@ public class Slider {
         v = Math.round(v * 1000.0f) / 1000.0f;
     }
 
-    public void checkSlider(PApplet p5) {
+    public void checkSlider(PApplet p5, Scene scene) {
         if (!enabled) return;
-        if (p5.mousePressed && mouseOnSlider(p5)) updateSlider(p5);
+        if (p5.mousePressed && mouseOnSlider(p5, scene)) updateSlider(p5);
     }
 }
