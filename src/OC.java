@@ -2,9 +2,6 @@ import processing.core.PApplet;
 
 public class OC extends Stand {
 
-    public int ID;
-    public long uniqueID;
-    private static int nextUID = 0;
 
     float weight;
     float BMI;
@@ -18,7 +15,7 @@ public class OC extends Stand {
 
     public OC(int ID) {
         this.ID = ID;
-        this.uniqueID = nextUID++;
+
 
         this.name = "Zwolf";
 
@@ -39,7 +36,7 @@ public class OC extends Stand {
               float age, float bhratio, int r, int g, int b) {
 
         this.ID = -1;
-        this.uniqueID = nextUID++;
+
 
         this.name = name;
 
@@ -76,6 +73,9 @@ public class OC extends Stand {
         } else {
             p5.ellipse(x + width / 2f, y + headH / 2f, width, headH);
         }
+
+        p5.fill(255);
+        p5.text(this.ID, x+width/2, y+headH/2);
 
         p5.popMatrix();
     }

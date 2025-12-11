@@ -1,5 +1,6 @@
 import processing.core.PApplet;
 import processing.core.PImage;
+import java.util.ArrayList;
 
 
 public class Main extends PApplet {
@@ -64,13 +65,20 @@ public class Main extends PApplet {
                     initializeSceneEditorValues();
                     sceneEditorInitialized = true;
                 }
-                if (scene.nObjects < 2) {
+                if (scene.nObjects == 0) {
                     gui.sced3.setEnabled(false);
                     gui.sced4.setEnabled(false);
+                    gui.sced5.setEnabled(false);
+                } else if (scene.nObjects < 2) {
+                    gui.sced3.setEnabled(false);
+                    gui.sced4.setEnabled(false);
+                    gui.sced5.setEnabled(true);
                 } else {
                     gui.sced3.setEnabled(true);
                     gui.sced4.setEnabled(true);
+                    gui.sced5.setEnabled(true);
                 }
+
                 if (scene.sel == Scene.scInstance.OCSELECT) {
                     int start = scene.selPage * 10;
                     int end = Math.min(selects.length, start + 10);
@@ -158,7 +166,7 @@ public class Main extends PApplet {
                         addThisOC(selects[i].oc);
                     }
                 }
-        }
+            }
 
             if (gui.exit.mouseOverButton(this)) {
                 scene.sel = Scene.scInstance.DISPLAY;
@@ -173,101 +181,109 @@ public class Main extends PApplet {
                     if (!gui.tfsced[i].mouseOverTextField(this) && gui.tfsced[i].selected) gui.tfsced[i].keyPressed('0', ENTER);
                 }
             }
-            if (scene.sel != Scene.scInstance.OCSELECT) {
-                for (int i = 1; i < gui.slSced.length; i++) {
-                    if (i == 2 || i == 4) continue;
-                    if (gui.slSced[i].mouseOnSlider(this, scene)) {
-                        gui.slSced[i].checkSlider(this, scene);
-                        selectedSl = gui.slSced[i];
-                        if (i >= 7 && i < 10) gui.tfsced[i].setText(String.valueOf((int) gui.slSced[i].v));
-                        else gui.tfsced[i].setText(String.format("%.2f", gui.slSced[i].v));
-                    } else {
-                        String txt = gui.tfsced[i].getText().replace(',', '.');
-                        if (txt.matches("\\d*(\\.\\d{0,2})?") && !txt.isEmpty()) {
-                            if (i >= 6 && i < 10) {
-                                int value = (int) Float.parseFloat(txt);
-                                value = (int) constrain(value, gui.slSced[i].minV, gui.slSced[i].maxV);
-                                gui.slSced[i].v = value;
-                                gui.tfsced[i].setText(String.valueOf(value));
-                            } else {
-                                float value = Float.parseFloat(txt);
-                                value = constrain(value, gui.slSced[i].minV, gui.slSced[i].maxV);
-                                gui.slSced[i].v = value;
-                                gui.tfsced[i].setText(String.format("%.2f", value));
+            if (this.scene != null) {
+                if (scene.sel != Scene.scInstance.OCSELECT) {
+                    for (int i = 1; i < gui.slSced.length; i++) {
+                        if (i == 2 || i == 4) continue;
+                        if (gui.slSced[i].mouseOnSlider(this, scene)) {
+                            gui.slSced[i].checkSlider(this, scene);
+                            selectedSl = gui.slSced[i];
+                            if (i >= 7 && i < 10) gui.tfsced[i].setText(String.valueOf((int) gui.slSced[i].v));
+                            else gui.tfsced[i].setText(String.format("%.2f", gui.slSced[i].v));
+                        } else {
+                            String txt = gui.tfsced[i].getText().replace(',', '.');
+                            if (txt.matches("\\d*(\\.\\d{0,2})?") && !txt.isEmpty()) {
+                                if (i >= 6 && i < 10) {
+                                    int value = (int) Float.parseFloat(txt);
+                                    value = (int) constrain(value, gui.slSced[i].minV, gui.slSced[i].maxV);
+                                    gui.slSced[i].v = value;
+                                    gui.tfsced[i].setText(String.valueOf(value));
+                                } else {
+                                    float value = Float.parseFloat(txt);
+                                    value = constrain(value, gui.slSced[i].minV, gui.slSced[i].maxV);
+                                    gui.slSced[i].v = value;
+                                    gui.tfsced[i].setText(String.format("%.2f", value));
+                                }
+                            }
+                            updateCalculatedValues();
+                        }
+                    }
+                }
+
+                if (gui.sced1.mouseOverButton(this)) instanceOC();
+                if (gui.sced2.mouseOverButton(this)) {
+                    scene.sel = Scene.scInstance.OCSELECT;
+                }
+                if (gui.sced4.enabled && gui.sced4.mouseOverButton(this)) {
+                    if (scene.sel == Scene.scInstance.DISPLAY) {
+                        if (scene.nObjects > 0) {
+                            scene.currentObject = (scene.currentObject + 1) % scene.nObjects;
+                            if (scene.stands[scene.currentObject] instanceof OC pHolder) {
+                                changeTFValues(pHolder);
+                                gui.slSced[1].v = pHolder.tHeight;
+                                gui.slSced[2].v = pHolder.weight;
+                                gui.slSced[3].v = pHolder.BMI;
+                                gui.slSced[4].v = pHolder.tWidth;
+                                gui.slSced[5].v = pHolder.bhratio;
+                                gui.slSced[6].v = pHolder.age;
+                                gui.slSced[7].v = pHolder.r;
+                                gui.slSced[8].v = pHolder.g;
+                                gui.slSced[9].v = pHolder.b;
+                                selectedSl = null;
+                                updateCalculatedValues();
                             }
                         }
-                        updateCalculatedValues();
+                    } else {
+                        scene.selPage++;
                     }
                 }
-            }
-            if (gui.sced1.mouseOverButton(this)) instanceOC();
-            if (gui.sced2.mouseOverButton(this)) {
-                scene.sel = Scene.scInstance.OCSELECT;
-            }
-            if (gui.sced4.enabled && gui.sced4.mouseOverButton(this)) {
-                if (scene.sel == Scene.scInstance.DISPLAY) {
-                    if (scene.nObjects > 0) {
-                        scene.currentObject = (scene.currentObject + 1) % scene.nObjects;
-                        if (scene.stands[scene.currentObject] instanceof OC pHolder) {
-                            changeTFValues(pHolder);
-                            gui.slSced[1].v = pHolder.tHeight;
-                            gui.slSced[2].v = pHolder.weight;
-                            gui.slSced[3].v = pHolder.BMI;
-                            gui.slSced[4].v = pHolder.tWidth;
-                            gui.slSced[5].v = pHolder.bhratio;
-                            gui.slSced[6].v = pHolder.age;
-                            gui.slSced[7].v = pHolder.r;
-                            gui.slSced[8].v = pHolder.g;
-                            gui.slSced[9].v = pHolder.b;
-                            selectedSl = null;
-                            updateCalculatedValues();
+
+                if (gui.sced3.enabled && gui.sced3.mouseOverButton(this)) {
+                    if (scene.sel == Scene.scInstance.DISPLAY) {
+                        if (scene.nObjects > 0) {
+                            scene.currentObject = (scene.currentObject - 1 + scene.nObjects) % scene.nObjects;
+                            if (scene.stands[scene.currentObject] instanceof OC pHolder) {
+                                changeTFValues(pHolder);
+                                gui.slSced[1].v = pHolder.tHeight;
+                                gui.slSced[2].v = pHolder.weight;
+                                gui.slSced[3].v = pHolder.BMI;
+                                gui.slSced[4].v = pHolder.tWidth;
+                                gui.slSced[5].v = pHolder.bhratio;
+                                gui.slSced[6].v = pHolder.age;
+                                gui.slSced[7].v = pHolder.r;
+                                gui.slSced[8].v = pHolder.g;
+                                gui.slSced[9].v = pHolder.b;
+                                selectedSl = null;
+                                updateCalculatedValues();
+                            }
                         }
+                    } else {
+                        if (scene.selPage != 0) scene.selPage--;
                     }
-                } else {
-                    scene.selPage++;
                 }
-            }
 
-            if (gui.sced3.enabled && gui.sced3.mouseOverButton(this)) {
-                if (scene.sel == Scene.scInstance.DISPLAY) {
-                    if (scene.nObjects > 0) {
-                        scene.currentObject = (scene.currentObject - 1 + scene.nObjects) % scene.nObjects;
-                        if (scene.stands[scene.currentObject] instanceof OC pHolder) {
-                            changeTFValues(pHolder);
-                            gui.slSced[1].v = pHolder.tHeight;
-                            gui.slSced[2].v = pHolder.weight;
-                            gui.slSced[3].v = pHolder.BMI;
-                            gui.slSced[4].v = pHolder.tWidth;
-                            gui.slSced[5].v = pHolder.bhratio;
-                            gui.slSced[6].v = pHolder.age;
-                            gui.slSced[7].v = pHolder.r;
-                            gui.slSced[8].v = pHolder.g;
-                            gui.slSced[9].v = pHolder.b;
-                            selectedSl = null;
-                            updateCalculatedValues();
-                        }
+                if (gui.sced5.mouseOverButton(this) && gui.sced5.enabled) {
+                    if (scene.sel == Scene.scInstance.OCSELECT) {
+                        scene.sel = Scene.scInstance.DISPLAY;
+                    } else {
+                        scene.deleteObject(scene.stands[scene.currentObject]);
                     }
-                } else {
-                    if (scene.selPage != 0) scene.selPage--;
                 }
-            }
 
-            if (gui.sced5.mouseOverButton(this)){
-                if (scene.sel == Scene.scInstance.OCSELECT){
-                    scene.sel = Scene.scInstance.DISPLAY;
-                } else {
-                    scene.deleteObject(scene.currentObject);
-                }
+                if (scene != null) updateCalculatedValues();
             }
-
-            if (scene != null) updateCalculatedValues();
         } else if (gui.currentScreen == GUI.SCREEN.OCVIEWER) {
             if (gui.nav1.mouseOverButton(this)) scedPage = 0;
             if (gui.nav2.mouseOverButton(this) && scedPage > 0) scedPage--;
             if (gui.nav3.mouseOverButton(this) && scedPage < (slabs.length - 1) / 5) scedPage++;
             if (gui.nav4.mouseOverButton(this)) scedPage = (slabs.length - 1) / 5;
             if (gui.exit.mouseOverButton(this)) gui.currentScreen = GUI.SCREEN.MAIN;
-            for (int i = 0; i < nAllOCs; i++) if (slabs[i].delete.mouseOverButton(this)) deleteOCfromBase(allOCs[i]);
+            for (int i = 0; i < nAllOCs; i++){
+                if (slabs[i].delete.mouseOverButton(this)) {
+                    deleteOCfromBase(allOCs[i]);
+                    break;
+                }
+            }
         }
     }
 
@@ -305,9 +321,6 @@ public class Main extends PApplet {
                 updateCalculatedValues();
             }
         }
-        if (key == 'z' || key == 'Z') {
-            if (scene != null) for (int i = 0; i < 21; i++) instanceOC();
-        }
     }
 
     public void mouseDragged() {
@@ -337,7 +350,6 @@ public class Main extends PApplet {
         selects = java.util.Arrays.copyOf(selects, nAllOCs + 1);
 
         oc.ID = nAllOCs;
-        oc.uniqueID = (long) (System.nanoTime() + Math.random() * 1000);
 
         allOCs[nAllOCs] = oc;
         slabs[nAllOCs] = new InfoSlab(oc, this);
@@ -346,45 +358,45 @@ public class Main extends PApplet {
         nAllOCs++;
     }
 
-    public void deleteOCfromBase(OC oc) {
-        long neededID = oc.uniqueID;
-        int index = -1;
 
+    public void deleteOCfromBase(OC oc) {
+        int index = -1;
         for (int i = 0; i < nAllOCs; i++) {
-            if (allOCs[i].uniqueID == neededID) {
+            if (allOCs[i] == oc) {
                 index = i;
                 break;
             }
         }
         if (index == -1) return;
 
+        for (int j = 0; j < 150; j++) {
+            if (scenes[j] == null) continue;
+            for (int i = scenes[j].nObjects - 1; i >= 0; i--) {
+                Stand st = scenes[j].stands[i];
+                if (st.equals(oc)) {
+                    scenes[j].deleteObject(oc);
+                }
+            }
+        }
+
         for (int i = index; i < nAllOCs - 1; i++) {
             allOCs[i] = allOCs[i + 1];
-            allOCs[i].ID = i;
+            allOCs[i].ID--;
             slabs[i] = slabs[i + 1];
             selects[i] = selects[i + 1];
         }
 
-        allOCs[nAllOCs - 1] = null;
-        slabs[nAllOCs - 1] = null;
-        selects[nAllOCs - 1] = null;
-
         nAllOCs--;
+        allOCs[nAllOCs] = null;
+        slabs[nAllOCs] = null;
+        selects[nAllOCs] = null;
 
         allOCs = java.util.Arrays.copyOf(allOCs, nAllOCs);
         slabs = java.util.Arrays.copyOf(slabs, nAllOCs);
         selects = java.util.Arrays.copyOf(selects, nAllOCs);
-
-        for (Scene s : scenes) {
-            if (s == null) continue;
-            for (int j = s.nObjects - 1; j >= 0; j--) {
-                Stand st = s.stands[j];
-                if (st instanceof OC oc2 && oc2.uniqueID == neededID) {
-                    s.deleteObject(j);
-                }
-            }
-        }
     }
+
+
 
     public void updateCalculatedValues() {
         float height = round(gui.slSced[1].v, 3);
@@ -467,7 +479,7 @@ public class Main extends PApplet {
         gui.slSced[8].v = 127;
         gui.slSced[9].v = 127;
 
-        pHolder.name = "Zwolf";
+        pHolder.name = "Zwolf"+ pHolder.ID;
         pHolder.tHeight = gui.slSced[1].v;
         pHolder.weight = gui.slSced[2].v;
         pHolder.BMI = gui.slSced[3].v;
@@ -482,6 +494,7 @@ public class Main extends PApplet {
         addNewOCtoBase(pHolder);
         scene.addObject(pHolder);
     }
+
 
     public void addThisOC(OC pHolder) {
         scene.addObject(pHolder);
@@ -503,5 +516,6 @@ public class Main extends PApplet {
         float factor = (float) Math.pow(10, decimals);
         return Math.round(value * factor) / factor;
     }
+
 
 }

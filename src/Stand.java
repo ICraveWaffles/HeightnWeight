@@ -3,6 +3,7 @@ import processing.core.PImage;
 
 public class Stand {
 
+    public int ID;
     String name;
     float x, y;
     float width, height;
@@ -24,7 +25,12 @@ public class Stand {
         p5.pushStyle();
         p5.rectMode(p5.LEFT);
         p5.image(pic, x,y, width, height);
+        p5.text(this.ID, x+width/2, y+height/2);
         p5.popStyle();
+    }
+
+    public void setID(int i){
+        this.ID = i;
     }
 
 }

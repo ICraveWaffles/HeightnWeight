@@ -1,3 +1,5 @@
+import java.util.Arrays;
+
 public class Scene {
 
     Stand[] stands;
@@ -24,19 +26,26 @@ public class Scene {
         nObjects++;
     }
 
-    public void deleteObject(int index) {
-        if (index < 0 || index >= nObjects) return;
-
+    public void deleteObject(Stand oc) {
+        int index = -1;
+        for (int i = 0; i < nObjects; i++) {
+            if (stands[i] == oc) {
+                index = i;
+                break;
+            }
+        }
+        if (index == -1) return;
         for (int i = index; i < nObjects - 1; i++) {
             stands[i] = stands[i + 1];
         }
-
         stands[nObjects - 1] = null;
         nObjects--;
-
+        stands = Arrays.copyOf(stands, nObjects);
         if (currentObject >= nObjects) currentObject = nObjects - 1;
         if (nObjects == 0) currentObject = -1;
     }
+
+
 
     public float[] getTallestObject() {
         if (nObjects == 0) return new float[]{-1, 0};
@@ -80,18 +89,4 @@ public class Scene {
             currentX += stands[i].width + 0.5f / pixelSize;
         }
     }
-
-    public void updateSelectSlabs(SelectSlab[] selects) {
-        for (SelectSlab s : selects) {
-            boolean existsInThisScene = false;
-            for (int i = 0; i < nObjects; i++) {
-                if (stands[i] instanceof OC oc && oc.ID == s.oc.ID) {
-                    existsInThisScene = true;
-                    break;
-                }
-            }
-            s.isEnabled = !existsInThisScene;
-        }
-    }
-
 }
