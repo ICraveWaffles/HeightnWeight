@@ -364,6 +364,7 @@ public class Main extends PApplet {
         for (int i = 0; i < nAllOCs; i++) {
             if (allOCs[i] == oc) {
                 index = i;
+                System.out.print(oc.name + " chosen, the ID is " + oc.ID);
                 break;
             }
         }
@@ -375,6 +376,7 @@ public class Main extends PApplet {
                 Stand st = scenes[j].stands[i];
                 if (st.equals(oc)) {
                     scenes[j].deleteObject(oc);
+                    changeTFValues((OC) scenes[j].stands[scenes[j].currentObject]);
                 }
             }
         }
