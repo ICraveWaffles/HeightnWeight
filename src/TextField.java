@@ -62,6 +62,10 @@ public class TextField {
         } else {
             if (isLetter || isNumber || isSymbol) addText(key);
         }
+        if (keyCode != 108) {
+            if (keyCode == 128) addText('[');
+            if (keyCode == 129) addText('{');
+        }
     }
 
     public void addText(char c) {

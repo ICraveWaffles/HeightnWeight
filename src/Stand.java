@@ -4,6 +4,7 @@ import processing.core.PImage;
 public class Stand {
 
     public int ID;
+    long uniqueID;
     String name;
     float x, y;
     float width, height;
@@ -11,6 +12,7 @@ public class Stand {
     PImage pic;
 
     Stand (String name,float tWidth, float tHeight, PImage pic){
+        this.uniqueID = System.nanoTime();
         this.name = name;
         this.tWidth = tWidth;
         this.tHeight = tHeight;

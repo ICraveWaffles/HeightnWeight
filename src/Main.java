@@ -84,6 +84,8 @@ public class Main extends PApplet {
                     int end = Math.min(selects.length, start + 10);
                     for (int i = start; i < end; i++) selects[i].display(this);
                 }
+
+                checkSelectStatus();
             }
             case OCVIEWER -> {
                 gui.drawOCVIEWER(this);
@@ -162,7 +164,7 @@ public class Main extends PApplet {
                 int start = scene.selPage * 10;
                 int end = Math.min(selects.length, start + 10);
                 for (int i = start; i < end; i++) {
-                    if (selects[i].mouseOverButton(this)) {
+                    if (selects[i].mouseOverButton(this)&&selects[i].isEnabled) {
                         addThisOC(selects[i].oc);
                     }
                 }
@@ -267,6 +269,9 @@ public class Main extends PApplet {
                         scene.sel = Scene.scInstance.DISPLAY;
                     } else {
                         scene.deleteObject(scene.stands[scene.currentObject]);
+                        if (scene.stands[scene.currentObject] != null) {
+                            changeTFValues((OC) scene.stands[scene.currentObject]);
+                        }
                     }
                 }
 
@@ -358,6 +363,37 @@ public class Main extends PApplet {
         nAllOCs++;
     }
 
+    public void copyOC(OC copier) {
+        OC copied = new OC(copier.ID);
+
+        copied.name = copier.name;
+        copied.tHeight = copier.tHeight;
+        copied.weight = copier.weight;
+        copied.BMI = copier.BMI;
+        copied.tWidth = copier.tWidth;
+        copied.bhratio = copier.bhratio;
+        copied.age = copier.age;
+        copied.r = copier.r;
+        copied.g = copier.g;
+        copied.b = copier.b;
+
+        allOCs = java.util.Arrays.copyOf(allOCs, nAllOCs + 1);
+        slabs = java.util.Arrays.copyOf(slabs, nAllOCs + 1);
+        selects = java.util.Arrays.copyOf(selects, nAllOCs + 1);
+
+        copied.ID = copier.ID;
+        copied.uniqueID = copier.uniqueID;
+
+        allOCs[nAllOCs] = copied;
+        slabs[nAllOCs] = new InfoSlab(copied, this);
+        selects[nAllOCs] = new SelectSlab(this, copied);
+
+        nAllOCs++;
+
+        scene.addObject(copied);
+        scene.designLayout();
+    }
+
 
     public void deleteOCfromBase(OC oc) {
         int index = -1;
@@ -374,9 +410,11 @@ public class Main extends PApplet {
             if (scenes[j] == null) continue;
             for (int i = scenes[j].nObjects - 1; i >= 0; i--) {
                 Stand st = scenes[j].stands[i];
-                if (st.equals(oc)) {
+                if (st.equals(oc) || st.ID == oc.ID|| st.uniqueID == oc.ID) {
                     scenes[j].deleteObject(oc);
-                    changeTFValues((OC) scenes[j].stands[scenes[j].currentObject]);
+                    if (scenes[j].nObjects != 0) {
+                        changeTFValues((OC) scenes[j].stands[scenes[j].currentObject]);
+                    }
                 }
             }
         }
@@ -497,7 +535,6 @@ public class Main extends PApplet {
         scene.addObject(pHolder);
     }
 
-
     public void addThisOC(OC pHolder) {
         scene.addObject(pHolder);
 
@@ -514,10 +551,22 @@ public class Main extends PApplet {
         changeTFValues(pHolder);
     }
 
+    public void checkSelectStatus() {
+        for (int i = 0; i < nAllOCs; i++) {
+            boolean found = false;
+            for (int j = 0; j < scene.nObjects; j++) {
+                if (scene.stands[j].equals(selects[i].oc) || scene.stands[j].ID == selects[i].oc.ID) {
+                    found = true;
+                    break;
+                }
+            }
+            selects[i].isEnabled = !found;
+        }
+    }
+
+
     private float round(float value, int decimals) {
         float factor = (float) Math.pow(10, decimals);
         return Math.round(value * factor) / factor;
     }
-
-
 }

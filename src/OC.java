@@ -15,6 +15,7 @@ public class OC extends Stand {
 
     public OC(int ID) {
         this.ID = ID;
+        this.uniqueID = System.nanoTime();
 
 
         this.name = "Zwolf";
