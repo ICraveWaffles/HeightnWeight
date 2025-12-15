@@ -61,6 +61,7 @@ public class Main extends PApplet {
             case SCENESELECTOR -> gui.drawSCENESELECTOR(this);
             case SCENEEDITOR -> {
                 gui.drawSCENEEDITOR(this, scene);
+
                 if (!sceneEditorInitialized) {
                     initializeSceneEditorValues();
                     sceneEditorInitialized = true;
@@ -269,8 +270,18 @@ public class Main extends PApplet {
                         scene.sel = Scene.scInstance.DISPLAY;
                     } else {
                         scene.deleteObject(scene.stands[scene.currentObject]);
-                        if (scene.stands[scene.currentObject] != null) {
-                            changeTFValues((OC) scene.stands[scene.currentObject]);
+                        if (scene.currentObject != -1) {
+                            OC pHolder = (OC) scene.stands[scene.currentObject];
+                            gui.slSced[1].v = pHolder.tHeight;
+                            gui.slSced[2].v = pHolder.weight;
+                            gui.slSced[3].v = pHolder.BMI;
+                            gui.slSced[4].v = pHolder.tWidth;
+                            gui.slSced[5].v = pHolder.bhratio;
+                            gui.slSced[6].v = pHolder.age;
+                            gui.slSced[7].v = pHolder.r;
+                            gui.slSced[8].v = pHolder.g;
+                            gui.slSced[9].v = pHolder.b;
+                            changeTFValues(pHolder);
                         }
                     }
                 }
@@ -412,10 +423,22 @@ public class Main extends PApplet {
                 Stand st = scenes[j].stands[i];
                 if (st.equals(oc) || st.ID == oc.ID|| st.uniqueID == oc.ID) {
                     scenes[j].deleteObject(oc);
-                    if (scenes[j].nObjects != 0) {
-                        changeTFValues((OC) scenes[j].stands[scenes[j].currentObject]);
+                    if (scenes[j].currentObject != -1) {
+                        OC pHolder = (OC) scenes[j].stands[scenes[j].currentObject];
+                        gui.slSced[1].v = pHolder.tHeight;
+                        gui.slSced[2].v = pHolder.weight;
+                        gui.slSced[3].v = pHolder.BMI;
+                        gui.slSced[4].v = pHolder.tWidth;
+                        gui.slSced[5].v = pHolder.bhratio;
+                        gui.slSced[6].v = pHolder.age;
+                        gui.slSced[7].v = pHolder.r;
+                        gui.slSced[8].v = pHolder.g;
+                        gui.slSced[9].v = pHolder.b;
+
+                        changeTFValues(pHolder);
                     }
                 }
+
             }
         }
 
