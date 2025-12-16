@@ -469,7 +469,7 @@ public class Main extends PApplet {
         }
         if (index == -1) return;
 
-        for (int j = 0; j < 150; j++) {
+        for (int j = 0; j < scenes.size(); j++) {
             if (scenes.get(j) == null) continue;
             for (int i = scenes.get(j).nObjects - 1; i >= 0; i--) {
                 Stand st = scenes.get(j).stands[i];
