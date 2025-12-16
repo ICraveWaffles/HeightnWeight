@@ -1,4 +1,5 @@
 import processing.core.PApplet;
+import java.util.ArrayList;
 
 public class GUI {
 
@@ -10,7 +11,7 @@ public class GUI {
 
     cButton[] navigation = new cButton[4];
     cButton nav1, nav2, nav3, nav4;
-    rButton[] scenes = new rButton[150];
+    public ArrayList<rButton> scenes = new ArrayList<>();
     rButton exit;
 
     cButton sced1, sced2, sced3, sced4, sced5;
@@ -77,24 +78,26 @@ public class GUI {
         tfBlue = new TextField(p5, "B", 220, 670, 110, 20, true);
 
 
-        slZero = new Slider (p5, "Cosa", 160,360, 250, 10, 2, 10 , 5);
-        slHeight = new Slider (p5, "Altura(m)", 150,160, 250, 15, 0.01f, 10 , 1.83f);
-        slWeight = new Slider (p5, "Peso", 150,220, 250, 15, 0.01f, 25000 , 83.7f);
-        slBMI = new Slider (p5, "IMC", 150,280, 250, 15, 1, 250 , 25);
-        slWidth = new Slider (p5, "Anchura", 150,340, 250, 15, 2, 10 , 5);
-        slBHRatio = new Slider (p5, "Ratio C/C", 150,430, 250, 15, 0.125f, 0.25f , 0.15f);
-        slAge = new Slider (p5, "Edad", 150,490, 250, 15, 0, 80 , 20);
-        slRed = new Slider (p5, "R", 150,580, 250, 15, 0, 255 , 127);
-        slGreen = new Slider (p5, "G", 150,640, 250, 15, 0, 255 , 127);
-        slBlue = new Slider (p5, "B", 150,700, 250, 15, 0, 255 , 127);
+
+        slHeight = new Slider (p5, "Altura(m)", 150,160, 250, 8, 0.01f, 10 , 1.83f);
+        slWeight = new Slider (p5, "Peso", 150,220, 250, 8, 0.01f, 25000 , 83.7f);
+        slBMI = new Slider (p5, "IMC", 150,280, 250, 8, 1, 250 , 25);
+        slWidth = new Slider (p5, "Anchura", 150,340, 250, 8, 2, 10 , 5);
+        slBHRatio = new Slider (p5, "Ratio C/C", 150,430, 250, 8, 0.125f, 0.25f , 0.15f);
+        slAge = new Slider (p5, "Edad", 150,490, 250, 8, 0, 80 , 20);
+        slRed = new Slider (p5, "R", 150,580, 250, 8, 0, 255 , 127);
+        slGreen = new Slider (p5, "G", 150,640, 250, 8, 0, 255 , 127);
+        slBlue = new Slider (p5, "B", 150,700, 250, 8, 0, 255 , 127);
 
         int buttonIndex = 0;
-        for (int h = 0; h < 10; h++) {
+        for (int h = 0; h < 100; h++) {
             for (int j = 0; j < 3; j++) {
                 for (int i = 0; i < 5; i++) {
                     int x = i * 250 + 120;
                     int y = j * 212 + 200;
-                    scenes[buttonIndex] = new rButton(p5, "Escena " + (buttonIndex + 1), x, y, 200, 180, 4, 7, 6);
+                    scenes.add(buttonIndex,new rButton(p5, "Escena " + (buttonIndex + 1), x, y, 200, 180, 4, 7, 6));
+                    if (buttonIndex !=0) scenes.get(buttonIndex).state = STATE.NULL;
+                    if (buttonIndex == 1) scenes.get(buttonIndex).state = STATE.PLUS;
                     buttonIndex++;
                 }
             }
@@ -232,7 +235,6 @@ public class GUI {
         plog1.display(p5);
         plog2.display(p5);
         exit.display(p5);
-        slZero.display(p5);
 
         p5.popStyle();
 
@@ -338,7 +340,8 @@ public class GUI {
         p5.textFont(Fonts.getThisFont(1));
 
         for (int i = (page*15); i < (page+1)*15; i++){
-            scenes[i].display(p5);
+            if (scenes.get(i).state == STATE.NORM)  scenes.get(i).display(p5);
+            if (scenes.get(i).state == STATE.PLUS)  scenes.get(i).display(p5);
         }
 
         for (int i = 0; i < navigation.length; i++){

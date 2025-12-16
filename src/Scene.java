@@ -9,8 +9,8 @@ public class Scene {
     scInstance sel;
     int selPage = 0;
 
-    public Scene(int n) {
-        this.stands = new Stand[n];
+    public Scene() {
+        this.stands = new Stand[0];
         this.nObjects = 0;
         this.currentObject = -1;
         this.sel = Scene.scInstance.DISPLAY;

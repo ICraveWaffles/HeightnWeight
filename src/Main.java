@@ -12,12 +12,14 @@ public class Main extends PApplet {
     public int scedPage = 0;
 
     Stand banana, cabinet, door;
-    public Scene[] scenes = new Scene[150];
+    public ArrayList<Scene> scenes = new ArrayList<>();
+    public Scene nextScene;
     public Scene scene;
     public Stand[] allStands = new Stand[3];
     public OC[] allOCs;
     public InfoSlab[] slabs = new InfoSlab[0];
     public SelectSlab[] selects = new SelectSlab[0];
+    public boolean firstClick = false;
 
     public int nAllOCs = 0;
 
@@ -39,7 +41,8 @@ public class Main extends PApplet {
         allStands[1] = cabinet;
         allStands[2] = door;
         allOCs = new OC[0];
-        for (int i = 0; i < scenes.length; i++) scenes[i] = new Scene(i);
+        scenes.add(new Scene());
+        scene = scenes.get(0);
     }
 
     public void setup() {
@@ -58,7 +61,20 @@ public class Main extends PApplet {
             case SIGNUP -> gui.drawSIGNUP(this);
             case MAIN -> gui.drawMAIN(this);
             case QNA -> gui.drawQNA(this);
-            case SCENESELECTOR -> gui.drawSCENESELECTOR(this);
+            case SCENESELECTOR -> {
+                gui.drawSCENESELECTOR(this);
+                if (scenes.size()<15) {
+                    gui.nav1.setEnabled(false);
+                    gui.nav2.setEnabled(false);
+                    gui.nav3.setEnabled(false);
+                    gui.nav4.setEnabled(false);
+                } else {
+                    gui.nav1.setEnabled(true);
+                    gui.nav2.setEnabled(true);
+                    gui.nav3.setEnabled(true);
+                    gui.nav4.setEnabled(true);
+                }
+            }
             case SCENEEDITOR -> {
                 gui.drawSCENEEDITOR(this, scene);
 
@@ -113,6 +129,22 @@ public class Main extends PApplet {
         updateCalculatedValues();
     }
 
+    public void redoSceneEditorValues() {
+        if (scene.currentObject != -1){
+        OC pHolder = (OC) scene.stands[scene.currentObject];
+        gui.slSced[1].v = pHolder.tHeight;
+        gui.slSced[2].v = pHolder.weight;
+        gui.slSced[3].v = pHolder.BMI;
+        gui.slSced[4].v = pHolder.tWidth;
+        gui.slSced[5].v = pHolder.bhratio;
+        gui.slSced[6].v = pHolder.age;
+        gui.slSced[7].v = pHolder.r;
+        gui.slSced[8].v = pHolder.g;
+        gui.slSced[9].v = pHolder.b;
+        changeTFValues(pHolder);
+        }
+    }
+
     public void mousePressed() {
         if (gui.currentScreen == GUI.SCREEN.PRELOGIN) {
             if (gui.plog1.mouseOverButton(this)) gui.currentScreen = GUI.SCREEN.LOGIN;
@@ -148,19 +180,30 @@ public class Main extends PApplet {
                 gui.currentScreen = GUI.SCREEN.MAIN;
                 gui.page = 0;
             }
-            if (gui.nav1.mouseOverButton(this)) gui.page = 0;
-            if (gui.nav2.mouseOverButton(this) && gui.page > 0) gui.page--;
-            if (gui.nav3.mouseOverButton(this) && gui.page < 9) gui.page++;
-            if (gui.nav4.mouseOverButton(this)) gui.page = 9;
-            for (int i = 0; i < gui.scenes.length; i++) {
-                if (gui.scenes[i].mouseOverButton(this)) {
-                    scene = scenes[i];
-                    gui.currentScreen = GUI.SCREEN.SCENEEDITOR;
-                    scene.selPage = 0;
-                    sceneEditorInitialized = false;
+            if (gui.nav1.mouseOverButton(this)&&gui.nav1.enabled) gui.page = 0;
+            if (gui.nav2.mouseOverButton(this)&&gui.nav2.enabled && gui.page > 0) gui.page--;
+            if (gui.nav3.mouseOverButton(this)&&gui.nav3.enabled && gui.page < 9) gui.page++;
+            if (gui.nav4.mouseOverButton(this)&&gui.nav4.enabled) gui.page = 9;
+            for (int i = 15 * gui.page; i < Math.min(15 * (gui.page + 1), gui.scenes.size()); i++) {
+                if (gui.scenes.get(i).mouseOverButton(this)) {
+                    if (gui.scenes.get(i).mouseOverButton(this) && gui.scenes.get(i).state != STATE.NULL) {
+                        if (gui.scenes.get(i).state == STATE.PLUS) {
+                            scenes.add(new Scene());
+                            gui.scenes.get(i).state = STATE.NORM;
+                            gui.scenes.get(i+1).state = STATE.PLUS;
+                        } else {
+                            scene = scenes.get(i);
+                            redoSceneEditorValues();
+
+                            gui.currentScreen = GUI.SCREEN.SCENEEDITOR;
+                            scene.selPage = 0;
+                            sceneEditorInitialized = false;
+                        }
+                    }
                 }
             }
         } else if (gui.currentScreen == GUI.SCREEN.SCENEEDITOR) {
+            if (firstClick){
             if (scene.sel != Scene.scInstance.DISPLAY) {
                 int start = scene.selPage * 10;
                 int end = Math.min(selects.length, start + 10);
@@ -176,6 +219,7 @@ public class Main extends PApplet {
                 scene.selPage = 0;
                 gui.currentScreen = GUI.SCREEN.SCENESELECTOR;
                 scene = null;
+                firstClick = false;
             }
             if (gui.rsced1.mouseOverButton(this)) gui.gridon = !gui.gridon;
             for (int i = 0; i < gui.tfsced.length; i++) {
@@ -285,9 +329,10 @@ public class Main extends PApplet {
                         }
                     }
                 }
-
+            }
                 if (scene != null) updateCalculatedValues();
             }
+
         } else if (gui.currentScreen == GUI.SCREEN.OCVIEWER) {
             if (gui.nav1.mouseOverButton(this)) scedPage = 0;
             if (gui.nav2.mouseOverButton(this) && scedPage > 0) scedPage--;
@@ -344,12 +389,14 @@ public class Main extends PApplet {
             if (gui.slZero.mouseDraggingOnSlider(this)) gui.slZero.checkSlider(this, scene);
         }
         if (gui.currentScreen == GUI.SCREEN.SCENEEDITOR) {
-            for (int i = 0; i < gui.slSced.length; i++) {
-                if (i == 2 || i == 4) continue;
-                if (gui.slSced[i] != null && gui.slSced[i].mouseDraggingOnSlider(this)) {
-                    gui.slSced[i].checkSlider(this, scene);
-                    if (i >= 7 && i < 10) gui.tfsced[i].setText(String.valueOf((int) gui.slSced[i].v));
-                    else gui.tfsced[i].setText(String.format("%.2f", gui.slSced[i].v));
+            if (firstClick) {
+                for (int i = 0; i < gui.slSced.length; i++) {
+                    if (i == 2 || i == 4) continue;
+                    if (gui.slSced[i] != null && gui.slSced[i].mouseDraggingOnSlider(this)) {
+                        gui.slSced[i].checkSlider(this, scene);
+                        if (i >= 7 && i < 10) gui.tfsced[i].setText(String.valueOf((int) gui.slSced[i].v));
+                        else gui.tfsced[i].setText(String.format("%.2f", gui.slSced[i].v));
+                    }
                 }
             }
             updateCalculatedValues();
@@ -357,7 +404,12 @@ public class Main extends PApplet {
     }
 
     public void mouseReleased() {
-        if (gui.currentScreen == GUI.SCREEN.SCENEEDITOR) updateCalculatedValues();
+        if (gui.currentScreen == GUI.SCREEN.SCENEEDITOR) {
+            updateCalculatedValues();
+            if (!firstClick){
+                firstClick =true;
+            }
+        }
     }
 
     public void addNewOCtoBase(OC oc) {
@@ -418,13 +470,13 @@ public class Main extends PApplet {
         if (index == -1) return;
 
         for (int j = 0; j < 150; j++) {
-            if (scenes[j] == null) continue;
-            for (int i = scenes[j].nObjects - 1; i >= 0; i--) {
-                Stand st = scenes[j].stands[i];
+            if (scenes.get(j) == null) continue;
+            for (int i = scenes.get(j).nObjects - 1; i >= 0; i--) {
+                Stand st = scenes.get(j).stands[i];
                 if (st.equals(oc) || st.ID == oc.ID|| st.uniqueID == oc.ID) {
-                    scenes[j].deleteObject(oc);
-                    if (scenes[j].currentObject != -1) {
-                        OC pHolder = (OC) scenes[j].stands[scenes[j].currentObject];
+                    scenes.get(j).deleteObject(oc);
+                    if (scenes.get(j).currentObject != -1) {
+                        OC pHolder = (OC) scenes.get(j).stands[scenes.get(j).currentObject];
                         gui.slSced[1].v = pHolder.tHeight;
                         gui.slSced[2].v = pHolder.weight;
                         gui.slSced[3].v = pHolder.BMI;
@@ -434,11 +486,9 @@ public class Main extends PApplet {
                         gui.slSced[7].v = pHolder.r;
                         gui.slSced[8].v = pHolder.g;
                         gui.slSced[9].v = pHolder.b;
-
                         changeTFValues(pHolder);
                     }
                 }
-
             }
         }
 

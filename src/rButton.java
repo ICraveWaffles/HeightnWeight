@@ -1,5 +1,7 @@
 import processing.core.PApplet;
 
+enum STATE{NULL, NORM, PLUS};
+
 public class rButton {
 
 
@@ -9,6 +11,7 @@ public class rButton {
     String bText;
     int cText;
     public boolean enabled;
+    STATE state;
 
     public rButton(PApplet p5, String text, float x, float y, float w, float h, int f, int s, int t){
         this.bText = text;
@@ -22,6 +25,7 @@ public class rButton {
         this.fillColorDisabled = Colors.getThisColor(0);
         this.strokeColor = Colors.getThisColor(s);
         this.cText = Colors.getThisColor(t);
+        this.state = STATE.NORM;
     }
 
     public void setEnabled(boolean b){
@@ -43,26 +47,38 @@ public class rButton {
     public void display(PApplet p5){
         p5.pushStyle();
 
+
         p5.rectMode(p5.CENTER);
         p5.textAlign(p5.CENTER, p5.CENTER);
 
-        if(!enabled){
-            p5.fill(fillColorDisabled);
-        }
-        else if(mouseOverButton(p5)){
-            p5.fill(fillColorOver);
-        }
-        else{
-            p5.fill(fillColor);
-        }
-        p5.stroke(strokeColor);
-        p5.strokeWeight(2);
-        p5.rect(this.x, this.y, this.w, this.h, 10);
+        if (this.state == STATE.NORM) {
+            if (!enabled) {
+                p5.fill(fillColorDisabled);
+            } else if (mouseOverButton(p5)) {
+                p5.fill(fillColorOver);
+            } else {
+                p5.fill(fillColor);
+            }
+            p5.stroke(strokeColor);
+            p5.strokeWeight(2);
+            p5.rect(this.x, this.y, this.w, this.h, 10);
 
 
-        p5.fill(cText);
-        p5.textFont(Fonts.getThisFont(1));
-        p5.text(bText, this.x , this.y);
+            p5.fill(cText);
+            p5.textFont(Fonts.getThisFont(1));
+            p5.text(bText, this.x, this.y);
+        } else if (this.state == STATE.PLUS){
+            p5.fill(Colors.getThisColor(5));
+            p5.stroke(strokeColor);
+            p5.strokeWeight(2);
+            p5.rect(this.x, this.y, this.w, this.h, 10);
+
+
+            p5.fill(cText);
+            p5.textFont(Fonts.getThisFont(1));
+            p5.textSize(50);
+            p5.text("+", this.x, this.y);
+        }
         p5.popStyle();
     }
 
@@ -104,4 +120,6 @@ public class rButton {
     public boolean updateHandCursor(PApplet p5){
         return mouseOverButton(p5) && enabled;
     }
+
+
 }
