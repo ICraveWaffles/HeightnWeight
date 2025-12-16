@@ -385,9 +385,6 @@ public class Main extends PApplet {
     }
 
     public void mouseDragged() {
-        if (gui.currentScreen == GUI.SCREEN.PRELOGIN) {
-            if (gui.slZero.mouseDraggingOnSlider(this)) gui.slZero.checkSlider(this, scene);
-        }
         if (gui.currentScreen == GUI.SCREEN.SCENEEDITOR) {
             if (firstClick) {
                 for (int i = 0; i < gui.slSced.length; i++) {
