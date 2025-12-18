@@ -2,14 +2,17 @@ import java.util.Arrays;
 
 public class Scene {
 
+    String name;
     Stand[] stands;
     int nObjects;
     int currentObject;
     enum scInstance {DISPLAY, OCSELECT}
     scInstance sel;
     int selPage = 0;
+    int ID;
 
-    public Scene() {
+    public Scene(int ID) {
+        this.ID = ID;
         this.stands = new Stand[0];
         this.nObjects = 0;
         this.currentObject = -1;
@@ -43,6 +46,7 @@ public class Scene {
         stands = Arrays.copyOf(stands, nObjects);
         if (currentObject >= nObjects) currentObject = nObjects - 1;
         if (nObjects == 0) currentObject = -1;
+
     }
 
 

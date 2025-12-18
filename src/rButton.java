@@ -116,10 +116,21 @@ public class rButton {
 
     }
 
+    public void updateSceneButton(int buttonIndex) {
+        int i = buttonIndex % 5;
+        int j = (buttonIndex / 5) % 3;
+
+        int x = i * 250 + 120;
+        int y = j * 212 + 200;
+
+        this.x = x;
+        this.y = y;
+    }
 
     public boolean updateHandCursor(PApplet p5){
         return mouseOverButton(p5) && enabled;
     }
+
 
 
 }

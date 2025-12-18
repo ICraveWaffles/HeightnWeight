@@ -19,6 +19,7 @@ public class GUI {
 
     TextField tfsignup1, tfsignup2, tfsignup3, tfsignup4;
     TextField tflogin1, tflogin2;
+    TextField scName;
     TextField tfName, tfHeight, tfWeight, tfBMI, tfWidth, tfBHRatio, tfAge, tfRed, tfGreen, tfBlue;
     TextField[] tfsced = new TextField[10];
 
@@ -77,8 +78,6 @@ public class GUI {
         tfGreen = new TextField(p5, "G", 220, 610, 110, 20, true);
         tfBlue = new TextField(p5, "B", 220, 670, 110, 20, true);
 
-
-
         slHeight = new Slider (p5, "Altura(m)", 150,160, 250, 8, 0.01f, 10 , 1.83f);
         slWeight = new Slider (p5, "Peso", 150,220, 250, 8, 0.01f, 25000 , 83.7f);
         slBMI = new Slider (p5, "IMC", 150,280, 250, 8, 1, 250 , 25);
@@ -90,12 +89,12 @@ public class GUI {
         slBlue = new Slider (p5, "B", 150,700, 250, 8, 0, 255 , 127);
 
         int buttonIndex = 0;
-        for (int h = 0; h < 100; h++) {
+        for (int h = 0; h < 30; h++) {
             for (int j = 0; j < 3; j++) {
                 for (int i = 0; i < 5; i++) {
                     int x = i * 250 + 120;
                     int y = j * 212 + 200;
-                    scenes.add(buttonIndex,new rButton(p5, "Escena " + (buttonIndex + 1), x, y, 200, 180, 4, 7, 6));
+                    scenes.add(buttonIndex,new rButton(p5, "Sin título", x, y, 200, 180, 4, 7, 6));
                     if (buttonIndex !=0) scenes.get(buttonIndex).state = STATE.NULL;
                     if (buttonIndex == 1) scenes.get(buttonIndex).state = STATE.PLUS;
                     buttonIndex++;
@@ -112,7 +111,7 @@ public class GUI {
         slSced[1]=slHeight; slSced[2]=slWeight; slSced[3]=slBMI; slSced[4]=slWidth;
         slSced[5]=slBHRatio; slSced[6]=slAge; slSced[7]=slRed; slSced[8]=slGreen; slSced[9]=slBlue;
 
-
+        scName = new TextField (p5, null, 494, 34, 260, 50, false);
         rsced1 = new rButton (p5, "Rejilla", 978, 34, 200, 60,3,7,7);
         rsced2 = new rButton (p5, "Pantallazo", 776, 34, 200, 60,3,7,7);
 
@@ -235,6 +234,7 @@ public class GUI {
         plog1.display(p5);
         plog2.display(p5);
         exit.display(p5);
+
 
         p5.popStyle();
 
@@ -360,6 +360,7 @@ public class GUI {
 
         p5.background(Colors.getThisColor(1));
 
+        scName.display(p5);
         rsced1.display(p5);
         rsced2.display(p5);
         exit.display(p5);

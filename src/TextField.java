@@ -38,9 +38,11 @@ public class TextField {
         p5.stroke(borderColor);
         p5.rect(x, y, w, h, 5);
         p5.fill(fgColor);
-        p5.textSize(textSize);
-        p5.textAlign(p5.CENTER, p5.CENTER);
-        p5.text(text, x, y);
+        if (this.text != null){
+            p5.textSize(textSize);
+            p5.textAlign(p5.CENTER, p5.CENTER);
+            p5.text(text, x, y);
+        }
         p5.popStyle();
     }
 
@@ -104,12 +106,13 @@ public class TextField {
         }
         if (mouseOverTextField(p5)) {
             selected = true;
+
             if (this.text.equals(trueText)) {
                 this.text = "";
             }
         } else {
             selected = false;
-            if (this.text.isEmpty()) {
+            if (this.text.isEmpty() && this.trueText != null) {
                 this.text = trueText;
             }
         }
