@@ -110,6 +110,9 @@ public class Main extends PApplet {
                 int end = Math.min(slabs.length, start + 5);
                 for (int i = start; i < end; i++) slabs[i].display(this, scedPage);
             }
+            case SETTINGS -> {
+                gui.drawSETTINGS(this);
+            }
         }
 
         if (scene != null) scene.designLayout();
@@ -177,6 +180,7 @@ public class Main extends PApplet {
                     gui.tfsignup4.keyPressed('0', ENTER);
             } else if (gui.currentScreen == GUI.SCREEN.MAIN) {
                 if (gui.q1.mouseOverButton(this)) gui.currentScreen = GUI.SCREEN.QNA;
+                if (gui.s1.mouseOverButton(this)) gui.currentScreen = GUI.SCREEN.SETTINGS;
                 if (gui.m1.mouseOverButton(this)) gui.currentScreen = GUI.SCREEN.SCENESELECTOR;
                 if (gui.m2.mouseOverButton(this)) gui.currentScreen = GUI.SCREEN.OCVIEWER;
                 if (gui.m3.mouseOverButton(this)) gui.currentScreen = GUI.SCREEN.PRELOGIN;
@@ -231,8 +235,6 @@ public class Main extends PApplet {
                     }
                     gui.scName.isPressed(this);
                     if (!gui.scName.mouseOverTextField(this) && gui.scName.selected) gui.scName.keyPressed('0', ENTER);
-
-
                     if (gui.exit.mouseOverButton(this)) {
                         scene.sel = Scene.scInstance.DISPLAY;
                         scene.selPage = 0;
@@ -365,12 +367,19 @@ public class Main extends PApplet {
                 if (gui.nav4.mouseOverButton(this)) scedPage = (slabs.length - 1) / 5;
                 if (gui.exit.mouseOverButton(this)) gui.currentScreen = GUI.SCREEN.MAIN;
                 for (int i = 0; i < nAllOCs; i++) {
+
                     if (slabs[i].delete.mouseOverButton(this)) {
                         deleteOCfromBase(allOCs[i]);
                         break;
                     }
                 }
+            } else if (gui.currentScreen == GUI.SCREEN.SETTINGS){
+                if (gui.sLang.mouseOverButton(this)) gui.sLang.toggle();
+                if (gui.sCol.mouseOverButton(this)) gui.sCol.toggle();
+                if (gui.deleteEverything.mouseOverButton(this)) reset();
+                if (gui.exit.mouseOverButton(this))gui.currentScreen = GUI.SCREEN.MAIN;
             }
+
         } else if (mouseButton == RIGHT){
             print ("Right Button");
             if (gui.currentScreen == GUI.SCREEN.SCENESELECTOR){
@@ -545,6 +554,20 @@ public class Main extends PApplet {
             gui.scenes.get(i).x = x;
             gui.scenes.get(i).y = y;
         }
+    }
+
+    public void reset(){
+        allOCs = new OC[0];
+        scenes = new ArrayList<>();
+        slabs = new InfoSlab[0];
+        selects = new SelectSlab[0];
+        nAllOCs = 0;
+        for (int i = 1; i < gui.scenes.size();i++){
+            if (gui.scenes.get(i).state != STATE.NULL) {
+                gui.scenes.get(i).state = STATE.NULL;
+            }
+        }
+        gui.scenes.getFirst().state = STATE.PLUS;
     }
 
 

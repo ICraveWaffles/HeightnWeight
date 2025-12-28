@@ -7,12 +7,15 @@ public class GUI {
     rButton signup;
     rButton login;
     rButton m1, m2, m3;
-    cButton q1, q2, q3;
+    cButton q1, q2, q3, s1;
+    rSwitch sLang, sCol;
+
 
     cButton[] navigation = new cButton[4];
     cButton nav1, nav2, nav3, nav4;
     public ArrayList<rButton> scenes = new ArrayList<>();
     rButton exit;
+    rButton deleteEverything;
 
     cButton sced1, sced2, sced3, sced4, sced5;
     rButton rsced1, rsced2;
@@ -24,15 +27,13 @@ public class GUI {
     TextField[] tfsced = new TextField[10];
 
 
-
-
-    Slider slZero, slHeight, slWeight, slBMI, slWidth,slBHRatio,slAge, slRed, slGreen, slBlue;
+    Slider slVolume, slHeight, slWeight, slBMI, slWidth,slBHRatio,slAge, slRed, slGreen, slBlue;
     Slider slSced[] = new Slider[10];
 
     int page;
     boolean gridon;
 
-    public enum SCREEN { PRELOGIN, LOGIN, SIGNUP, MAIN, QNA, SCENESELECTOR, SCENEEDITOR, OCVIEWER }
+    public enum SCREEN { PRELOGIN, LOGIN, SIGNUP, MAIN, QNA, SETTINGS,  SCENESELECTOR, SCENEEDITOR, OCVIEWER }
 
     public SCREEN currentScreen;
 
@@ -50,6 +51,11 @@ public class GUI {
         m2 = new rButton(p5, "Mis OCs",640, 440, 640, 60, 3, 7,7 );
         m3 = new rButton(p5, "Salir",640, 540, 640, 60, 3, 7,7 );
         q1 = new cButton(p5, "?", 30, 30, 50, 3, 7,7);
+        s1 = new cButton(p5, "O", 30, 90, 50, 3,7,7);
+
+        sLang = new rSwitch(p5, "ES", "EN", 840, 360, 100,40,4, 7,7);
+        sCol = new rSwitch(p5, "D", "N", 840, 420, 100,40,4, 7,7);
+        deleteEverything = new rButton(p5, "Reset Everything", 640, 490, 500, 60, 7,6,6);
 
         q2 = new cButton(p5, "<", 50, 360, 50, 3, 7,7);
         q3 = new cButton(p5, ">", 1230, 370, 50, 3, 7,7);
@@ -78,6 +84,7 @@ public class GUI {
         tfGreen = new TextField(p5, "G", 220, 610, 110, 20, true);
         tfBlue = new TextField(p5, "B", 220, 670, 110, 20, true);
 
+        //slVolume = new Slider();
         slHeight = new Slider (p5, "Altura(m)", 150,160, 250, 8, 0.01f, 10 , 1.83f);
         slWeight = new Slider (p5, "Peso", 150,220, 250, 8, 0.01f, 25000 , 83.7f);
         slBMI = new Slider (p5, "IMC", 150,280, 250, 8, 1, 250 , 25);
@@ -303,6 +310,7 @@ public class GUI {
         m3.display(p5);
 
         q1.display(p5);
+        s1.display(p5);
 
         drawDarkButton(p5, 1120, 50, 240, 80, "Nombre de Usuario");
 
@@ -323,6 +331,30 @@ public class GUI {
         drawTextField(p5, 230, "Lorem ipsum etcetcetc.");
         q2.display(p5);
         q3.display(p5);
+        exit.display(p5);
+
+        p5.popStyle();
+    }
+
+    public void drawSETTINGS(PApplet p5) {
+        p5.pushStyle();
+
+        p5.background(Colors.getThisColor(1));
+        p5.rectMode(p5.CENTER);
+        p5.textAlign(p5.CENTER, p5.CENTER);
+        p5.fill(Colors.getThisColor(3));
+        p5.stroke(Colors.getThisColor(7));
+        p5.strokeWeight(2);
+
+        p5.rect(640, 360, 720,360, 20);
+
+        p5.fill(Colors.getThisColor(7));
+        p5.text ("AJUSTES", 640, 240);
+        p5.text("Idioma:", 448, 360);
+        p5.text("Modo:", 434, 420);
+        sCol.display(p5);
+        sLang.display(p5);
+        deleteEverything.display(p5);
         exit.display(p5);
 
         p5.popStyle();

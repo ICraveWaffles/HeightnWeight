@@ -76,8 +76,6 @@ public class OC extends Stand {
         }
 
         p5.fill(255);
-        p5.text(this.ID, x+width/2, y+headH/2);
-
         p5.popMatrix();
     }
 }
