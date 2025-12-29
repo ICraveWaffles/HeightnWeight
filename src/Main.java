@@ -374,7 +374,14 @@ public class Main extends PApplet {
                     }
                 }
             } else if (gui.currentScreen == GUI.SCREEN.SETTINGS){
-                if (gui.sLang.mouseOverButton(this)) gui.sLang.toggle();
+                if (gui.sLang.mouseOverButton(this)) {
+                    gui.sLang.toggle();
+                    if (gui.lang == LANG.ESP){
+                        gui.lang = LANG.ENG;
+                    } else {
+                        gui.lang = LANG.ESP;
+                    }
+                }
                 if (gui.sCol.mouseOverButton(this)) gui.sCol.toggle();
                 if (gui.deleteEverything.mouseOverButton(this)) reset();
                 if (gui.exit.mouseOverButton(this))gui.currentScreen = GUI.SCREEN.MAIN;
@@ -447,6 +454,8 @@ public class Main extends PApplet {
                 }
             }
             updateCalculatedValues();
+        } else if  (gui.currentScreen == GUI.SCREEN.SETTINGS){
+            gui.slVolume.checkSlider(this);
         }
     }
 
@@ -454,7 +463,7 @@ public class Main extends PApplet {
         if (gui.currentScreen == GUI.SCREEN.SCENEEDITOR) {
             updateCalculatedValues();
             if (!firstClick){
-                firstClick =true;
+                firstClick = true;
             }
         }
     }

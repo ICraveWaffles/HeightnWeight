@@ -1,8 +1,12 @@
 import processing.core.PApplet;
 import java.util.ArrayList;
 
+enum LANG {ENG, ESP}
+
 public class GUI {
 
+
+    LANG lang;
     rButton plog1, plog2;
     rButton signup;
     rButton login;
@@ -26,7 +30,6 @@ public class GUI {
     TextField tfName, tfHeight, tfWeight, tfBMI, tfWidth, tfBHRatio, tfAge, tfRed, tfGreen, tfBlue;
     TextField[] tfsced = new TextField[10];
 
-
     Slider slVolume, slHeight, slWeight, slBMI, slWidth,slBHRatio,slAge, slRed, slGreen, slBlue;
     Slider slSced[] = new Slider[10];
 
@@ -39,6 +42,7 @@ public class GUI {
 
     public GUI(PApplet p5) {
         currentScreen = SCREEN.PRELOGIN;
+        lang = LANG.ESP;
         Colors.instanceColors(p5);
 
         plog1 = new rButton(p5, "Iniciar sesión", 640, 440, 600, 70, 4, 7, 7);
@@ -84,7 +88,7 @@ public class GUI {
         tfGreen = new TextField(p5, "G", 220, 610, 110, 20, true);
         tfBlue = new TextField(p5, "B", 220, 670, 110, 20, true);
 
-        //slVolume = new Slider();
+        slVolume = new Slider(p5, "Volumen", 640, 300, 500, 12, 0, 100, 50);
         slHeight = new Slider (p5, "Altura(m)", 150,160, 250, 8, 0.01f, 10 , 1.83f);
         slWeight = new Slider (p5, "Peso", 150,220, 250, 8, 0.01f, 25000 , 83.7f);
         slBMI = new Slider (p5, "IMC", 150,280, 250, 8, 1, 250 , 25);
@@ -242,7 +246,6 @@ public class GUI {
         plog2.display(p5);
         exit.display(p5);
 
-
         p5.popStyle();
 
     }
@@ -258,9 +261,6 @@ public class GUI {
         p5.noStroke();
 
         p5.rect(640, 360, 600,360, 20);
-
-        drawTextField(p5, 230, "Nombre de usuario / Correo electrónico");
-        drawTextField(p5, 310, "Contraseña");
 
         tflogin1.display(p5);
         tflogin2.display(p5);
@@ -281,7 +281,6 @@ public class GUI {
         p5.noStroke();
 
         p5.rect(640, 360, 600,600, 20);
-
 
         tfsignup1.display(p5);
         tfsignup2.display(p5);
@@ -311,8 +310,6 @@ public class GUI {
 
         q1.display(p5);
         s1.display(p5);
-
-        drawDarkButton(p5, 1120, 50, 240, 80, "Nombre de Usuario");
 
         p5.popStyle();
     }
@@ -349,9 +346,18 @@ public class GUI {
         p5.rect(640, 360, 720,360, 20);
 
         p5.fill(Colors.getThisColor(7));
-        p5.text ("AJUSTES", 640, 240);
-        p5.text("Idioma:", 448, 360);
-        p5.text("Modo:", 434, 420);
+        if (lang == LANG.ESP) {
+            p5.text("AJUSTES", 640, 240);
+            p5.text("Idioma:", 448, 360);
+            p5.text("Modo:", 434, 420);
+        }else{
+            p5.text("SETTINGS", 640, 240);
+            p5.text("Language:", 448, 360);
+            p5.text("Mode:", 434, 420);
+        }
+
+        slVolume.display(p5);
+        p5.text((int) slVolume.v,  880, 270);
         sCol.display(p5);
         sLang.display(p5);
         deleteEverything.display(p5);
@@ -420,8 +426,13 @@ public class GUI {
                     }
                     slSced[1].display(p5);
                     slSced[3].display(p5);
-                    p5.text("Peso(kg): ", 25, 200);
-                    p5.text("Ancho(m): ", 25, 320);
+                    if (lang == LANG.ESP) {
+                        p5.text("Peso(kg): ", 25, 200);
+                        p5.text("Ancho(m): ", 25, 320);
+                    } else {
+                        p5.text("Weight(kg): ", 25, 200);
+                        p5.text("Width(m): ", 25, 320);
+                    }
                 }
             }
         }
@@ -475,11 +486,11 @@ public class GUI {
             scene.stands[i].display(p5);
         }
 
-        float fase = 255 *p5.sin(p5.frameCount*0.1f);
+        float phase = 255 *p5.sin(p5.frameCount*0.1f);
 
         if (scene.nObjects>0) {
             p5.noFill();
-            p5.stroke(255, 0, 0, fase);
+            p5.stroke(255, 0, 0, phase);
             p5.strokeWeight(2);
             p5.rectMode(p5.CORNER);
 

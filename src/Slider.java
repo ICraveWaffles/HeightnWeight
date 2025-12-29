@@ -53,6 +53,10 @@ public class Slider {
         else return false;
     }
 
+    public boolean mouseOnSlider(PApplet p5) {
+        return p5.mouseX > x - w / 2f - 20 && p5.mouseX < x + w / 2f + 5 && p5.mouseY > y - h - 5 && p5.mouseY < y + h + 5;
+    }
+
     public boolean mouseDraggingOnSlider(PApplet p5) {
         return p5.mousePressed && p5.mouseX > x - w / 2f-20 && p5.mouseX < x + w / 2 +20 && p5.mouseY > y - h * 2f - 5 && p5.mouseY < y + h * 2 +   5;
     }
@@ -67,5 +71,10 @@ public class Slider {
     public void checkSlider(PApplet p5, Scene scene) {
         if (!enabled) return;
         if (p5.mousePressed && mouseOnSlider(p5, scene)) updateSlider(p5);
+    }
+
+    public void checkSlider(PApplet p5) {
+        if (!enabled) return;
+        if (p5.mousePressed && mouseOnSlider(p5)) updateSlider(p5);
     }
 }
