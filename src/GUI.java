@@ -29,6 +29,7 @@ public class GUI {
     TextField scName;
     TextField tfName, tfHeight, tfWeight, tfBMI, tfWidth, tfBHRatio, tfAge, tfRed, tfGreen, tfBlue;
     TextField[] tfsced = new TextField[10];
+    TextField tfSearch;
 
     Slider slVolume, slHeight, slWeight, slBMI, slWidth,slBHRatio,slAge, slRed, slGreen, slBlue;
     Slider slSced[] = new Slider[10];
@@ -77,16 +78,17 @@ public class GUI {
         tflogin1 = new TextField(p5, "Nombre de usuario", 640, 230, 540, 60, false);
         tflogin2 = new TextField(p5, "Contraseña", 640, 310, 540, 60, false);
 
-        tfName = new TextField(p5, "Nombre", 150, 80, 250, 30, false);
-        tfHeight = new TextField(p5, "Altura", 220, 130, 110, 20, true);
-        tfWeight = new TextField(p5, "Peso", 220, 200, 110, 20, true);
-        tfBMI = new TextField(p5, "IMC", 220, 250, 110, 20, true);
-        tfWidth = new TextField(p5, "Anchura", 220, 320, 110, 20, true);
-        tfBHRatio = new TextField(p5, "Proporción C/C", 220, 400, 110, 20, true);
-        tfAge = new TextField(p5, "Edad estimada", 220, 460, 110, 20, true);
-        tfRed = new TextField(p5, "R", 220, 550, 110, 20, true);
-        tfGreen = new TextField(p5, "G", 220, 610, 110, 20, true);
-        tfBlue = new TextField(p5, "B", 220, 670, 110, 20, true);
+        tfSearch = new TextField (p5, "", 152, 97, 280, 50, false);
+        tfName = new TextField(p5, "Nombre", 152, 80, 250, 30, false);
+        tfHeight = new TextField(p5, "Altura", 222, 130, 110, 20, true);
+        tfWeight = new TextField(p5, "Peso", 222, 200, 110, 20, true);
+        tfBMI = new TextField(p5, "IMC", 222, 250, 110, 20, true);
+        tfWidth = new TextField(p5, "Anchura", 222, 320, 110, 20, true);
+        tfBHRatio = new TextField(p5, "Proporción C/C", 222, 400, 110, 20, true);
+        tfAge = new TextField(p5, "Edad estimada", 222, 460, 110, 20, true);
+        tfRed = new TextField(p5, "R", 222, 550, 110, 20, true);
+        tfGreen = new TextField(p5, "G", 222, 610, 110, 20, true);
+        tfBlue = new TextField(p5, "B", 222, 670, 110, 20, true);
 
         slVolume = new Slider(p5, "Volumen", 640, 300, 500, 12, 0, 100, 50);
         slHeight = new Slider (p5, "Altura(m)", 150,160, 250, 8, 0.01f, 10 , 1.83f);
@@ -426,6 +428,7 @@ public class GUI {
                     }
                     slSced[1].display(p5);
                     slSced[3].display(p5);
+
                     if (lang == LANG.ESP) {
                         p5.text("Peso(kg): ", 25, 200);
                         p5.text("Ancho(m): ", 25, 320);
@@ -434,6 +437,8 @@ public class GUI {
                         p5.text("Width(m): ", 25, 320);
                     }
                 }
+            }else {
+                tfSearch.display(p5);
             }
         }
 

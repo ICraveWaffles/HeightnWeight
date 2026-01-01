@@ -14,9 +14,11 @@ public class main {
         SSySS Spain = new SSySS(506030,47889958, "España");
         SSySS Madrid = new SSySS (8028, 7056000, "Madrid");
         SSySS Majorca = new SSySS (3620, 966908, "Mallorca");
+        SSySS Greenland = new SSySS (2165000, 56700, "Greenland");
 
         Spain.print();
         Majorca.print();
         Madrid.print();
+        Greenland.print();
     }
 }

@@ -4,10 +4,16 @@ public class SelectSlab {
 
     OC oc;
     boolean isEnabled;
+    boolean isSearched;
+    int page;
+    int y;
 
     public SelectSlab(PApplet p5, OC oc) {
         this.oc = oc;
         this.isEnabled = true;
+        this.isSearched = true;
+        this.y = 132 + (oc.ID % 10) * 58;
+        this.page = oc.ID / 10;
     }
 
     public void display(PApplet p5) {
@@ -18,8 +24,7 @@ public class SelectSlab {
         p5.strokeWeight(3);
         p5.fill(oc.r, oc.g, oc.b);
 
-        int y = 132 + (oc.ID % 10) * 58;
-        p5.rect(10, y, 280, 50, 10);
+        p5.rect(12, y, 280, 50, 10);
 
         if (oc.r + oc.g + oc.b > 480) p5.fill(0);
         else p5.fill(255);
@@ -30,7 +35,6 @@ public class SelectSlab {
     }
 
     public boolean mouseOverButton(PApplet p5) {
-        int y = 132 + (oc.ID % 10) * 58;
         if (this.isEnabled)
             return p5.mouseX >= 10 && p5.mouseX <= 290 && p5.mouseY >= y && p5.mouseY <= y + 50;
         return false;
