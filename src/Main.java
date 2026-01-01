@@ -247,7 +247,7 @@ public class Main extends PApplet {
                             int start = scene.selPage * 10;
                             int end = Math.min(searchSelects.length, start + 10);
                             for (int i = start; i < end; i++) {
-                                if (searchSelects[i].mouseOverButton(this) && searchSelects[i].isEnabled) {
+                                if (searchSelects[i].mouseOverButton(this) && searchSelects[i].isEnabled && searchSelects[i].isSearched) {
                                     addThisOC(searchSelects[i].oc);
                                 }
                             }
@@ -259,13 +259,17 @@ public class Main extends PApplet {
                     if (gui.exit.mouseOverButton(this)) {
                         scene.sel = Scene.scInstance.DISPLAY;
                         scene.selPage = 0;
-                        updateSearchArr("");
+
                         gui.tfSearch.text = "";
+                        updateSearchArr("");
+
                         gui.currentScreen = GUI.SCREEN.SCENESELECTOR;
                         gui.scenes.get(scene.ID).bText = gui.scName.text;
+
                         if (scene.nObjects == 0) {
                             deleteScene(scene);
                         }
+
                         scene = null;
                         firstClick = false;
                     }
@@ -414,14 +418,12 @@ public class Main extends PApplet {
         if (gui.currentScreen == GUI.SCREEN.LOGIN) {
             gui.tflogin1.keyPressed(key, keyCode);
             gui.tflogin2.keyPressed(key, keyCode);
-        }
-        else if (gui.currentScreen == GUI.SCREEN.SIGNUP) {
+        } else if (gui.currentScreen == GUI.SCREEN.SIGNUP) {
             gui.tfsignup1.keyPressed(key, keyCode);
             gui.tfsignup2.keyPressed(key, keyCode);
             gui.tfsignup3.keyPressed(key, keyCode);
             gui.tfsignup4.keyPressed(key, keyCode);
-        }
-        else if (gui.currentScreen == GUI.SCREEN.SCENEEDITOR) {
+        } else if (gui.currentScreen == GUI.SCREEN.SCENEEDITOR) {
             if (scene.sel != Scene.scInstance.OCSELECT) {
                 if (gui.scName.selected) gui.scName.keyPressed(key, keyCode);
                 for (int i = 0; i < gui.tfsced.length; i++) {
@@ -444,8 +446,11 @@ public class Main extends PApplet {
                 }
                 updateCalculatedValues();
             } else {
-                gui.tfSearch.keyPressed(key, keyCode);
-                updateSearchArr(gui.tfSearch.text);
+                if (gui.tfSearch.selected) {
+                    gui.tfSearch.keyPressed(key, keyCode);
+                    scene.selPage = 0;
+                    updateSearchArr(gui.tfSearch.text);
+                }
             }
         }
     }
@@ -692,17 +697,29 @@ public class Main extends PApplet {
     }
 
     public void updateSearchArr(String str) {
-        searchSelects = selects;
-        for (int i = 0; i < nAllOCs; i++) {
-            searchSelects[i].isSearched = selects[i].oc.name.contains(str);
-        }
-        int j = 0;
-        for (int i = 0; i < nAllOCs; i++) {
-            if (searchSelects[i].isSearched) {
-                searchSelects[i].y = 132 + (j % 10) * 58;
-                j++;
-            } else {
-                searchSelects[i].y = -100;
+        if (str == null || str.equals("")) {
+            searchSelects = selects;
+            for (int i = 0; i < selects.length; i++) {
+                selects[i].isSearched = true;
+                selects[i].y = 132 + (i % 10) * 58;
+            }
+        } else {
+            java.util.ArrayList<SelectSlab> temp = new java.util.ArrayList<>();
+            String searchLower = str.toLowerCase();
+
+            for (int i = 0; i < selects.length; i++) {
+                if (selects[i].oc.name.toLowerCase().contains(searchLower)) {
+                    selects[i].isSearched = true;
+                    temp.add(selects[i]);
+                } else {
+                    selects[i].isSearched = false;
+                }
+            }
+
+            searchSelects = temp.toArray(new SelectSlab[0]);
+
+            for (int i = 0; i < searchSelects.length; i++) {
+                searchSelects[i].y = 132 + (i % 10) * 58;
             }
         }
     }

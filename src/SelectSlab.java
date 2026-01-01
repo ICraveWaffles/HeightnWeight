@@ -1,4 +1,6 @@
 import processing.core.PApplet;
+import static processing.core.PConstants.LEFT;
+import static processing.core.PConstants.CENTER;
 
 public class SelectSlab {
 
@@ -19,7 +21,7 @@ public class SelectSlab {
     public void display(PApplet p5) {
         p5.pushMatrix();
         p5.textFont(Fonts.getThisFont((oc.name.length() < 12) ? 1 : 2));
-        p5.textMode(p5.CENTER);
+        p5.textAlign(LEFT, CENTER);
         p5.stroke(255);
         p5.strokeWeight(3);
         p5.fill(oc.r, oc.g, oc.b);
@@ -29,14 +31,16 @@ public class SelectSlab {
         if (oc.r + oc.g + oc.b > 480) p5.fill(0);
         else p5.fill(255);
 
-        p5.text((this.isEnabled) ? oc.name : "[[" + oc.name + "]]", 15, y + 25);
+        String txt = (this.isEnabled) ? oc.name : "[[" + oc.name + "]]";
+        p5.text(txt, 25, y + 22);
         p5.textFont(Fonts.getThisFont(1));
         p5.popMatrix();
     }
 
     public boolean mouseOverButton(PApplet p5) {
-        if (this.isEnabled)
-            return p5.mouseX >= 10 && p5.mouseX <= 290 && p5.mouseY >= y && p5.mouseY <= y + 50;
+        if (this.isEnabled && this.isSearched) {
+            return p5.mouseX >= 12 && p5.mouseX <= 292 && p5.mouseY >= y && p5.mouseY <= y + 50;
+        }
         return false;
     }
 }
