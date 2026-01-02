@@ -76,38 +76,45 @@ public class Main extends PApplet {
             }
             case SCENEEDITOR -> {
                 gui.drawSCENEEDITOR(this, scene);
+
                 if (!sceneEditorInitialized) {
                     initializeSceneEditorValues();
                     sceneEditorInitialized = true;
                 }
-                if (scene.sel != Scene.scInstance.OCSELECT)
-                if (scene.nObjects == 0) {
-                    gui.sced3.setEnabled(false);
-                    gui.sced4.setEnabled(false);
-                    gui.sced5.setEnabled(false);
-                } else if (scene.nObjects < 2) {
-                    gui.sced3.setEnabled(false);
-                    gui.sced4.setEnabled(false);
-                    gui.sced5.setEnabled(true);
+
+                if (scene.sel != Scene.scInstance.OCSELECT) {
+                    if (scene.nObjects == 0) {
+                        gui.sced3.setEnabled(false);
+                        gui.sced4.setEnabled(false);
+                        gui.sced5.setEnabled(false);
+                    } else if (scene.nObjects < 2) {
+                        gui.sced3.setEnabled(false);
+                        gui.sced4.setEnabled(false);
+                        gui.sced5.setEnabled(true);
+                    }
+
+                    checkSelectStatus();
                 } else {
                     gui.sced3.setEnabled(true);
                     gui.sced4.setEnabled(true);
-                    gui.sced5.setEnabled(true);
-                } else {
-                    gui.sced3.setEnabled(true);
-                    gui.sced4.setEnabled(true);
+
+                    int start = scene.selPage * 10;
+                    int end;
+
                     if (gui.tfSearch.text.equals("")) {
-                        int start = scene.selPage * 10;
-                        int end = Math.min(selects.length, start + 10);
+                        end = Math.min(selects.length, start + 10);
                         for (int i = start; i < end; i++) {
                             selects[i].display(this);
                         }
                     } else if (searchSelects != null) {
-                        int start = scene.selPage * 10;
-                        int end = start + 10;
+                        end = start + 10;
                         int visibleIndex = 0;
+
                         for (int i = 0; i < searchSelects.length; i++) {
-                            if (searchSelects[i].y == -100) continue;
+                            if (searchSelects[i].y == -100) {
+                                continue;
+                            }
+
                             if (visibleIndex >= start && visibleIndex < end) {
                                 searchSelects[i].display(this);
                             }
@@ -115,8 +122,17 @@ public class Main extends PApplet {
                         }
                     }
                 }
-                checkSelectStatus();
+                gui.sced3.setEnabled(scene.selPage != 0);
+                if (gui.tfSearch.text.equals("")) {
+                    int maxPage = (nAllOCs - 1) / 10;
+                    gui.sced4.setEnabled(scene.selPage < maxPage);
+                } else if (searchSelects != null) {
+                    int maxPage = (searchSelects.length - 1) / 10;
+                    gui.sced4.setEnabled(scene.selPage < maxPage);
+                }
             }
+
+
             case OCVIEWER -> {
                 gui.drawOCVIEWER(this);
                 int start = scedPage * 5;
@@ -372,7 +388,7 @@ public class Main extends PApplet {
                 if (gui.nav4.mouseOverButton(this)) scedPage = (slabs.length - 1) / 5;
                 if (gui.exit.mouseOverButton(this)) gui.currentScreen = GUI.SCREEN.MAIN;
                 for (int i = 0; i < nAllOCs; i++) {
-                    if (slabs[i].delete.mouseOverButton(this)) {
+                    if (slabs[i].delete.mouseOverButton(this) && slabs[i].page == scedPage) {
                         deleteOCfromBase(allOCs[i]);
                         break;
                     }
@@ -401,7 +417,6 @@ public class Main extends PApplet {
         }
     }
 
-    // Helper para evitar repetición de código
     private void updateSlidersFromOC(OC pHolder) {
         gui.slSced[1].v = pHolder.tHeight;
         gui.slSced[2].v = pHolder.weight;
@@ -499,6 +514,7 @@ public class Main extends PApplet {
                 break;
             }
         }
+        print(index);
         if (index == -1) return;
 
         for (Scene s : scenes) {
@@ -520,6 +536,7 @@ public class Main extends PApplet {
             allOCs[i] = allOCs[i + 1];
             allOCs[i].ID--;
             slabs[i] = slabs[i + 1];
+            slabs[i].page = (slabs[i].oc.ID) / 5;
             selects[i] = selects[i + 1];
         }
         nAllOCs--;

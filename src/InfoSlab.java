@@ -10,7 +10,7 @@ public class InfoSlab {
     public InfoSlab(OC oc, PApplet p5) {
         this.oc = oc;
         this.ID = oc.ID;
-        this.page = (oc.ID - 1) / 5;
+        this.page = (oc.ID) / 5;
         this.delete = new rButton(p5, "OUT", 350 + ((oc.ID - 1) * 200), 560, 120, 40, 7, 6, 6);
     }
 
@@ -38,7 +38,8 @@ public class InfoSlab {
         p5.text(String.valueOf(oc.tWidth), x + 10, 360);
         p5.text(String.valueOf(oc.bhratio), x + 10, 420);
         p5.text(String.valueOf(oc.age), x + 10, 480);
-        p5.text(String.valueOf(oc.ID), x + 10, 640);
+        p5.text(String.valueOf(oc.ID), x + 10, 540);
+        p5.text(String.valueOf(this.page), x+10, 600  );
 
         delete.display(p5, x);
         p5.popMatrix();
