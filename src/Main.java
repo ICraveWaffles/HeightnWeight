@@ -101,7 +101,7 @@ public class Main extends PApplet {
                     int start = scene.selPage * 10;
                     int end;
 
-                    if (gui.tfSearch.text.equals("")) {
+                    if (gui.tfSelectSearch.text.equals("")) {
                         end = Math.min(selects.length, start + 10);
                         for (int i = start; i < end; i++) {
                             selects[i].display(this);
@@ -123,7 +123,7 @@ public class Main extends PApplet {
                     }
                 }
                 gui.sced3.setEnabled(scene.selPage != 0);
-                if (gui.tfSearch.text.equals("")) {
+                if (gui.tfSelectSearch.text.equals("")) {
                     int maxPage = (nAllOCs - 1) / 10;
                     gui.sced4.setEnabled(scene.selPage < maxPage);
                 } else if (searchSelects != null) {
@@ -251,7 +251,7 @@ public class Main extends PApplet {
             else if (gui.currentScreen == GUI.SCREEN.SCENEEDITOR) {
                 if (firstClick) {
                     if (scene.sel != Scene.scInstance.DISPLAY) {
-                        if (gui.tfSearch.text.equals("")) {
+                        if (gui.tfSelectSearch.text.equals("")) {
                             int start = scene.selPage * 10;
                             int end = Math.min(selects.length, start + 10);
                             for (int i = start; i < end; i++) {
@@ -276,7 +276,7 @@ public class Main extends PApplet {
                         scene.sel = Scene.scInstance.DISPLAY;
                         scene.selPage = 0;
 
-                        gui.tfSearch.text = "";
+                        gui.tfSelectSearch.text = "";
                         updateSearchArr("");
 
                         gui.currentScreen = GUI.SCREEN.SCENESELECTOR;
@@ -326,7 +326,7 @@ public class Main extends PApplet {
                                 }
                             }
                         } else {
-                            gui.tfSearch.isPressed(this);
+                            gui.tfSelectSearch.isPressed(this);
                         }
 
                         if (gui.sced1.mouseOverButton(this)) instanceOC();
@@ -367,7 +367,7 @@ public class Main extends PApplet {
                         if (gui.sced5.mouseOverButton(this) && gui.sced5.enabled) {
                             if (scene.sel == Scene.scInstance.OCSELECT) {
                                 scene.sel = Scene.scInstance.DISPLAY;
-                                gui.tfSearch.text = "";
+                                gui.tfSelectSearch.text = "";
                             } else {
                                 scene.deleteObject(scene.stands[scene.currentObject]);
                                 if (scene.currentObject != -1) {
@@ -382,11 +382,16 @@ public class Main extends PApplet {
                 }
             }
             else if (gui.currentScreen == GUI.SCREEN.OCVIEWER) {
+                gui.tfInfoSearch.isPressed(this);
                 if (gui.nav1.mouseOverButton(this)) scedPage = 0;
                 if (gui.nav2.mouseOverButton(this) && scedPage > 0) scedPage--;
                 if (gui.nav3.mouseOverButton(this) && scedPage < (slabs.length - 1) / 5) scedPage++;
                 if (gui.nav4.mouseOverButton(this)) scedPage = (slabs.length - 1) / 5;
-                if (gui.exit.mouseOverButton(this)) gui.currentScreen = GUI.SCREEN.MAIN;
+                if (gui.exit.mouseOverButton(this)) {
+                    gui.currentScreen = GUI.SCREEN.MAIN;
+                    gui.tfInfoSearch.text = "";
+                    scedPage = 0;
+                }
                 for (int i = 0; i < nAllOCs; i++) {
                     if (slabs[i].delete.mouseOverButton(this) && slabs[i].page == scedPage) {
                         deleteOCfromBase(allOCs[i]);
@@ -399,7 +404,10 @@ public class Main extends PApplet {
                     gui.sLang.toggle();
                     gui.lang = (gui.lang == LANG.ESP) ? LANG.ENG : LANG.ESP;
                 }
-                if (gui.sCol.mouseOverButton(this)) gui.sCol.toggle();
+                if (gui.sCol.mouseOverButton(this)) {
+                    gui.sCol.toggle();
+                    Colors.switchMode();
+                }
                 if (gui.deleteEverything.mouseOverButton(this)) reset();
                 if (gui.exit.mouseOverButton(this)) gui.currentScreen = GUI.SCREEN.MAIN;
             }
@@ -461,11 +469,17 @@ public class Main extends PApplet {
                 }
                 updateCalculatedValues();
             } else {
-                if (gui.tfSearch.selected) {
-                    gui.tfSearch.keyPressed(key, keyCode);
+                if (gui.tfSelectSearch.selected) {
+                    gui.tfSelectSearch.keyPressed(key, keyCode);
                     scene.selPage = 0;
-                    updateSearchArr(gui.tfSearch.text);
+                    updateSearchArr(gui.tfSelectSearch.text);
                 }
+            }
+        } else if (gui.currentScreen == GUI.SCREEN.OCVIEWER){
+            if (gui.tfInfoSearch.selected) {
+                gui.tfInfoSearch.keyPressed(key, keyCode);
+                scedPage = 0;
+                updateSearchArr(gui.tfSelectSearch.text);
             }
         }
     }

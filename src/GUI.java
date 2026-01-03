@@ -29,7 +29,7 @@ public class GUI {
     TextField scName;
     TextField tfName, tfHeight, tfWeight, tfBMI, tfWidth, tfBHRatio, tfAge, tfRed, tfGreen, tfBlue;
     TextField[] tfsced = new TextField[10];
-    TextField tfSearch;
+    TextField tfSelectSearch, tfInfoSearch;
 
     Slider slVolume, slHeight, slWeight, slBMI, slWidth,slBHRatio,slAge, slRed, slGreen, slBlue;
     Slider slSced[] = new Slider[10];
@@ -78,7 +78,8 @@ public class GUI {
         tflogin1 = new TextField(p5, "Nombre de usuario", 640, 230, 540, 60, false);
         tflogin2 = new TextField(p5, "Contraseña", 640, 310, 540, 60, false);
 
-        tfSearch = new TextField (p5, "", 152, 97, 280, 50, false);
+        tfSelectSearch = new TextField (p5, "", 152, 97, 280, 50, false);
+        tfInfoSearch = new TextField (p5, "", 150, 32, 280, 50, false);
         tfName = new TextField(p5, "Nombre", 152, 80, 250, 30, false);
         tfHeight = new TextField(p5, "Altura", 222, 130, 110, 20, true);
         tfWeight = new TextField(p5, "Peso", 222, 200, 110, 20, true);
@@ -438,7 +439,7 @@ public class GUI {
                     }
                 }
             }else {
-                tfSearch.display(p5);
+                tfSelectSearch.display(p5);
             }
         }
 
@@ -519,14 +520,40 @@ public class GUI {
 
     public void drawOCVIEWER(PApplet p5){
         p5.pushStyle();
+        p5.pushMatrix();
 
         p5.background(Colors.getThisColor(1));
+
+        p5.textFont(Fonts.getThisFont(1));
+        p5.textMode(p5.CENTER);
+        p5.stroke(255);
+        p5.strokeWeight(3);
+        p5.fill(Colors.getThisColor(2));
+
+        int x = 10;
+        p5.rect(x, 76, 256, 632, 15);
+        p5.line(x, 128, x + (256), 128);
+        p5.line(x, 124, x + (256), 124);
+
+        p5.fill(0);
+
+        p5.text("Nombre", x + 10, 110);
+        p5.text("Altura [m]", x + 10, 170);
+        p5.text("Peso [kg]", x + 10, 230);
+        p5.text("IMC [kgm^-2]", x + 10, 290);
+        p5.text("Anchura [m]", x + 10, 360);
+        p5.textFont(Fonts.getThisFont(2));
+        p5.text("Ratio cabeza/cuerpo [m]", x + 10, 420);
+        p5.text("Edad aproximada [años]", x + 10, 480);
+        p5.textFont(Fonts.getThisFont(1));
 
         for (int i = 0; i < navigation.length; i++){
             navigation[i].display(p5);
         }
+        tfInfoSearch.display(p5);
         exit.display(p5);
 
+        p5.popMatrix();
         p5.popStyle();
     }
 
