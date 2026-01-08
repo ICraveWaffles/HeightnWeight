@@ -31,7 +31,7 @@ public class SelectSlab {
         if (oc.r + oc.g + oc.b > 480) p5.fill(0);
         else p5.fill(255);
 
-        String txt = (this.isEnabled) ? oc.name : "[[" + oc.name + "]]";
+        String txt = (this.isEnabled) ? oc.name : "[[" + oc.name + "]]  " + oc.uniqueID;
         p5.text(txt, 25, y + 22);
         p5.textFont(Fonts.getThisFont(1));
         p5.popMatrix();

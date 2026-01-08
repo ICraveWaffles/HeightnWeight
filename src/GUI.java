@@ -31,6 +31,7 @@ public class GUI {
     TextField[] tfsced = new TextField[10];
     TextField tfSelectSearch, tfInfoSearch;
 
+
     Slider slVolume, slHeight, slWeight, slBMI, slWidth,slBHRatio,slAge, slRed, slGreen, slBlue;
     Slider slSced[] = new Slider[10];
 
@@ -78,7 +79,7 @@ public class GUI {
         tflogin1 = new TextField(p5, "Nombre de usuario", 640, 230, 540, 60, false);
         tflogin2 = new TextField(p5, "Contraseña", 640, 310, 540, 60, false);
 
-        tfSelectSearch = new TextField (p5, "", 152, 97, 280, 50, false);
+        tfSelectSearch = new TextField (p5, "", 152, 97, 280, 50, true);
         tfInfoSearch = new TextField (p5, "", 150, 32, 280, 50, false);
         tfName = new TextField(p5, "Nombre", 152, 80, 250, 30, false);
         tfHeight = new TextField(p5, "Altura", 222, 130, 110, 20, true);

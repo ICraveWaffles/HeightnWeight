@@ -1,7 +1,7 @@
 import processing.core.PApplet;
+import java.util.Random;
 
 public class OC extends Stand {
-
 
     float weight;
     float BMI;
@@ -15,7 +15,8 @@ public class OC extends Stand {
 
     public OC(int ID) {
         this.ID = ID;
-        this.uniqueID = System.nanoTime();
+        Random random = new Random();
+        this.uniqueID = 100000 + random.nextInt(900000);
 
 
         this.name = "Zwolf";

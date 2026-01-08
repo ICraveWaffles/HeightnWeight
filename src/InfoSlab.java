@@ -40,6 +40,7 @@ public class InfoSlab {
         p5.text(String.valueOf(oc.age), x + 10, 480);
         p5.text(String.valueOf(oc.ID), x + 10, 540);
         p5.text(String.valueOf(this.page), x+10, 600  );
+        p5.text(String.valueOf(this.oc.uniqueID), x+10, 670);
 
         delete.display(p5, x);
         p5.popMatrix();

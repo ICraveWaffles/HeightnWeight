@@ -10,12 +10,12 @@ public class Main extends PApplet {
     public int scedPage = 0;
     Stand banana, cabinet, door;
     public ArrayList<Scene> scenes = new ArrayList<>();
-    public Scene nextScene;
     public Scene scene;
     public Stand[] allStands = new Stand[3];
     public OC[] allOCs;
     public InfoSlab[] slabs = new InfoSlab[0];
     public SelectSlab[] selects = new SelectSlab[0];
+    public SelectSlab searchedOC;
     public SelectSlab[] searchSelects;
     public boolean firstClick = false;
     public int nAllOCs = 0;
@@ -82,7 +82,7 @@ public class Main extends PApplet {
                     sceneEditorInitialized = true;
                 }
 
-                if (scene.sel != Scene.scInstance.OCSELECT) {
+                if (scene.sel == Scene.scInstance.DISPLAY) {
                     if (scene.nObjects == 0) {
                         gui.sced3.setEnabled(false);
                         gui.sced4.setEnabled(false);
@@ -91,8 +91,11 @@ public class Main extends PApplet {
                         gui.sced3.setEnabled(false);
                         gui.sced4.setEnabled(false);
                         gui.sced5.setEnabled(true);
+                    } else {
+                        gui.sced3.setEnabled(true);
+                        gui.sced4.setEnabled(true);
+                        gui.sced5.setEnabled(true);
                     }
-
                     checkSelectStatus();
                 } else {
                     gui.sced3.setEnabled(true);
@@ -106,33 +109,19 @@ public class Main extends PApplet {
                         for (int i = start; i < end; i++) {
                             selects[i].display(this);
                         }
+                    } else {
+                        if (searchedOC != null) searchedOC.display(this);
+                    }
+                    gui.sced3.setEnabled(scene.selPage != 0);
+                    if (gui.tfSelectSearch.text.equals("")) {
+                        int maxPage = (nAllOCs - 1) / 10;
+                        gui.sced4.setEnabled(scene.selPage < maxPage);
                     } else if (searchSelects != null) {
-                        end = start + 10;
-                        int visibleIndex = 0;
-
-                        for (int i = 0; i < searchSelects.length; i++) {
-                            if (searchSelects[i].y == -100) {
-                                continue;
-                            }
-
-                            if (visibleIndex >= start && visibleIndex < end) {
-                                searchSelects[i].display(this);
-                            }
-                            visibleIndex++;
-                        }
+                        int maxPage = (searchSelects.length - 1) / 10;
+                        gui.sced4.setEnabled(scene.selPage < maxPage);
                     }
                 }
-                gui.sced3.setEnabled(scene.selPage != 0);
-                if (gui.tfSelectSearch.text.equals("")) {
-                    int maxPage = (nAllOCs - 1) / 10;
-                    gui.sced4.setEnabled(scene.selPage < maxPage);
-                } else if (searchSelects != null) {
-                    int maxPage = (searchSelects.length - 1) / 10;
-                    gui.sced4.setEnabled(scene.selPage < maxPage);
-                }
             }
-
-
             case OCVIEWER -> {
                 gui.drawOCVIEWER(this);
                 int start = scedPage * 5;
@@ -257,18 +246,18 @@ public class Main extends PApplet {
                             for (int i = start; i < end; i++) {
                                 if (selects[i].mouseOverButton(this) && selects[i].isEnabled) {
                                     addThisOC(selects[i].oc);
+                                    selects[i].isEnabled = false;
                                 }
                             }
                         } else {
-                            int start = scene.selPage * 10;
-                            int end = Math.min(searchSelects.length, start + 10);
-                            for (int i = start; i < end; i++) {
-                                if (searchSelects[i].mouseOverButton(this) && searchSelects[i].isEnabled && searchSelects[i].isSearched) {
-                                    addThisOC(searchSelects[i].oc);
+                            if (searchedOC != null)
+                                if (searchedOC.mouseOverButton(this) && searchedOC.isEnabled) {
+                                    addThisOC(searchedOC.oc);
+                                    selects[searchedOC.oc.ID].isEnabled = false;
+                                    gui.tfSelectSearch.text = "";
                                 }
                             }
                         }
-                    }
                     gui.scName.isPressed(this);
                     if (!gui.scName.mouseOverTextField(this) && gui.scName.selected) gui.scName.keyPressed('0', ENTER);
 
@@ -277,7 +266,6 @@ public class Main extends PApplet {
                         scene.selPage = 0;
 
                         gui.tfSelectSearch.text = "";
-                        updateSearchArr("");
 
                         gui.currentScreen = GUI.SCREEN.SCENESELECTOR;
                         gui.scenes.get(scene.ID).bText = gui.scName.text;
@@ -470,9 +458,13 @@ public class Main extends PApplet {
                 updateCalculatedValues();
             } else {
                 if (gui.tfSelectSearch.selected) {
-                    gui.tfSelectSearch.keyPressed(key, keyCode);
+                    if (key != ',' && key != '.') {
+                        gui.tfSelectSearch.keyPressed(key, keyCode);
+                    }
                     scene.selPage = 0;
-                    updateSearchArr(gui.tfSelectSearch.text);
+                    if (gui.tfSelectSearch.text.length() == 6) {
+                        updateSearchArr(gui.tfSelectSearch.text);
+                    }
                 }
             }
         } else if (gui.currentScreen == GUI.SCREEN.OCVIEWER){
@@ -517,6 +509,7 @@ public class Main extends PApplet {
         allOCs[nAllOCs] = oc;
         slabs[nAllOCs] = new InfoSlab(oc, this);
         selects[nAllOCs] = new SelectSlab(this, oc);
+        selects[nAllOCs].isEnabled = false;
         nAllOCs++;
     }
 
@@ -675,6 +668,7 @@ public class Main extends PApplet {
         changeTFValues(pHolder);
         addNewOCtoBase(pHolder);
         scene.addObject(pHolder);
+
     }
 
     public void instanceZwolf() {
@@ -711,6 +705,7 @@ public class Main extends PApplet {
     public void addThisOC(OC pHolder) {
         scene.addObject(pHolder);
         updateSlidersFromOC(pHolder);
+        gui.tfName.text = (pHolder.name);
         changeTFValues(pHolder);
     }
 
@@ -728,35 +723,25 @@ public class Main extends PApplet {
     }
 
     public void updateSearchArr(String str) {
-        if (str == null || str.equals("")) {
-            searchSelects = selects;
-            for (int i = 0; i < selects.length; i++) {
-                selects[i].isSearched = true;
-                selects[i].y = 132 + (i % 10) * 58;
-            }
-        } else {
-            java.util.ArrayList<SelectSlab> temp = new java.util.ArrayList<>();
-            String searchLower = str.toLowerCase();
+        long idLong = Long.parseLong(str);
 
-            for (int i = 0; i < selects.length; i++) {
-                if (selects[i].oc.name.toLowerCase().contains(searchLower)) {
-                    selects[i].isSearched = true;
-                    temp.add(selects[i]);
-                } else {
-                    selects[i].isSearched = false;
-                }
-            }
-
-            searchSelects = temp.toArray(new SelectSlab[0]);
-
-            for (int i = 0; i < searchSelects.length; i++) {
-                searchSelects[i].y = 132 + (i % 10) * 58;
+        boolean found = false;
+        for (int i = 0; i < selects.length; i++) {
+            if (selects[i].oc.uniqueID == idLong) {
+                searchedOC = new SelectSlab (this, selects[i].oc);
+                searchedOC.y = 132;
+                found = true;
+                break;
             }
         }
+        if (!found) searchedOC = null;
     }
+
 
     private float round(float value, int decimals) {
         float factor = (float) Math.pow(10, decimals);
         return Math.round(value * factor) / factor;
     }
+
+
 }
