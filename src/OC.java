@@ -61,7 +61,7 @@ public class OC extends Stand {
         p5.pushMatrix();
 
         p5.rectMode(PApplet.CORNER);
-        p5.stroke(255);
+        p5.stroke(Colors.getThisColor(7));
         p5.strokeWeight(3);
         p5.fill(r & 0xFF, g & 0xFF, b & 0xFF);
 

@@ -5,8 +5,7 @@ enum LANG {ENG, ESP}
 
 public class GUI {
 
-
-    LANG lang;
+    public LANG lang;
     rButton plog1, plog2;
     rButton signup;
     rButton login;
@@ -47,8 +46,8 @@ public class GUI {
         lang = LANG.ESP;
         Colors.instanceColors(p5);
 
-        plog1 = new rButton(p5, "Iniciar sesión", 640, 440, 600, 70, 4, 7, 7);
-        plog2 = new rButton(p5, "No tienes cuenta? Crear cuenta", 640, 540, 600, 70, 4, 7, 7);
+        plog1 = new rButton(p5, "PLOG1", 640, 440, 600, 70, 4, 7, 7);
+        plog2 = new rButton(p5, "PLOG2", 640, 540, 600, 70, 4, 7, 7);
 
         login = new rButton(p5, "INICIAR SESIÓN",640, 435, 300, 100, 3, 7,  7);
         signup = new rButton(p5, "CREAR CUENTA",640, 565, 300, 100, 3, 7,  7);
@@ -60,7 +59,7 @@ public class GUI {
         s1 = new cButton(p5, "O", 30, 90, 50, 3,7,7);
 
         sLang = new rSwitch(p5, "ES", "EN", 840, 360, 100,40,4, 7,7);
-        sCol = new rSwitch(p5, "D", "N", 840, 420, 100,40,4, 7,7);
+        sCol = new rSwitch(p5, "N", "D", 840, 420, 100,40,4, 7,7);
         deleteEverything = new rButton(p5, "Reset Everything", 640, 490, 500, 60, 7,6,6);
 
         q2 = new cButton(p5, "<", 50, 360, 50, 3, 7,7);
@@ -92,7 +91,7 @@ public class GUI {
         tfGreen = new TextField(p5, "G", 222, 610, 110, 20, true);
         tfBlue = new TextField(p5, "B", 222, 670, 110, 20, true);
 
-        slVolume = new Slider(p5, "Volumen", 640, 300, 500, 12, 0, 100, 50);
+        slVolume = new Slider(p5, "Volumen", 640, 300, 500, 12, 0, 100, 50, false);
         slHeight = new Slider (p5, "Altura(m)", 150,160, 250, 8, 0.01f, 10 , 1.83f);
         slWeight = new Slider (p5, "Peso", 150,220, 250, 8, 0.01f, 25000 , 83.7f);
         slBMI = new Slider (p5, "IMC", 150,280, 250, 8, 1, 250 , 25);
@@ -444,27 +443,27 @@ public class GUI {
             }
         }
 
-        p5.fill(Colors.getThisColor(7));
+        p5.fill(255);
         p5.rect(354, 114, 920, 600);
 
         if (gridon) {
             p5.strokeWeight(2);
 
             for (int i = 354; i <= 1274; i += 20) {
-                p5.stroke(Colors.getThisColor(6));
+                p5.stroke(0);
                 p5.line(i, 114, i, 714);
                 p5.stroke(Colors.getThisColor(7));
                 p5.line(i, 94, i, 104);
             }
             for (int j = 114; j <= 720; j += 20) {
-                p5.stroke(Colors.getThisColor(6));
+                p5.stroke(0);
                 p5.line(354, j, 1274, j);
                 p5.stroke(Colors.getThisColor(7));
                 p5.line(334, j, 344, j);
             }
         }
 
-        p5.fill(Colors.getThisColor(6));
+        p5.fill(0);
 
 
         //p5.text("Name: []",10, 80 );
@@ -527,7 +526,7 @@ public class GUI {
 
         p5.textFont(Fonts.getThisFont(1));
         p5.textMode(p5.CENTER);
-        p5.stroke(255);
+        p5.stroke(Colors.getThisColor(6));
         p5.strokeWeight(3);
         p5.fill(Colors.getThisColor(2));
 
@@ -536,7 +535,7 @@ public class GUI {
         p5.line(x, 128, x + (256), 128);
         p5.line(x, 124, x + (256), 124);
 
-        p5.fill(0);
+        p5.fill(Colors.getThisColor(6));
 
         p5.text("Nombre", x + 10, 110);
         p5.text("Altura [m]", x + 10, 170);
@@ -547,6 +546,7 @@ public class GUI {
         p5.text("Ratio cabeza/cuerpo [m]", x + 10, 420);
         p5.text("Edad aproximada [años]", x + 10, 480);
         p5.textFont(Fonts.getThisFont(1));
+        p5.text("ID único", x + 10, 670);
 
         for (int i = 0; i < navigation.length; i++){
             navigation[i].display(p5);

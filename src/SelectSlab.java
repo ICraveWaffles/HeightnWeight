@@ -21,7 +21,7 @@ public class SelectSlab {
     public void display(PApplet p5) {
         p5.pushMatrix();
         p5.textFont(Fonts.getThisFont((oc.name.length() < 12) ? 1 : 2));
-        p5.textAlign(LEFT, CENTER);
+        p5.textAlign(CENTER, CENTER);
         p5.stroke(255);
         p5.strokeWeight(3);
         p5.fill(oc.r, oc.g, oc.b);
@@ -31,8 +31,8 @@ public class SelectSlab {
         if (oc.r + oc.g + oc.b > 480) p5.fill(0);
         else p5.fill(255);
 
-        String txt = (this.isEnabled) ? oc.name : "[[" + oc.name + "]]  " + oc.uniqueID;
-        p5.text(txt, 25, y + 22);
+        String txt = (this.isEnabled) ? oc.name: "[[" + oc.name + "]]";
+        p5.text(txt, 150, y + 22);
         p5.textFont(Fonts.getThisFont(1));
         p5.popMatrix();
     }

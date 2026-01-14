@@ -1,0 +1,4 @@
+TXT_LANG;ENGLISH;ESPAÑOL
+TXT_HI;HI;HOLAS
+PLOG1;Log in;Iniciar Sesión
+PLOG2;Don't have an account? Sign up;¿No tienes cuenta? Crear cuenta

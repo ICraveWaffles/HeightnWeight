@@ -26,7 +26,6 @@ public class rSwitch extends rButton {
     }
 
     public void display(PApplet p5) {
-        this.bText = on ? textOn : textOff;
         super.display(p5);
     }
 }

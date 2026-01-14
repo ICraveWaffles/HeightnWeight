@@ -47,6 +47,13 @@ public class Main extends PApplet {
     public void setup() {
         fonts = new Fonts(this);
         gui = new GUI(this);
+        try {
+            Languages.load();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+        translateEverything();
+
         gui.tfsced[2].setEnabled(false);
         gui.tfsced[4].setEnabled(false);
         gui.slSced[2].setEnabled(false);
@@ -218,11 +225,11 @@ public class Main extends PApplet {
                             if (gui.scenes.get(i).state == STATE.PLUS) {
                                 scenes.add(new Scene(scenes.size()));
                                 gui.scenes.get(i).state = STATE.NORM;
-                                scenes.get(i).name = gui.scenes.get(i).bText;
+                                scenes.get(i).name = gui.scenes.get(i).token;
                                 gui.scenes.get(i + 1).state = STATE.PLUS;
                                 gui.scenes.get(scenes.size()).updateSceneButton(scenes.size());
                             } else {
-                                scenes.get(i).name = gui.scenes.get(i).bText;
+                                scenes.get(i).name = gui.scenes.get(i).token;
                                 gui.scName.text = scenes.get(i).name;
                                 scene = scenes.get(i);
                                 if (scene.nObjects == 0) {
@@ -268,7 +275,7 @@ public class Main extends PApplet {
                         gui.tfSelectSearch.text = "";
 
                         gui.currentScreen = GUI.SCREEN.SCENESELECTOR;
-                        gui.scenes.get(scene.ID).bText = gui.scName.text;
+                        gui.scenes.get(scene.ID).text = gui.scName.text;
 
                         if (scene.nObjects == 0) {
                             deleteScene(scene);
@@ -391,6 +398,7 @@ public class Main extends PApplet {
                 if (gui.sLang.mouseOverButton(this)) {
                     gui.sLang.toggle();
                     gui.lang = (gui.lang == LANG.ESP) ? LANG.ENG : LANG.ESP;
+                    translateEverything();
                 }
                 if (gui.sCol.mouseOverButton(this)) {
                     gui.sCol.toggle();
@@ -471,7 +479,6 @@ public class Main extends PApplet {
             if (gui.tfInfoSearch.selected) {
                 gui.tfInfoSearch.keyPressed(key, keyCode);
                 scedPage = 0;
-                updateSearchArr(gui.tfSelectSearch.text);
             }
         }
     }
@@ -743,5 +750,15 @@ public class Main extends PApplet {
         return Math.round(value * factor) / factor;
     }
 
+    public void translateEverything(){
 
+        if (gui.lang == LANG.ENG){
+            gui.plog1.text = Languages.translate(gui.plog1.token, 1);
+            gui.plog2.text = Languages.translate(gui.plog2.token, 1);
+
+        } else if (gui.lang == LANG.ESP){
+            gui.plog1.text = Languages.translate(gui.plog1.token, 2);
+            gui.plog2.text = Languages.translate(gui.plog2.token, 2);
+        }
+    }
 }

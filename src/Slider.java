@@ -5,8 +5,20 @@ public class Slider {
     String s;
     float x, y, w, h;
     float minV, maxV, v;
-    int barColor, knobColor, textColor;
+    public boolean light;
     boolean enabled = true;
+
+    public Slider(PApplet p5, String s, float x, float y, float w, float h, float minV, float maxV, float val, boolean light) {
+        this.s = s;
+        this.x = x;
+        this.y = y;
+        this.w = w;
+        this.h = h;
+        this.minV = minV;
+        this.maxV = maxV;
+        this.light = light;
+        this.v = PApplet.constrain(val, minV, maxV);
+    }
 
     public Slider(PApplet p5, String s, float x, float y, float w, float h, float minV, float maxV, float val) {
         this.s = s;
@@ -16,10 +28,8 @@ public class Slider {
         this.h = h;
         this.minV = minV;
         this.maxV = maxV;
+        this.light = true;
         this.v = PApplet.constrain(val, minV, maxV);
-        this.barColor = Colors.getThisColor(1);
-        this.knobColor = Colors.getThisColor(8);
-        this.textColor = Colors.getThisColor(6);
     }
 
     public float getValue() { return v; }
@@ -31,16 +41,17 @@ public class Slider {
         p5.pushStyle();
         p5.rectMode(p5.CENTER);
         p5.stroke(100);
-        p5.fill(enabled ? barColor : 180);
+        p5.fill(light ? Colors.getThisColor(6) : Colors.getThisColor(7));
         p5.rect(x, y, w, h, 5);
 
         float knobX = x - w / 2 + p5.map(v, minV, maxV, 0, w);
+
         p5.noStroke();
-        p5.fill(enabled ? knobColor : 150);
+        p5.fill(light ? Colors.getThisColor(7) : Colors.getThisColor(6));
         p5.circle(knobX, y, h * 1.5f);
 
-        p5.fill(textColor);
         p5.textAlign(p5.LEFT, p5.CENTER);
+        p5.fill(light ? Colors.getThisColor(6) : Colors.getThisColor(7));
         p5.textSize(24);
         p5.text(s + ": ", x - w / 2, y - h - 15);
         p5.popStyle();

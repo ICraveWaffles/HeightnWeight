@@ -3,10 +3,9 @@ import processing.core.PApplet;
 public class cButton {
 
 
-    float x, y, d;
-    int fillColor, strokeColor;
-    int fillColorOver, fillColorDisabled;
-    int page = 0;
+    public float x, y, d;
+    public int fillColor, strokeColor;
+    public int fillColorOver, fillColorDisabled;
 
     String bText;
     int cText;
@@ -18,22 +17,15 @@ public class cButton {
         this.y = y;
         this.d = d;
         this.enabled = true;
-        this.fillColor = Colors.getThisColor(f);
-        this.fillColorOver = Colors.getThisColor(f+1);
-        this.fillColorDisabled = Colors.getThisColor(0);
-        this.strokeColor = Colors.getThisColor(s);
-        this.cText = Colors.getThisColor(t);
+        this.fillColor = f;
+        this.fillColorOver = f+1;
+        this.fillColorDisabled = 0;
+        this.strokeColor = s;
+        this.cText = t;
     }
 
     public void setEnabled(boolean b){
         this.enabled = b;
-    }
-
-    public void setColors(int cFill, int cStroke, int cOver, int cDisabled){
-        this.fillColor = cFill;
-        this.strokeColor = cStroke;
-        this.fillColorOver = cOver;
-        this.fillColorDisabled = cDisabled;
     }
 
     public boolean isEnabled(){
@@ -48,20 +40,20 @@ public class cButton {
         p5.textAlign(p5.CENTER, p5.CENTER);
 
         if(!enabled){
-            p5.fill(fillColorDisabled);
+            p5.fill(Colors.getThisColor(fillColor));
         }
         else if(mouseOverButton(p5)){
-            p5.fill(fillColorOver);
+            p5.fill(Colors.getThisColor(fillColorOver));
         }
         else{
-            p5.fill(fillColor);
+            p5.fill(Colors.getThisColor(fillColorDisabled));
         }
-        p5.stroke(strokeColor);
+        p5.stroke(Colors.getThisColor(strokeColor));
         p5.strokeWeight(2);
         p5.circle(this.x, this.y, this.d);
 
 
-        p5.fill(cText);
+        p5.fill(Colors.getThisColor(cText));
         p5.textFont(Fonts.getThisFont(0));
         p5.text(bText, this.x , this.y-2);
         p5.popStyle();
@@ -69,10 +61,5 @@ public class cButton {
 
     public boolean mouseOverButton(PApplet p5){
         return p5.dist(this.x, this.y, p5.mouseX, p5.mouseY)<= this.d/2;
-    }
-
-
-    public boolean updateHandCursor(PApplet p5){
-        return mouseOverButton(p5) && enabled;
     }
 }
