@@ -177,7 +177,6 @@ public class Main extends PApplet {
             if (gui.currentScreen == GUI.SCREEN.PRELOGIN) {
                 if (gui.plog1.mouseOverButton(this)) gui.currentScreen = GUI.SCREEN.LOGIN;
                 if (gui.plog2.mouseOverButton(this)) gui.currentScreen = GUI.SCREEN.SIGNUP;
-                if (gui.exit.mouseOverButton(this)) exit();
             }
             else if (gui.currentScreen == GUI.SCREEN.LOGIN) {
                 if (gui.exit.mouseOverButton(this)) gui.currentScreen = GUI.SCREEN.PRELOGIN;
@@ -230,7 +229,7 @@ public class Main extends PApplet {
                                 gui.scenes.get(scenes.size()).updateSceneButton(scenes.size());
                             } else {
                                 scenes.get(i).name = gui.scenes.get(i).token;
-                                gui.scName.text = scenes.get(i).name;
+                                gui.scName.text = gui.scenes.get(i).text;
                                 scene = scenes.get(i);
                                 if (scene.nObjects == 0) {
                                     instanceZwolf();
@@ -289,7 +288,6 @@ public class Main extends PApplet {
                     for (int i = 0; i < gui.tfsced.length; i++) {
                         if (i != 2 && i != 4) {
                             gui.tfsced[i].isPressed(this);
-                            if (!gui.tfsced[i].mouseOverTextField(this) && gui.tfsced[i].selected) gui.tfsced[i].keyPressed('0', ENTER);
                         }
                     }
 
@@ -302,22 +300,6 @@ public class Main extends PApplet {
                                     selectedSl = gui.slSced[i];
                                     if (i >= 7 && i < 10) gui.tfsced[i].setText(String.valueOf((int) gui.slSced[i].v));
                                     else gui.tfsced[i].setText(String.format("%.2f", gui.slSced[i].v));
-                                } else {
-                                    String txt = gui.tfsced[i].getText().replace(',', '.');
-                                    if (txt.matches("\\d*(\\.\\d{0,2})?") && !txt.isEmpty()) {
-                                        if (i >= 6 && i < 10) {
-                                            int value = (int) Float.parseFloat(txt);
-                                            value = (int) constrain(value, gui.slSced[i].minV, gui.slSced[i].maxV);
-                                            gui.slSced[i].v = value;
-                                            gui.tfsced[i].setText(String.valueOf(value));
-                                        } else {
-                                            float value = Float.parseFloat(txt);
-                                            value = constrain(value, gui.slSced[i].minV, gui.slSced[i].maxV);
-                                            gui.slSced[i].v = value;
-                                            gui.tfsced[i].setText(String.format("%.2f", value));
-                                        }
-                                    }
-                                    updateCalculatedValues();
                                 }
                             }
                         } else {
@@ -358,7 +340,6 @@ public class Main extends PApplet {
                                 if (scene.selPage != 0) scene.selPage--;
                             }
                         }
-
                         if (gui.sced5.mouseOverButton(this) && gui.sced5.enabled) {
                             if (scene.sel == Scene.scInstance.OCSELECT) {
                                 scene.sel = Scene.scInstance.DISPLAY;
@@ -444,26 +425,29 @@ public class Main extends PApplet {
             gui.tfsignup4.keyPressed(key, keyCode);
         } else if (gui.currentScreen == GUI.SCREEN.SCENEEDITOR) {
             if (scene.sel != Scene.scInstance.OCSELECT) {
-                if (gui.scName.selected) gui.scName.keyPressed(key, keyCode);
-                for (int i = 0; i < gui.tfsced.length; i++) {
-                    if (i == 2 || i == 4) continue;
-                    gui.tfsced[i].keyPressed(key, keyCode);
-                    if (gui.tfsced[i].selected && keyCode == ENTER) {
-                        String txt = gui.tfsced[i].getText().replace(',', '.');
-                        if (txt.matches("\\d*(\\.\\d{0,3})?") && !txt.isEmpty()) {
-                            if (i >= 6 && i < 10) {
-                                int value = (int) constrain(Float.parseFloat(txt), gui.slSced[i].minV, gui.slSced[i].maxV);
-                                gui.slSced[i].v = value;
-                                gui.tfsced[i].setText(String.valueOf(value));
-                            } else {
-                                float value = constrain(Float.parseFloat(txt), gui.slSced[i].minV, gui.slSced[i].maxV);
-                                gui.slSced[i].v = value;
-                                gui.tfsced[i].setText(String.format("%.3f", value));
+                    for (int i = 1; i < gui.tfsced.length; i++) {
+                        if (i == 2 || i == 4) continue;
+                        gui.tfsced[i].keyPressed(key, keyCode);
+                        if (gui.tfsced[i].selected && keyCode == ENTER) {
+                            try {
+                                String cleanText = gui.tfsced[i].getText().replace(',', '.');
+                                if (!cleanText.isEmpty()) {
+                                    float val = Float.parseFloat(cleanText);
+                                    val = constrain(val, gui.slSced[i].minV, gui.slSced[i].maxV);
+                                    gui.slSced[i].v = val;
+                                    selectedSl = gui.slSced[i];
+                                    if (i >= 6) {
+                                        gui.tfsced[i].setText(String.valueOf((int) val));
+                                    } else {
+                                        gui.tfsced[i].setText(String.format("%.2f", val).replace(',', '.'));
+                                    }
+                                    updateCalculatedValues();
+                                }
+                            } catch (NumberFormatException e) {
+                                println("Error: Número no válido");
                             }
                         }
                     }
-                }
-                updateCalculatedValues();
             } else {
                 if (gui.tfSelectSearch.selected) {
                     if (key != ',' && key != '.') {
@@ -745,20 +729,63 @@ public class Main extends PApplet {
     }
 
 
+
     private float round(float value, int decimals) {
         float factor = (float) Math.pow(10, decimals);
         return Math.round(value * factor) / factor;
     }
 
-    public void translateEverything(){
+    public void translateEverything() {
+        int l = (gui.lang == LANG.ESP) ? 2 : 1;
 
-        if (gui.lang == LANG.ENG){
-            gui.plog1.text = Languages.translate(gui.plog1.token, 1);
-            gui.plog2.text = Languages.translate(gui.plog2.token, 1);
+        gui.plog1.text = Languages.translate("PLOG1", l);
+        gui.plog2.text = Languages.translate("PLOG2", l);
+        gui.login.text = Languages.translate("LOGIN", l);
+        gui.signup.text = Languages.translate("SIGNUP", l);
+        gui.deleteEverything.text = Languages.translate("RESET", l);
 
-        } else if (gui.lang == LANG.ESP){
-            gui.plog1.text = Languages.translate(gui.plog1.token, 2);
-            gui.plog2.text = Languages.translate(gui.plog2.token, 2);
-        }
+        gui.m1.text = Languages.translate("M1", l);
+        gui.m2.text = Languages.translate("M2", l);
+        gui.m3.text = Languages.translate("M3", l);
+        gui.rsced1.text = Languages.translate("GRID", l);
+        gui.rsced2.text = Languages.translate("SCREENSHOT", l);
+
+        if (gui.exit != null) gui.exit.text = Languages.translate("EXIT", l);
+
+        gui.tfsignup1.text = Languages.translate("USERNAME", l);
+        gui.tfsignup2.text = Languages.translate("EMAIL", l);
+        gui.tfsignup3.text = Languages.translate("PASSWORD(1)", l);
+        gui.tfsignup4.text = Languages.translate("PASSWORD(2)", l);
+        gui.tfsignup1.trueText = Languages.translate("USERNAME", l);
+        gui.tfsignup2.trueText = Languages.translate("EMAIL", l);
+        gui.tfsignup3.trueText = Languages.translate("PASSWORD(1)", l);
+        gui.tfsignup4.trueText = Languages.translate("PASSWORD(2)", l);
+
+        gui.tflogin1.text = Languages.translate("USERNAME", l);
+        gui.tflogin2.text = Languages.translate("PASSWORD", l);
+        gui.tflogin1.trueText = Languages.translate("USERNAME", l);
+        gui.tflogin2.trueText = Languages.translate("PASSWORD", l);
+
+
+        gui.slVolume.s = Languages.translate("SOUND", l);
+        gui.slHeight.s = Languages.translate("HEIGHT", l);
+        gui.slWeight.s = Languages.translate("WEIGHT", l);
+        gui.slBMI.s = Languages.translate("BMI", l);
+        gui.slWidth.s = Languages.translate("WIDTH", l);
+        gui.slBHRatio.s = Languages.translate("BHRATIO", l);
+        gui.slAge.s = Languages.translate("AGE", l);
+        gui.slRed.s = Languages.translate("R", l);
+        gui.slGreen.s = Languages.translate("G", l);
+        gui.slBlue.s = Languages.translate("B", l);
+
+        gui.tfHeight.text = Languages.translate("HEIGHT", l);
+        gui.tfWeight.text = Languages.translate("WEIGHT", l);
+        gui.tfBMI.text = Languages.translate("BMI", l);
+        gui.tfWidth.text = Languages.translate("WIDTH", l);
+        gui.tfBHRatio.text = Languages.translate("BHRATIO", l);
+        gui.tfAge.text = Languages.translate("AGE", l);
+        gui.tfRed.text = Languages.translate("R", l);
+        gui.tfGreen.text = Languages.translate("G", l);
+        gui.tfBlue.text = Languages.translate("B", l);
     }
 }

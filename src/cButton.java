@@ -40,13 +40,13 @@ public class cButton {
         p5.textAlign(p5.CENTER, p5.CENTER);
 
         if(!enabled){
-            p5.fill(Colors.getThisColor(fillColor));
+            p5.fill(Colors.getThisColor(fillColorDisabled));
         }
         else if(mouseOverButton(p5)){
             p5.fill(Colors.getThisColor(fillColorOver));
         }
         else{
-            p5.fill(Colors.getThisColor(fillColorDisabled));
+            p5.fill(Colors.getThisColor(fillColor));
         }
         p5.stroke(Colors.getThisColor(strokeColor));
         p5.strokeWeight(2);

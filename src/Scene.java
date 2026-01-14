@@ -20,6 +20,8 @@ public class Scene {
         this.selPage = 0;
     }
 
+
+
     public void addObject(Stand s) {
         if (nObjects == stands.length) {
             stands = java.util.Arrays.copyOf(stands, stands.length + 1);

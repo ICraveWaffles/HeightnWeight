@@ -4,7 +4,7 @@ public class rSwitch extends rButton {
 
     String textOn;
     String textOff;
-    boolean on;
+    public boolean on;
 
     public rSwitch(PApplet p5, String textOn, String textOff,
                    float x, float y, float w, float h,
@@ -26,6 +26,8 @@ public class rSwitch extends rButton {
     }
 
     public void display(PApplet p5) {
+        if (this.on){ this.text = textOn;}
+        else this.text = textOff;
         super.display(p5);
     }
 }

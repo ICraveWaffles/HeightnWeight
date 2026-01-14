@@ -2,3 +2,25 @@ TXT_LANG;ENGLISH;ESPAÑOL
 TXT_HI;HI;HOLAS
 PLOG1;Log in;Iniciar Sesión
 PLOG2;Don't have an account? Sign up;¿No tienes cuenta? Crear cuenta
+LOGIN;LOG IN; INICIAR SESIÓN
+SIGNUP;CREATE ACCOUNT;CREAR CUENTA
+M1;My scenes;Mis escenas
+M2;My OCs;Mis OCs
+M3;Exit;Salir
+GRID;Toggle grid;Activar rejilla
+EXIT;Exit;Salir
+SCREENSHOT;Screenshot;Pantallazo
+USERNAME;Username;Nombre de usuario
+EMAIL;Email;Correo electrónico
+PASSWORD(1);Password (1st time);Contraseña (1ª vez)
+PASSWORD(2);Password (2nd time);Contraseña (2ª vez)
+PASSWORD;Password;Contraseña
+SOUND;Sound;Volumen
+HEIGHT;Height[m];Altura[m]
+WEIGHT;Weight[kg];Peso[kg]
+BMI;BMI;IMC
+WIDTH;Width[m];Anchura[m]
+BHRATIO;Head/Body;Cabeza/Cuerpo
+AGE;Av.Age[years];Edad[años]
+RESET;RESET EVERYTHING;BORRAR TODO
+OUT;DELETE;BORRAR

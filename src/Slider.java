@@ -2,6 +2,7 @@ import processing.core.PApplet;
 
 public class Slider {
 
+    public String token;
     String s;
     float x, y, w, h;
     float minV, maxV, v;
@@ -9,7 +10,8 @@ public class Slider {
     boolean enabled = true;
 
     public Slider(PApplet p5, String s, float x, float y, float w, float h, float minV, float maxV, float val, boolean light) {
-        this.s = s;
+        this.token = s;
+        this.s = Languages.translate(token, 1);
         this.x = x;
         this.y = y;
         this.w = w;
@@ -21,7 +23,8 @@ public class Slider {
     }
 
     public Slider(PApplet p5, String s, float x, float y, float w, float h, float minV, float maxV, float val) {
-        this.s = s;
+        this.token = s;
+        this.s = Languages.translate(token, 1);
         this.x = x;
         this.y = y;
         this.w = w;

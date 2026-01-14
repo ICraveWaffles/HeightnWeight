@@ -49,18 +49,18 @@ public class GUI {
         plog1 = new rButton(p5, "PLOG1", 640, 440, 600, 70, 4, 7, 7);
         plog2 = new rButton(p5, "PLOG2", 640, 540, 600, 70, 4, 7, 7);
 
-        login = new rButton(p5, "INICIAR SESIÓN",640, 435, 300, 100, 3, 7,  7);
-        signup = new rButton(p5, "CREAR CUENTA",640, 565, 300, 100, 3, 7,  7);
+        login = new rButton(p5, "LOGIN",640, 435, 300, 100, 3, 7,  7);
+        signup = new rButton(p5, "SIGNUP",640, 565, 300, 100, 3, 7,  7);
 
-        m1 = new rButton(p5, "Mis escenas",640, 340, 640, 60, 3, 7,7 );
-        m2 = new rButton(p5, "Mis OCs",640, 440, 640, 60, 3, 7,7 );
-        m3 = new rButton(p5, "Salir",640, 540, 640, 60, 3, 7,7 );
+        m1 = new rButton(p5, "M1",640, 340, 640, 60, 3, 7,7 );
+        m2 = new rButton(p5, "M2",640, 440, 640, 60, 3, 7,7 );
+        m3 = new rButton(p5, "M3",640, 540, 640, 60, 3, 7,7 );
         q1 = new cButton(p5, "?", 30, 30, 50, 3, 7,7);
         s1 = new cButton(p5, "O", 30, 90, 50, 3,7,7);
 
         sLang = new rSwitch(p5, "ES", "EN", 840, 360, 100,40,4, 7,7);
         sCol = new rSwitch(p5, "N", "D", 840, 420, 100,40,4, 7,7);
-        deleteEverything = new rButton(p5, "Reset Everything", 640, 490, 500, 60, 7,6,6);
+        deleteEverything = new rButton(p5, "RESET", 640, 490, 500, 60, 7,6,6);
 
         q2 = new cButton(p5, "<", 50, 360, 50, 3, 7,7);
         q3 = new cButton(p5, ">", 1230, 370, 50, 3, 7,7);
@@ -70,34 +70,34 @@ public class GUI {
         nav3 = new cButton(p5, ">",670, 30, 50, 3, 7, 7);
         nav4 = new cButton(p5, ">>",730, 30, 50, 3, 7, 7);
 
-        tfsignup1 = new TextField(p5, "Nombre de usuario", 640, 120, 540, 60, false);
-        tfsignup2 = new TextField(p5, "Correo electrónico", 640, 200, 540, 60, false);
-        tfsignup3 = new TextField(p5, "Contraseña (primera vez)", 640, 360, 540, 60, false);
-        tfsignup4 = new TextField(p5, "Contraseña (segunda vez)", 640, 440, 540, 60, false);
+        tfsignup1 = new TextField(p5, "USERNAME", 640, 120, 540, 60, false);
+        tfsignup2 = new TextField(p5, "EMAIL", 640, 200, 540, 60, false);
+        tfsignup3 = new TextField(p5, "PASSWORD (1)", 640, 360, 540, 60, false);
+        tfsignup4 = new TextField(p5, "PASSWORD (2)", 640, 440, 540, 60, false);
 
-        tflogin1 = new TextField(p5, "Nombre de usuario", 640, 230, 540, 60, false);
-        tflogin2 = new TextField(p5, "Contraseña", 640, 310, 540, 60, false);
+        tflogin1 = new TextField(p5, "USERNAME", 640, 230, 540, 60, false);
+        tflogin2 = new TextField(p5, "PASSWORD", 640, 310, 540, 60, false);
 
         tfSelectSearch = new TextField (p5, "", 152, 97, 280, 50, true);
         tfInfoSearch = new TextField (p5, "", 150, 32, 280, 50, false);
-        tfName = new TextField(p5, "Nombre", 152, 80, 250, 30, false);
-        tfHeight = new TextField(p5, "Altura", 222, 130, 110, 20, true);
-        tfWeight = new TextField(p5, "Peso", 222, 200, 110, 20, true);
-        tfBMI = new TextField(p5, "IMC", 222, 250, 110, 20, true);
-        tfWidth = new TextField(p5, "Anchura", 222, 320, 110, 20, true);
-        tfBHRatio = new TextField(p5, "Proporción C/C", 222, 400, 110, 20, true);
-        tfAge = new TextField(p5, "Edad estimada", 222, 460, 110, 20, true);
+        tfName = new TextField(p5, "SOUND", 152, 80, 250, 30, false);
+        tfHeight = new TextField(p5, "HEIGHT", 222, 130, 110, 20, true);
+        tfWeight = new TextField(p5, "WEIGHT", 222, 200, 110, 20, true);
+        tfBMI = new TextField(p5, "BMI", 222, 250, 110, 20, true);
+        tfWidth = new TextField(p5, "WIDTH", 222, 320, 110, 20, true);
+        tfBHRatio = new TextField(p5, "BHRATIO", 222, 400, 110, 20, true);
+        tfAge = new TextField(p5, "AGE", 222, 460, 110, 20, true);
         tfRed = new TextField(p5, "R", 222, 550, 110, 20, true);
         tfGreen = new TextField(p5, "G", 222, 610, 110, 20, true);
         tfBlue = new TextField(p5, "B", 222, 670, 110, 20, true);
 
-        slVolume = new Slider(p5, "Volumen", 640, 300, 500, 12, 0, 100, 50, false);
-        slHeight = new Slider (p5, "Altura(m)", 150,160, 250, 8, 0.01f, 10 , 1.83f);
-        slWeight = new Slider (p5, "Peso", 150,220, 250, 8, 0.01f, 25000 , 83.7f);
-        slBMI = new Slider (p5, "IMC", 150,280, 250, 8, 1, 250 , 25);
-        slWidth = new Slider (p5, "Anchura", 150,340, 250, 8, 2, 10 , 5);
-        slBHRatio = new Slider (p5, "Ratio C/C", 150,430, 250, 8, 0.125f, 0.25f , 0.15f);
-        slAge = new Slider (p5, "Edad", 150,490, 250, 8, 0, 80 , 20);
+        slVolume = new Slider(p5, "SOUND", 640, 300, 500, 12, 0, 100, 50, false);
+        slHeight = new Slider (p5, "HEIGHT", 150,160, 250, 8, 0.01f, 10 , 1.83f);
+        slWeight = new Slider (p5, "WEIGHT", 150,220, 250, 8, 0.01f, 25000 , 83.7f);
+        slBMI = new Slider (p5, "BMI", 150,280, 250, 8, 1, 250 , 25);
+        slWidth = new Slider (p5, "WIDTH", 150,340, 250, 8, 2, 10 , 5);
+        slBHRatio = new Slider (p5, "BHRATIO", 150,430, 250, 8, 0.125f, 0.25f , 0.15f);
+        slAge = new Slider (p5, "AGE", 150,490, 250, 8, 0, 80 , 20);
         slRed = new Slider (p5, "R", 150,580, 250, 8, 0, 255 , 127);
         slGreen = new Slider (p5, "G", 150,640, 250, 8, 0, 255 , 127);
         slBlue = new Slider (p5, "B", 150,700, 250, 8, 0, 255 , 127);
@@ -126,8 +126,8 @@ public class GUI {
         slSced[5]=slBHRatio; slSced[6]=slAge; slSced[7]=slRed; slSced[8]=slGreen; slSced[9]=slBlue;
 
         scName = new TextField (p5, null, 494, 34, 260, 50, false);
-        rsced1 = new rButton (p5, "Rejilla", 978, 34, 200, 60,3,7,7);
-        rsced2 = new rButton (p5, "Pantallazo", 776, 34, 200, 60,3,7,7);
+        rsced1 = new rButton (p5, "GRID", 978, 34, 200, 60,3,7,7);
+        rsced2 = new rButton (p5, "SCREENSHOT", 776, 34, 200, 60,3,7,7);
 
         sced1 = new cButton(p5,"+",30, 28,50, 3,7,7);
         sced2 = new cButton(p5,"*",90, 28,50, 3,7,7);
@@ -135,7 +135,7 @@ public class GUI {
         sced4 = new cButton(p5,">",210, 28, 50, 3,7,7);
         sced5 = new cButton(p5,"X",270, 28, 50, 3,7,7);
 
-        exit = new rButton(p5, "SALIR", 1178, 34, 196, 60, 3, 7,7 );
+        exit = new rButton(p5, "EXIT", 1178, 34, 196, 60, 3, 7,7 );
 
         page = 0; gridon = true;
     }
@@ -247,8 +247,6 @@ public class GUI {
         drawLogo(p5, 260);
         plog1.display(p5);
         plog2.display(p5);
-        exit.display(p5);
-
         p5.popStyle();
 
     }
@@ -355,7 +353,7 @@ public class GUI {
             p5.text("Modo:", 434, 420);
         }else{
             p5.text("SETTINGS", 640, 240);
-            p5.text("Language:", 448, 360);
+            p5.text("Language:", 462, 360);
             p5.text("Mode:", 434, 420);
         }
 
@@ -525,7 +523,7 @@ public class GUI {
         p5.background(Colors.getThisColor(1));
 
         p5.textFont(Fonts.getThisFont(1));
-        p5.textMode(p5.CENTER);
+        p5.textMode(p5.LEFT);
         p5.stroke(Colors.getThisColor(6));
         p5.strokeWeight(3);
         p5.fill(Colors.getThisColor(2));
@@ -537,16 +535,30 @@ public class GUI {
 
         p5.fill(Colors.getThisColor(6));
 
-        p5.text("Nombre", x + 10, 110);
-        p5.text("Altura [m]", x + 10, 170);
-        p5.text("Peso [kg]", x + 10, 230);
-        p5.text("IMC [kgm^-2]", x + 10, 290);
-        p5.text("Anchura [m]", x + 10, 360);
-        p5.textFont(Fonts.getThisFont(2));
-        p5.text("Ratio cabeza/cuerpo [m]", x + 10, 420);
-        p5.text("Edad aproximada [años]", x + 10, 480);
-        p5.textFont(Fonts.getThisFont(1));
-        p5.text("ID único", x + 10, 670);
+        p5.textMode(p5.LEFT);
+        if (lang == LANG.ESP) {
+            p5.text("Nombre", x + 10, 110);
+            p5.text("Altura [m]", x + 10, 170);
+            p5.text("Peso [kg]", x + 10, 230);
+            p5.text("IMC", x + 10, 290);
+            p5.text("Anchura [m]", x + 10, 360);
+            p5.textFont(Fonts.getThisFont(2));
+            p5.text("Ratio cabeza/cuerpo", x + 10, 420);
+            p5.text("Edad aproximada [años]", x + 10, 480);
+            p5.textFont(Fonts.getThisFont(1));
+            p5.text("ID único", x + 10, 670);
+        } else if (lang == LANG.ENG) {
+            p5.text("Name", x + 10, 110);
+            p5.text("Height[m]", x + 10, 170);
+            p5.text("Weight[kg]", x + 10, 230);
+            p5.text("Body Mass Index", x + 10, 290);
+            p5.text("Width [m]", x + 10, 360);
+            p5.textFont(Fonts.getThisFont(2));
+            p5.text("Head/Body ratio", x + 10, 420);
+            p5.text("Average Age [years]", x + 10, 480);
+            p5.textFont(Fonts.getThisFont(1));
+            p5.text("Unique ID", x + 10, 670);
+        }
 
         for (int i = 0; i < navigation.length; i++){
             navigation[i].display(p5);
