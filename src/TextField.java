@@ -63,7 +63,7 @@ public class TextField {
         boolean isSymbol = "!@#$%^&*()-_+=[]{};:'\"\\|,.<>/?`~·".indexOf(key) >= 0;
 
         if (intOnly) {
-            if (isNumber || key == '.' || key == ',') addText(key);
+            if (isNumber) addText(key);
         } else {
             if (isLetter || isNumber || isSymbol || key == ' ') addText(key);
         }

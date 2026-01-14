@@ -427,14 +427,6 @@ public class GUI {
                     }
                     slSced[1].display(p5);
                     slSced[3].display(p5);
-
-                    if (lang == LANG.ESP) {
-                        p5.text("Peso(kg): ", 25, 200);
-                        p5.text("Ancho(m): ", 25, 320);
-                    } else {
-                        p5.text("Weight(kg): ", 25, 200);
-                        p5.text("Width(m): ", 25, 320);
-                    }
                 }
             }else {
                 tfSelectSearch.display(p5);
