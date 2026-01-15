@@ -243,7 +243,7 @@ public class Main extends PApplet {
                                 gui.scenes.get(scenes.size()).updateSceneButton(scenes.size());
                             } else {
                                 scenes.get(i).name = gui.scenes.get(i).token;
-                                gui.scName.text = scenes.get(i).name;
+                                gui.scName.text = gui.scenes.get(i).text;
                                 scene = scenes.get(i);
                                 if (scene.nObjects == 0) {
                                     instanceZwolf();
@@ -608,9 +608,11 @@ public class Main extends PApplet {
         for (int i = 1; i < gui.scenes.size(); i++) {
             if (gui.scenes.get(i).state != STATE.NULL) {
                 gui.scenes.get(i).state = STATE.NULL;
+                gui.scenes.get(i).text = "{}";
             }
         }
         gui.scenes.getFirst().state = STATE.PLUS;
+        gui.scenes.getFirst().text = "{}";
     }
 
     public void updateCalculatedValues() {

@@ -108,7 +108,7 @@ public class GUI {
                 for (int i = 0; i < 5; i++) {
                     int x = i * 250 + 120;
                     int y = j * 212 + 200;
-                    scenes.add(buttonIndex,new rButton(p5, "Sin título", x, y, 200, 180, 4, 7, 6));
+                    scenes.add(buttonIndex,new rButton(p5, "{}", x, y, 200, 180, 4, 7, 6));
                     if (buttonIndex !=0) scenes.get(buttonIndex).state = STATE.NULL;
                     if (buttonIndex == 1) scenes.get(buttonIndex).state = STATE.PLUS;
                     buttonIndex++;

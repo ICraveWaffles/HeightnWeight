@@ -21,12 +21,11 @@ public class TextField {
         this.h = h;
         this.token = token;
         this.trueText = Languages.translate(token, 1);
-        this.text = "";
+        this.text = trueText;
         this.bgColor = p5.color(192, 255, 255);
         this.fgColor = p5.color(32, 127, 127);
         this.selectedColor = p5.color(255, 255, 255);
         this.borderColor = p5.color(127, 255, 255);
-        this.borderWeight = 1;
         this.intOnly = intOnly;
     }
 
@@ -108,6 +107,9 @@ public class TextField {
             return;
         }
         selected = mouseOverTextField(p5);
+        if (text.equals(trueText)){
+            this.text = "";
+        }
     }
 
     public void setEnabled(boolean e) {
