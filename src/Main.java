@@ -501,7 +501,7 @@ public class Main extends PApplet {
             if (firstClick) {
                 for (int i = 0; i < gui.slSced.length; i++) {
                     if (i == 2 || i == 4) continue;
-                    if (gui.slSced[i] != null && gui.slSced[i].mouseDraggingOnSlider(this)) {
+                    if (gui.slSced[i] != null && gui.slSced[i].mouseOnSlider(this)) {
                         gui.slSced[i].checkSlider(this, scene);
                         if (i >= 7 && i < 10) gui.tfsced[i].setText(String.valueOf((int) gui.slSced[i].v));
                         else gui.tfsced[i].setText(String.format("%.2f", gui.slSced[i].v));
@@ -622,13 +622,16 @@ public class Main extends PApplet {
 
         float bmi = gui.slSced[3].v;
         gui.slSced[2].minV = height * height;
+        print(gui.slSced[2].minV+ "   ");
         gui.slSced[2].maxV = 250 * height * height;
+        print(gui.slSced[2].maxV+ " - ");
 
-        gui.slSced[2].v = constrain(bmi * height * height, gui.slSced[2].minV, gui.slSced[2].maxV);
+        gui.slSced[2].v = bmi * height * height;
+        print(gui.slSced[2].v+ " --- ");
+
         gui.slSced[2].v = round(gui.slSced[2].v, 2);
 
-        if (!gui.tfsced[2].selected) gui.tfsced[2].setText(String.format("%.2f", gui.slSced[2].v));
-
+        if (!gui.tfsced[2].selected) gui.tfsced[2].setText(String.valueOf(gui.slSced[2].v));
         gui.slSced[4].v = constrain((float)(height * Math.pow(bmi, 0.7979) / 81.906),
                 (float)(height * Math.pow(1, 0.7979) / 81.906),
                 (float)(height * Math.pow(250, 0.7979) / 81.906));

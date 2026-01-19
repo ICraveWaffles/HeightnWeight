@@ -91,8 +91,8 @@ public class GUI {
         tfGreen = new TextField(p5, "G", 222, 610, 110, 20, true);
         tfBlue = new TextField(p5, "B", 222, 670, 110, 20, true);
 
-        slVolume = new Slider(p5, "SOUND", 640, 300, 500, 12, 0, 100, 50, false);
-        slHeight = new Slider (p5, "HEIGHT", 150,160, 250, 8, 0.01f, 10 , 1.83f);
+        slVolume = new Slider(p5, "SOUND", 640, 300, 500, 12, 0, 100, 50, false, false);
+        slHeight = new Slider (p5, "HEIGHT", 150,160, 250, 8, 0.01f, 10000 , 1.83f,true, true );
         slWeight = new Slider (p5, "WEIGHT", 150,220, 250, 8, 0.01f, 25000 , 83.7f);
         slBMI = new Slider (p5, "BMI", 150,280, 250, 8, 1, 250 , 25);
         slWidth = new Slider (p5, "WIDTH", 150,340, 250, 8, 2, 10 , 5);
