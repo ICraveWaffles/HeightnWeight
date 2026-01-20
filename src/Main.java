@@ -629,9 +629,16 @@ public class Main extends PApplet {
         gui.slSced[2].v = bmi * height * height;
         print(gui.slSced[2].v+ " --- ");
 
-        gui.slSced[2].v = round(gui.slSced[2].v, 2);
+        float weight = gui.slSced[2].v;
 
-        if (!gui.tfsced[2].selected) gui.tfsced[2].setText(String.valueOf(gui.slSced[2].v));
+        if (!gui.tfsced[2].selected) {
+            if (Math.abs(weight) < 1 || Math.abs(weight) >= 1000) {
+                gui.tfsced[2].setText(String.format("%.3e", weight));
+            } else {
+                gui.tfsced[2].setText(String.format("%.3f", weight));
+            }
+        }
+
         gui.slSced[4].v = constrain((float)(height * Math.pow(bmi, 0.7979) / 81.906),
                 (float)(height * Math.pow(1, 0.7979) / 81.906),
                 (float)(height * Math.pow(250, 0.7979) / 81.906));
@@ -652,6 +659,8 @@ public class Main extends PApplet {
             float age = gui.slSced[6].v;
             gui.slSced[5].v = 0.125f + 0.125f * (float)Math.exp(-0.0741f * age);
         }
+
+        if (gui.tfsced[3].text.isEmpty()) {gui.tfsced[3].text ="0"; gui.slSced[3].v = 0;}
 
 
         gui.slSced[6].v = constrain(Math.round(gui.slSced[6].v), 0, 80);

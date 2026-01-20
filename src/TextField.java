@@ -75,6 +75,7 @@ public class TextField {
 
     public void addText(char c) {
         if (c == ',') c = '.';
+        if (intOnly && text.equals("0")){text = String.valueOf(c);} else
         if (text.length() < (w / (textSize * 0.6))) text += c;
     }
 
