@@ -57,26 +57,141 @@ public class OC extends Stand {
         this.b = b;
     }
 
+    @Override
     public void display(PApplet p5) {
         p5.pushMatrix();
-
-        p5.rectMode(PApplet.CORNER);
-        p5.stroke(Colors.getThisColor(7));
-        p5.strokeWeight(3);
-        p5.fill(r & 0xFF, g & 0xFF, b & 0xFF);
+        p5.rectMode(PApplet.CENTER);
 
         float headH = height * bhratio;
-        float bodyH = height - headH;
+        float remainingH = height - headH;
+        float neckH = remainingH * 0.05f;
+        float bodyH = remainingH * 0.95f;
 
-        p5.rect(x, y + headH, width, bodyH, 10);
+        float torsoTotalH = bodyH * 0.40f;
+        float pelvisH = bodyH * 0.10f;
+        float legsTotalH = bodyH * 0.50f;
 
-        if (width > headH) {
-            p5.ellipse(x + width / 2f, y + headH / 2f, headH, headH);
-        } else {
-            p5.ellipse(x + width / 2f, y + headH / 2f, width, headH);
-        }
+        float bmi = PApplet.max(1.1f, this.BMI);
+        float bmiFactor = PApplet.log(bmi);
 
-        p5.fill(255);
+        float armThickness = width * 0.225f;
+        float armInset = bmiFactor * 5f;
+
+        float trueTotalWidth = PApplet.max(
+                width,
+                2f * ((width / 2f) - armInset)
+        );
+
+        float shoulderW = width * 0.55f;
+        float waistW = width * 0.40f;
+        float hipsW = width * 0.50f;
+
+        float centerX = x + trueTotalWidth / 2f;
+        p5.translate(centerX, y);
+
+        float headScaleY = headH > shoulderW ? shoulderW / headH : 1f;
+        p5.fill(r, g, b);
+        p5.ellipse(0, headH / 2f, headH * headScaleY, headH);
+
+        p5.translate(0, headH + neckH);
+
+        float chestH = torsoTotalH * 0.4f;
+        float absH = torsoTotalH * 0.3f;
+        float lowerTorsoH = torsoTotalH * 0.3f;
+
+        float armOffset = (trueTotalWidth / 2f) - (armThickness / 2f) - armInset;
+
+        drawArmSegments(p5, -armOffset, torsoTotalH, legsTotalH);
+        drawArmSegments(p5, armOffset, torsoTotalH, legsTotalH);
+
+        p5.fill(r, g, b);
+        drawTrapezoid(p5, shoulderW, waistW, chestH);
+        p5.translate(0, chestH);
+
+        p5.fill(r - 10, g - 10, b - 10);
+        drawTrapezoid(p5, waistW, waistW * 0.9f, absH);
+        p5.translate(0, absH);
+
+        p5.fill(r, g, b);
+        drawTrapezoid(p5, waistW * 0.9f, hipsW, lowerTorsoH);
+        p5.translate(0, lowerTorsoH);
+
+        p5.fill(r - 5, g - 5, b - 5);
+        drawTrapezoid(p5, hipsW, hipsW * 0.8f, pelvisH);
+        p5.translate(0, pelvisH);
+
+        drawLegSegments(p5, -hipsW / 3f, legsTotalH);
+        drawLegSegments(p5, hipsW / 3f, legsTotalH);
+
         p5.popMatrix();
     }
+
+
+    private void drawTrapezoid(PApplet p5, float wTop, float wBottom, float h) {
+        p5.beginShape();
+        p5.vertex(-wTop / 2f, 0);
+        p5.vertex(wTop / 2f, 0);
+        p5.vertex(wBottom / 2f, h);
+        p5.vertex(-wBottom / 2f, h);
+        p5.endShape(PApplet.CLOSE);
+    }
+
+    private void drawArmSegments(PApplet p5, float offsetX, float torsoH, float legH) {
+        float armLen = (torsoH + legH * 0.4f) / 2.2f;
+        float thickness = width * 0.225f;
+
+        p5.pushMatrix();
+        p5.translate(offsetX, (float) 0);
+
+
+        p5.fill(r, g, b);
+        p5.rect(0, armLen / 2f, thickness, armLen, 5);
+
+        p5.fill(r - 30, g - 30, b - 30);
+        p5.ellipse(0, 0, thickness * 0.8f, height/14f);
+
+        p5.translate(0, armLen);
+
+        p5.fill(r, g, b);
+        p5.rect(0, armLen / 2f, thickness * 0.8f, armLen, 5);
+
+        p5.fill(r - 30, g - 30, b - 30);
+        p5.ellipse(0, 0, thickness * 0.7f, height/16f);
+
+        p5.translate(0, armLen);
+        p5.fill(r - 15, g - 15, b - 15);
+        p5.rect(0, 0, thickness, height/10, 2);
+
+        p5.popMatrix();
+    }
+
+    private void drawLegSegments(PApplet p5, float offsetX, float totalLegLen) {
+        float footH = height/12f;
+        float segmentLen = (totalLegLen - footH) / 2.1f;
+        float thickness = width * 0.3f;
+
+        p5.pushMatrix();
+        p5.translate(offsetX, (float) 0);
+
+        p5.fill(r, g, b);
+        p5.rect(0, segmentLen / 2f, thickness, segmentLen, 5);
+
+        p5.fill(r - 30, g - 30, b - 30);
+        p5.ellipse(0, 0, thickness * 0.5f, height/20f);
+
+        p5.translate(0, segmentLen);
+
+        p5.fill(r, g, b);
+        p5.rect(0, segmentLen*1.2f / 2f, thickness * 0.8f, segmentLen*1.2f, 5);
+
+        p5.fill(r - 30, g - 30, b - 30);
+        p5.ellipse(0, 0, thickness * 0.5f, height/16f);
+
+        p5.translate(0, segmentLen - footH / 2f);
+        p5.fill(r - 20, g - 20, b - 20);
+        p5.rect(0, height/10, thickness * 1.05f, footH, 2);
+
+        p5.popMatrix();
+    }
+
 }

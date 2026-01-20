@@ -75,7 +75,7 @@ public class Scene {
         float tallest = 0f;
 
         for (int i = 0; i < nObjects; i++) {
-            totalWidth += stands[i].tWidth;
+            totalWidth += stands[i].tWidth*1.3f;
             tallest = Math.max(tallest, stands[i].tHeight);
         }
 
@@ -88,7 +88,7 @@ public class Scene {
         float baseY = 114f;
 
         for (int i = 0; i < nObjects; i++) {
-            stands[i].width = stands[i].tWidth / pixelSize;
+            stands[i].width = stands[i].tWidth*1.3f / pixelSize;
             stands[i].height = stands[i].tHeight / pixelSize;
             stands[i].x = currentX;
             stands[i].y = baseY + (600f - stands[i].height);

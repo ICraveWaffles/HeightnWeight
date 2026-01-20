@@ -431,6 +431,10 @@ public class GUI {
             }else {
                 tfSelectSearch.display(p5);
             }
+        } else {
+            if (scene.sel == Scene.scInstance.OCSELECT){
+                tfSelectSearch.display(p5);
+            }
         }
 
         p5.fill(255);

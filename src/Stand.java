@@ -8,13 +8,14 @@ public class Stand {
     String name;
     float x, y;
     float width, height;
-    float tWidth, tHeight;
+    float tWidth, ttWidth, tHeight;
     PImage pic;
 
     Stand (String name,float tWidth, float tHeight, PImage pic){
         this.uniqueID = System.nanoTime();
         this.name = name;
         this.tWidth = tWidth;
+        this.ttWidth = tWidth;
         this.tHeight = tHeight;
         this.pic = pic;
     }

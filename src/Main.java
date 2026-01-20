@@ -87,12 +87,14 @@ public class Main extends PApplet {
                 pushStyle();
                 textSize(24);
                 fill(0);
-                if (gui.lang == LANG.ESP) {
-                    text("Peso(kg): ", 25, 210-4);
-                    text("Ancho(m): ", 25, 330-4);
-                } else {
-                    text("Weight(kg): ", 25, 210-4);
-                    text("Width(m): ", 25, 330-4);
+                if (scene.sel != Scene.scInstance.OCSELECT && scene.nObjects != 0 ) {
+                    if (gui.lang == LANG.ESP) {
+                        text("Peso(kg): ", 25, 210 - 4);
+                        text("Ancho(m): ", 25, 330 - 4);
+                    } else {
+                        text("Weight(kg): ", 25, 210 - 4);
+                        text("Width(m): ", 25, 330 - 4);
+                    }
                 }
                 popStyle();
 
@@ -120,6 +122,8 @@ public class Main extends PApplet {
                 } else {
                     gui.sced3.setEnabled(true);
                     gui.sced4.setEnabled(true);
+                    gui.sced5.setEnabled(true);
+                    gui.tfSelectSearch.setEnabled(true);
 
                     int start = scene.selPage * 10;
                     int end;
