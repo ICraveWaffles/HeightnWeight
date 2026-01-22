@@ -16,6 +16,7 @@ PASSWORD(1);Password (1st time);Contraseña (1ª vez)
 PASSWORD(2);Password (2nd time);Contraseña (2ª vez)
 PASSWORD;Password;Contraseña
 SOUND;Sound;Volumen
+NAME;Name;Nombre
 HEIGHT;Height[m];Altura[m]
 WEIGHT;Weight[kg];Peso[kg]
 BMI;BMI;IMC

@@ -20,8 +20,6 @@ public class Scene {
         this.selPage = 0;
     }
 
-
-
     public void addObject(Stand s) {
         if (nObjects == stands.length) {
             stands = java.util.Arrays.copyOf(stands, stands.length + 1);
@@ -51,7 +49,16 @@ public class Scene {
 
     }
 
-
+    public boolean isInScene(long id){
+        boolean isIn = false;
+        for (int i = 0; i <this.nObjects;i++){
+            if (this.stands[i].uniqueID == id) {
+                isIn = true;
+                break;
+            }
+        }
+        return !isIn;
+    }
 
     public float[] getTallestObject() {
         if (nObjects == 0) return new float[]{-1, 0};

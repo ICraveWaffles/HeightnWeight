@@ -35,6 +35,8 @@ public class Main extends PApplet {
         cabinet = new Stand("Gabinete", 0.5f, 0.8f, gabinett);
         door = new Stand("Puerta", 0.6f, 2f, dooor);
 
+
+
         allStands[0] = banana;
         allStands[1] = cabinet;
         allStands[2] = door;
@@ -87,7 +89,7 @@ public class Main extends PApplet {
                 pushStyle();
                 textSize(24);
                 fill(0);
-                if (scene.sel != Scene.scInstance.OCSELECT && scene.nObjects != 0 ) {
+                if (scene.sel != Scene.scInstance.OCSELECT && scene.nObjects != 0 && scene.stands[scene.currentObject] instanceof OC) {
                     if (gui.lang == LANG.ESP) {
                         text("Peso(kg): ", 25, 210 - 4);
                         text("Ancho(m): ", 25, 330 - 4);
@@ -461,43 +463,78 @@ public class Main extends PApplet {
             gui.tfsignup4.keyPressed(key, keyCode);
         } else if (gui.currentScreen == GUI.SCREEN.SCENEEDITOR) {
             if (scene.sel != Scene.scInstance.OCSELECT) {
-                if (gui.scName.selected) gui.scName.keyPressed(key, keyCode);
+
+                if (gui.scName.selected) {
+                    gui.scName.keyPressed(key, keyCode);
+                }
+
                 for (int i = 0; i < gui.tfsced.length; i++) {
                     if (i == 2 || i == 4) continue;
+
+                    if (!gui.tfsced[i].selected) continue;
+
                     gui.tfsced[i].keyPressed(key, keyCode);
-                    if (gui.tfsced[i].selected && keyCode == ENTER) {
+
+                    if (keyCode == ENTER) {
                         String txt = gui.tfsced[i].getText().replace(',', '.');
-                        if (txt.matches("\\d*(\\.\\d{0,3})?") && !txt.isEmpty()) {
+
+                        if (!txt.isEmpty() && txt.matches("\\d+(\\.\\d{0,3})?")) {
+
                             if (i >= 6 && i < 10) {
-                                int value = (int) constrain(Float.parseFloat(txt), gui.slSced[i].minV, gui.slSced[i].maxV);
+                                int value = (int) constrain(
+                                        Float.parseFloat(txt),
+                                        gui.slSced[i].minV,
+                                        gui.slSced[i].maxV
+                                );
                                 gui.slSced[i].v = value;
                                 gui.tfsced[i].setText(String.valueOf(value));
                             } else {
-                                float value = constrain(Float.parseFloat(txt), gui.slSced[i].minV, gui.slSced[i].maxV);
+                                float value = constrain(
+                                        Float.parseFloat(txt),
+                                        gui.slSced[i].minV,
+                                        gui.slSced[i].maxV
+                                );
                                 gui.slSced[i].v = value;
                                 gui.tfsced[i].setText(String.format("%.3f", value));
                             }
                         }
                     }
                 }
+
                 updateCalculatedValues();
-            } else {
-                if (gui.tfSelectSearch.selected) {
-                    if (key != ',' && key != '.') {
-                        gui.tfSelectSearch.keyPressed(key, keyCode);
-                    }
-                    scene.selPage = 0;
-                    if (gui.tfSelectSearch.text.length() == 6) {
-                        updateSearchArr(gui.tfSelectSearch.text);
-                    }
-                }
             }
-        } else if (gui.currentScreen == GUI.SCREEN.OCVIEWER){
+    } else if (gui.currentScreen == GUI.SCREEN.OCVIEWER){
             if (gui.tfInfoSearch.selected) {
                 gui.tfInfoSearch.keyPressed(key, keyCode);
                 scedPage = 0;
             }
         }
+        if (gui.currentScreen == GUI.SCREEN.SCENEEDITOR){
+                boolean isTfOn = false;
+
+                for (int i = 0; i < gui.tfsced.length; i++) {
+                    if (gui.tfsced[i].selected) {
+                        print(i + " ");
+                        isTfOn = true;
+                    }
+                }
+                print(isTfOn);
+
+                if (gui.tfSelectSearch.selected) {
+                    isTfOn = true;
+                }
+                if (gui.scName.selected) {
+                    isTfOn = true;
+                }
+
+                print(isTfOn);
+
+                if (!isTfOn) {
+                    if (key == '1' && scene.isInScene(banana.uniqueID)) scene.addObject(banana);
+                    if (key == '2' && scene.isInScene(cabinet.uniqueID)) scene.addObject(cabinet);
+                    if (key == '3'&& scene.isInScene(door.uniqueID)) scene.addObject(door);
+                }
+            }
     }
 
     public void mouseDragged() {
@@ -626,12 +663,8 @@ public class Main extends PApplet {
 
         float bmi = gui.slSced[3].v;
         gui.slSced[2].minV = height * height;
-        print(gui.slSced[2].minV+ "   ");
         gui.slSced[2].maxV = 250 * height * height;
-        print(gui.slSced[2].maxV+ " - ");
-
         gui.slSced[2].v = bmi * height * height;
-        print(gui.slSced[2].v+ " --- ");
 
         float weight = gui.slSced[2].v;
 

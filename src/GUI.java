@@ -80,7 +80,7 @@ public class GUI {
 
         tfSelectSearch = new TextField (p5, "", 152, 97, 280, 50, true);
         tfInfoSearch = new TextField (p5, "", 150, 32, 280, 50, false);
-        tfName = new TextField(p5, "SOUND", 152, 80, 250, 30, false);
+        tfName = new TextField(p5, "NAME", 152, 80, 250, 30, false);
         tfHeight = new TextField(p5, "HEIGHT", 222, 130, 110, 20, true);
         tfWeight = new TextField(p5, "WEIGHT", 222, 200, 110, 20, true);
         tfBMI = new TextField(p5, "BMI", 222, 250, 110, 20, true);
