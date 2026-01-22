@@ -482,29 +482,25 @@ public class GUI {
 
         */
 
-        for (int i = 0; i < scene.nObjects;i++){
-            scene.stands[i].display(p5);
-        }
-
         float phase = 255 *p5.sin(p5.frameCount*0.1f);
 
         if (scene.nObjects>0) {
             p5.noFill();
             p5.stroke(255, 0, 0, phase);
-            p5.strokeWeight(2);
+            p5.strokeWeight(4);
             p5.rectMode(p5.CORNER);
 
             if (scene.stands[scene.currentObject] != null && !(scene.stands[scene.currentObject] instanceof OC)) {
-                p5.rect(scene.stands[scene.currentObject].x - 5,
-                        scene.stands[scene.currentObject].y - 5,
-                        scene.stands[scene.currentObject].width + 10,
-                        scene.stands[scene.currentObject].height + 10);
+                p5.rect(scene.stands[scene.currentObject].x - 2,
+                        scene.stands[scene.currentObject].y - 2,
+                        scene.stands[scene.currentObject].width + 3,
+                        scene.stands[scene.currentObject].height + 3);
             } else if (scene.stands[scene.currentObject] instanceof OC){
                 OC oc = (OC)scene.stands[scene.currentObject];
                 if (scene.stands[scene.currentObject].width > scene.stands[scene.currentObject].height*oc.bhratio){
-                    p5.ellipse(oc.x+oc.width / 2, oc.y + (oc.height*oc.bhratio)/2, oc.height*oc.bhratio+5, oc.height*oc.bhratio+5);
+                    p5.ellipse(oc.x+oc.width / 2, oc.y + (oc.height*oc.bhratio)/2, oc.height*oc.bhratio+6, oc.height*oc.bhratio+6);
                 } else {
-                    p5.ellipse(oc.x+oc.width / 2, oc.y + (oc.height*oc.bhratio)/2, oc.width+5, oc.height*oc.bhratio+5);
+                    p5.ellipse(oc.x+oc.width / 2, oc.y + (oc.height*oc.bhratio)/2, oc.width+6, oc.height*oc.bhratio+6);
                 }
             }
         }

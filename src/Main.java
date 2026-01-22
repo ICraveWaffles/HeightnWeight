@@ -147,6 +147,18 @@ public class Main extends PApplet {
                         gui.sced4.setEnabled(scene.selPage < maxPage);
                     }
                 }
+                pushStyle();
+                for (int i = 0; i < scene.stands.length; i++) {
+                    Stand s = scene.stands[i];
+                    if (s instanceof OC) {
+                        OC oc = (OC) s;
+                        oc.display(this, scene);
+                    } else {
+                        s.display(this);
+                    }
+                }
+                popStyle();
+
             }
             case OCVIEWER -> {
                 gui.drawOCVIEWER(this);

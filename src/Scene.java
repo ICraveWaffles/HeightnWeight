@@ -4,7 +4,7 @@ public class Scene {
 
     String name;
     Stand[] stands;
-    int nObjects;
+    static int nObjects;
     int currentObject;
     enum scInstance {DISPLAY, OCSELECT}
     scInstance sel;
@@ -60,19 +60,16 @@ public class Scene {
         return !isIn;
     }
 
-    public float[] getTallestObject() {
-        if (nObjects == 0) return new float[]{-1, 0};
-
-        int index = 0;
-        float max = stands[0].tHeight;
+    public OC getTallestObject() {
+        if (nObjects == 0) return null;
+        Stand max = stands[0];
 
         for (int i = 1; i < nObjects; i++) {
-            if (stands[i].tHeight > max) {
-                max = stands[i].tHeight;
-                index = i;
+            if (stands[i].tHeight > max.height) {
+                max = stands[i];
             }
         }
-        return new float[]{index, max};
+        return (OC) max;
     }
 
     public void designLayout() {

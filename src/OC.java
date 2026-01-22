@@ -57,10 +57,11 @@ public class OC extends Stand {
         this.b = b;
     }
 
-    @Override
-    public void display(PApplet p5) {
+    public void display(PApplet p5, Scene sc) {
         p5.pushMatrix();
         p5.rectMode(PApplet.CENTER);
+        p5.stroke(0);
+        p5.strokeWeight(2);
 
         float headH = height * bhratio;
         float remainingH = height - headH;
@@ -74,8 +75,7 @@ public class OC extends Stand {
         float bmi = PApplet.max(1.1f, this.BMI);
         float bmiFactor = PApplet.log(bmi);
 
-        float armThickness = width * 0.225f;
-        float armInset = bmiFactor * 5f;
+        float armInset = bmiFactor * (width * 0.02f);
 
         float trueTotalWidth = PApplet.max(
                 width,
@@ -99,7 +99,7 @@ public class OC extends Stand {
         float absH = torsoTotalH * 0.3f;
         float lowerTorsoH = torsoTotalH * 0.3f;
 
-        float armOffset = (trueTotalWidth / 2f) - (armThickness / 2f) - armInset;
+        float armOffset = (shoulderW/1.3f) - armInset;
 
         drawArmSegments(p5, -armOffset, torsoTotalH, legsTotalH);
         drawArmSegments(p5, armOffset, torsoTotalH, legsTotalH);

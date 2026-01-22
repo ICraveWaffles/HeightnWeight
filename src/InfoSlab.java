@@ -15,7 +15,7 @@ public class InfoSlab {
     }
 
     public void display(PApplet p5, int currentPage) {
-        p5.pushMatrix();
+        p5.pushStyle();
         p5.textFont(Fonts.getThisFont((oc.name.length() < 12) ? 1 : 2));
         p5.textMode(p5.LEFT);
         p5.stroke(Colors.getThisColor(7));
@@ -43,7 +43,7 @@ public class InfoSlab {
         p5.text(String.valueOf(this.oc.uniqueID), x+10, 670);
 
         delete.display(p5, x);
-        p5.popMatrix();
+        p5.popStyle();
     }
 
     public void slabUpdate(int i) {
