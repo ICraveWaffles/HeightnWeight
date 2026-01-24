@@ -78,7 +78,7 @@ public class GUI {
         tflogin1 = new TextField(p5, "USERNAME", 640, 230, 540, 60, false);
         tflogin2 = new TextField(p5, "PASSWORD", 640, 310, 540, 60, false);
 
-        tfSelectSearch = new TextField (p5, "", 152, 97, 280, 50, true);
+        tfSelectSearch = new TextField (p5, "", 152, 97, 280, 50, false);
         tfInfoSearch = new TextField (p5, "", 150, 32, 280, 50, false);
         tfName = new TextField(p5, "NAME", 152, 80, 250, 30, false);
         tfHeight = new TextField(p5, "HEIGHT", 222, 130, 110, 20, false);

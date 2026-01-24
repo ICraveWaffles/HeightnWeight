@@ -8,10 +8,12 @@ public class SelectSlab {
     boolean isEnabled;
     boolean isSearched;
     int page;
+    int ID;
     int y;
 
     public SelectSlab(PApplet p5, OC oc) {
         this.oc = oc;
+        this.ID = oc.ID;
         this.isEnabled = true;
         this.isSearched = true;
         this.y = 132 + (oc.ID % 10) * 58;
@@ -32,7 +34,7 @@ public class SelectSlab {
         else p5.fill(255);
 
         String txt = (this.isEnabled) ? oc.name: "[[" + oc.name + "]]";
-        p5.text(txt, 150, y + 22);
+        p5.text(txt, 150, 132 + (ID % 10) * 58 + 22);
         p5.textFont(Fonts.getThisFont(1));
         p5.popStyle();
     }

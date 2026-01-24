@@ -5,16 +5,18 @@ public class InfoSlab {
     int page;
     OC oc;
     int ID;
+    public int x;
     rButton delete;
 
     public InfoSlab(OC oc, PApplet p5) {
         this.oc = oc;
         this.ID = oc.ID;
         this.page = (oc.ID) / 5;
+        this.x = 480 + ((ID - 1) - page * 5) * 200;
         this.delete = new rButton(p5, "OUT", 350 + ((oc.ID - 1) * 200), 560, 120, 40, 6, 7, 7);
     }
 
-    public void display(PApplet p5, int currentPage) {
+    public void display(PApplet p5) {
         p5.pushStyle();
         p5.textFont(Fonts.getThisFont((oc.name.length() < 12) ? 1 : 2));
         p5.textMode(p5.CENTER);
@@ -22,10 +24,9 @@ public class InfoSlab {
         p5.strokeWeight(3);
         p5.fill(oc.r, oc.g, oc.b);
 
-        int x = 480 + ((ID - 1) - currentPage * 5) * 200;
-        p5.rect(x, 76, (ID % 5 == 4) ? 196 : 180, 632, 15);
-        p5.line(x, 128, x + ((ID % 5 == 4) ? 196 : 180), 128);
-        p5.line(x, 124, x + ((ID % 5 == 4) ? 196 : 180), 124);
+        p5.rect(this.x, 76, (ID % 5 == 4) ? 196 : 180, 632, 15);
+        p5.line(this.x, 128, this.x + ((ID % 5 == 4) ? 196 : 180), 128);
+        p5.line(this.x, 124, this.x + ((ID % 5 == 4) ? 196 : 180), 124);
 
         if ((oc.r + oc.g + oc.b > 480)) p5.fill(0);
         else p5.fill(255);
