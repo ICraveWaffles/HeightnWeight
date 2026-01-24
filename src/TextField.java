@@ -74,10 +74,23 @@ public class TextField {
     }
 
     public void addText(char c) {
-        if (c == ',') c = '.';
-        if (intOnly && text.equals("0")){text = String.valueOf(c);} else
-        if (text.length() < (w / (textSize * 0.6))) text += c;
+
+        if (c == ',' || c == '.') {
+            if (text.contains(".") || text.contains(",")|| text.isEmpty()) {
+                return;
+            }
+            if (c == ',' && intOnly) {
+                c = '.';
+            }
+        }
+
+        if (intOnly && text.equals("0")) {
+            text = String.valueOf(c);
+        } else if (text.length() < (w / (textSize * 0.6))) {
+            text += c;
+        }
     }
+
 
     public void removeText() {
         if (!text.isEmpty()) text = text.substring(0, text.length() - 1);

@@ -14,6 +14,7 @@ public class Main extends PApplet {
     public Stand[] allStands = new Stand[3];
     public OC[] allOCs;
     public InfoSlab[] slabs = new InfoSlab[0];
+    public InfoSlab[] searchInfos = new InfoSlab[0];
     public SelectSlab[] selects = new SelectSlab[0];
     public SelectSlab searchedOC;
     public SelectSlab[] searchSelects;
@@ -34,8 +35,6 @@ public class Main extends PApplet {
         banana = new Stand("Plátano", 0.2f, 0.07f, bananaPic);
         cabinet = new Stand("Gabinete", 0.5f, 0.8f, gabinett);
         door = new Stand("Puerta", 0.6f, 2f, dooor);
-
-
 
         allStands[0] = banana;
         allStands[1] = cabinet;
@@ -162,10 +161,23 @@ public class Main extends PApplet {
             }
             case OCVIEWER -> {
                 gui.drawOCVIEWER(this);
+
+                InfoSlab[] currentList;
+                if (gui.tfInfoSearch.text.isEmpty()) {
+                    currentList = slabs;
+                } else {
+                    currentList = searchInfos;
+                }
+
+                int maxPage = (currentList.length == 0) ? 0 : (currentList.length - 1) / 5;
+
+                if (scedPage > maxPage) scedPage = maxPage;
+
                 int start = scedPage * 5;
-                int end = Math.min(slabs.length, start + 5);
+                int end = Math.min(currentList.length, start + 5);
+
                 for (int i = start; i < end; i++) {
-                    slabs[i].display(this, scedPage);
+                    currentList[i].display(this, scedPage);
                 }
             }
             case SETTINGS -> gui.drawSETTINGS(this);
@@ -409,18 +421,31 @@ public class Main extends PApplet {
             }
             else if (gui.currentScreen == GUI.SCREEN.OCVIEWER) {
                 gui.tfInfoSearch.isPressed(this);
+
+                InfoSlab[] currentList = gui.tfInfoSearch.text.isEmpty() ? slabs : searchInfos;
+                int maxPage = (currentList.length == 0) ? 0 : (currentList.length - 1) / 5;
+
                 if (gui.nav1.mouseOverButton(this)) scedPage = 0;
                 if (gui.nav2.mouseOverButton(this) && scedPage > 0) scedPage--;
-                if (gui.nav3.mouseOverButton(this) && scedPage < (slabs.length - 1) / 5) scedPage++;
-                if (gui.nav4.mouseOverButton(this)) scedPage = (slabs.length - 1) / 5;
+                if (gui.nav3.mouseOverButton(this) && scedPage < maxPage) scedPage++;
+                if (gui.nav4.mouseOverButton(this)) scedPage = maxPage;
+
                 if (gui.exit.mouseOverButton(this)) {
                     gui.currentScreen = GUI.SCREEN.MAIN;
                     gui.tfInfoSearch.text = "";
                     scedPage = 0;
                 }
-                for (int i = 0; i < nAllOCs; i++) {
-                    if (slabs[i].delete.mouseOverButton(this) && slabs[i].page == scedPage) {
-                        deleteOCfromBase(allOCs[i]);
+
+                int start = scedPage * 5;
+                int end = Math.min(currentList.length, start + 5);
+
+                for (int i = start; i < end; i++) {
+                    if (currentList[i].delete.mouseOverButton(this)) {
+                        OC ocToDelete = currentList[i].oc;
+                        deleteOCfromBase(ocToDelete);
+                        if (!gui.tfInfoSearch.text.isEmpty()) {
+                            updateSearchArr(gui.tfInfoSearch.text);
+                        }
                         break;
                     }
                 }
@@ -518,6 +543,7 @@ public class Main extends PApplet {
     } else if (gui.currentScreen == GUI.SCREEN.OCVIEWER){
             if (gui.tfInfoSearch.selected) {
                 gui.tfInfoSearch.keyPressed(key, keyCode);
+                updateSearchArr(gui.tfInfoSearch.text);
                 scedPage = 0;
             }
         }
@@ -623,6 +649,17 @@ public class Main extends PApplet {
         allOCs = java.util.Arrays.copyOf(allOCs, nAllOCs);
         slabs = java.util.Arrays.copyOf(slabs, nAllOCs);
         selects = java.util.Arrays.copyOf(selects, nAllOCs);
+
+        defragment();
+    }
+
+    public void defragment(){
+        for (int i = 0; i < nAllOCs;i++){
+            slabs[i].ID = i;
+            selects[i].y = 132 + (allOCs[i].ID % 10) * 58;
+            slabs[i].page = i / 5;
+            selects[i].page = i / 5;
+        }
     }
 
     public void deleteScene(Scene sc) {
@@ -709,6 +746,7 @@ public class Main extends PApplet {
             gui.slSced[5].v = 0.125f + 0.125f * (float)Math.exp(-0.0741f * age);
         }
 
+        if (gui.tfsced[1].text.isEmpty()) {gui.tfsced[1].text ="0"; gui.slSced[1].v = 0;}
         if (gui.tfsced[3].text.isEmpty()) {gui.tfsced[3].text ="0"; gui.slSced[3].v = 0;}
 
 
@@ -828,19 +866,32 @@ public class Main extends PApplet {
         }
     }
 
-    public void updateSearchArr(String str) {
-        long idLong = Long.parseLong(str);
 
-        boolean found = false;
-        for (int i = 0; i < selects.length; i++) {
-            if (selects[i].oc.uniqueID == idLong) {
-                searchedOC = new SelectSlab (this, selects[i].oc);
-                searchedOC.y = 132;
-                found = true;
-                break;
+    public void updateSearchArr(String str) {
+        if (str == null) str = "";
+        String searchStr = str.toLowerCase().trim();
+
+        ArrayList<InfoSlab> tempList = new ArrayList<>();
+        int searchIndex = 0;
+
+        if (slabs != null) {
+            for (int i = 0; i < slabs.length; i++) {
+
+                if (slabs[i] != null && slabs[i].oc != null && slabs[i].oc.name != null) {
+
+                    if (slabs[i].oc.name.toLowerCase().contains(searchStr)) {
+                        InfoSlab newSlab = new InfoSlab(slabs[i].oc, this);
+                        newSlab.oc = slabs[i].oc;
+                        newSlab.ID = searchIndex;
+                        newSlab.page = searchIndex / 5;
+                        tempList.add(newSlab);
+                        searchIndex++;
+                    }
+                }
             }
         }
-        if (!found) searchedOC = null;
+
+        searchInfos = tempList.toArray(new InfoSlab[0]);
     }
 
 

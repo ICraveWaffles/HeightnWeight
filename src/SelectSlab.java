@@ -19,7 +19,7 @@ public class SelectSlab {
     }
 
     public void display(PApplet p5) {
-        p5.pushMatrix();
+        p5.pushStyle();
         p5.textFont(Fonts.getThisFont((oc.name.length() < 12) ? 1 : 2));
         p5.textAlign(CENTER, CENTER);
         p5.stroke(255);
@@ -34,7 +34,7 @@ public class SelectSlab {
         String txt = (this.isEnabled) ? oc.name: "[[" + oc.name + "]]";
         p5.text(txt, 150, y + 22);
         p5.textFont(Fonts.getThisFont(1));
-        p5.popMatrix();
+        p5.popStyle();
     }
 
     public boolean mouseOverButton(PApplet p5) {

@@ -17,15 +17,15 @@ public class InfoSlab {
     public void display(PApplet p5, int currentPage) {
         p5.pushStyle();
         p5.textFont(Fonts.getThisFont((oc.name.length() < 12) ? 1 : 2));
-        p5.textMode(p5.LEFT);
+        p5.textMode(p5.CENTER);
         p5.stroke(Colors.getThisColor(7));
         p5.strokeWeight(3);
         p5.fill(oc.r, oc.g, oc.b);
 
-        int x = 480 + ((oc.ID - 1) - currentPage * 5) * 200;
-        p5.rect(x, 76, (oc.ID % 5 == 4) ? 196 : 180, 632, 15);
-        p5.line(x, 128, x + ((oc.ID % 5 == 4) ? 196 : 180), 128);
-        p5.line(x, 124, x + ((oc.ID % 5 == 4) ? 196 : 180), 124);
+        int x = 480 + ((ID - 1) - currentPage * 5) * 200;
+        p5.rect(x, 76, (ID % 5 == 4) ? 196 : 180, 632, 15);
+        p5.line(x, 128, x + ((ID % 5 == 4) ? 196 : 180), 128);
+        p5.line(x, 124, x + ((ID % 5 == 4) ? 196 : 180), 124);
 
         if ((oc.r + oc.g + oc.b > 480)) p5.fill(0);
         else p5.fill(255);
@@ -38,16 +38,12 @@ public class InfoSlab {
         p5.text(String.valueOf(oc.tWidth), x + 10, 360);
         p5.text(String.valueOf(oc.bhratio), x + 10, 420);
         p5.text(String.valueOf(oc.age), x + 10, 480);
-        p5.text(String.valueOf(oc.ID), x + 10, 540);
-        p5.text(String.valueOf(this.page), x+10, 600  );
+        /*p5.text(String.valueOf(oc.ID), x + 10, 540);
+        p5.text(String.valueOf(this.page), x+10, 600 );*/
         p5.text(String.valueOf(this.oc.uniqueID), x+10, 670);
 
         delete.display(p5, x);
         p5.popStyle();
     }
 
-    public void slabUpdate(int i) {
-        this.ID = i;
-        this.page = (i - 1) / 5;
-    }
 }
