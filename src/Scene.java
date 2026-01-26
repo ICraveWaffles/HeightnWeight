@@ -4,7 +4,7 @@ public class Scene {
 
     String name;
     Stand[] stands;
-    static int nObjects;
+    public int nObjects;
     int currentObject;
     enum scInstance {DISPLAY, OCSELECT}
     scInstance sel;

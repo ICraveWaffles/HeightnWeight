@@ -16,7 +16,6 @@ public class Main extends PApplet {
     public InfoSlab[] slabs = new InfoSlab[0];
     public InfoSlab[] searchInfos = new InfoSlab[0];
     public SelectSlab[] selects = new SelectSlab[0];
-    public SelectSlab searchedOC;
     public SelectSlab[] searchSelects;
     public boolean firstClick = false;
     public int nAllOCs = 0;
@@ -70,6 +69,19 @@ public class Main extends PApplet {
             case QNA -> gui.drawQNA(this);
             case SCENESELECTOR -> {
                 gui.drawSCENESELECTOR(this);
+
+                for (int i = 0; i < scenes.size(); i++) {
+                    Scene sc = scenes.get(i);
+
+                    if (sc == null || gui.scenes.get(i).state != STATE.NORM) continue;
+
+                    if (sc.nObjects == 0) {
+                        gui.scenes.get(i).cText = 8;
+                    } else {
+                        gui.scenes.get(i).cText = 6;
+                    }
+                }
+
                 if (scenes.size() < 15) {
                     gui.nav1.setEnabled(false);
                     gui.nav2.setEnabled(false);
@@ -82,6 +94,7 @@ public class Main extends PApplet {
                     gui.nav4.setEnabled(true);
                 }
             }
+
             case SCENEEDITOR -> {
                 gui.drawSCENEEDITOR(this, scene);
 
@@ -277,9 +290,6 @@ public class Main extends PApplet {
                                 scenes.get(i).name = gui.scenes.get(i).token;
                                 gui.scName.text = gui.scenes.get(i).text;
                                 scene = scenes.get(i);
-                                if (scene.nObjects == 0) {
-                                    instanceZwolf();
-                                }
                                 redoSceneEditorValues();
                                 gui.currentScreen = GUI.SCREEN.SCENEEDITOR;
                                 scene.selPage = 0;
@@ -323,10 +333,6 @@ public class Main extends PApplet {
 
                         gui.currentScreen = GUI.SCREEN.SCENESELECTOR;
                         gui.scenes.get(scene.ID).text = gui.scName.text;
-
-                        if (scene.nObjects == 0) {
-                            deleteScene(scene);
-                        }
 
                         scene = null;
                         firstClick = false;
@@ -631,9 +637,14 @@ public class Main extends PApplet {
 
         for (Scene s : scenes) {
             if (s == null) continue;
+            if (s.nObjects == 1){
+                if (s.stands[s.currentObject].uniqueID == oc.uniqueID){
+                    s.deleteObject(oc);
+                }
+            }
             for (int i = s.nObjects - 1; i >= 0; i--) {
                 Stand st = s.stands[i];
-                if (st.equals(oc) || st.ID == oc.ID || st.uniqueID == oc.ID) {
+                if (st.equals(oc) || st.uniqueID == oc.uniqueID) {
                     s.deleteObject(oc);
                     if (s.currentObject != -1) {
                         OC pHolder = (OC) s.stands[s.currentObject];
@@ -645,8 +656,6 @@ public class Main extends PApplet {
         }
         for (int i = index; i < nAllOCs - 1; i++) {
             allOCs[i] = allOCs[i + 1];
-            allOCs[i].ID = i;
-
             slabs[i] = slabs[i + 1];
             selects[i] = selects[i + 1];
         }
@@ -669,6 +678,8 @@ public class Main extends PApplet {
 
     public void defragment() {
         for (int i = 0; i < nAllOCs; i++) {
+
+            allOCs[i].ID = i;
 
             slabs[i].ID = i % 5;
             slabs[i].page = i / 5;
@@ -898,6 +909,7 @@ public class Main extends PApplet {
                         newSlab.oc = slabs[i].oc;
                         newSlab.ID = searchIndex;
                         newSlab.page = searchIndex / 5;
+                        newSlab.x = 480 + ((newSlab.ID - 1) - newSlab.page * 5) * 200;
                         tempList.add(newSlab);
                         searchIndex++;
                     }
