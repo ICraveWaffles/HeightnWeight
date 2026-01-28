@@ -21,7 +21,7 @@ public class GUI {
     rButton deleteEverything;
 
     cButton sced1, sced2, sced3, sced4, sced5;
-    rButton rsced1, rsced2;
+    rButton rsced0, rsced1, rsced2, rsced3, rsced4;
 
     TextField tfsignup1, tfsignup2, tfsignup3, tfsignup4;
     TextField tflogin1, tflogin2;
@@ -126,8 +126,13 @@ public class GUI {
         slSced[5]=slBHRatio; slSced[6]=slAge; slSced[7]=slRed; slSced[8]=slGreen; slSced[9]=slBlue;
 
         scName = new TextField (p5, null, 494, 34, 260, 50, false);
-        rsced1 = new rButton (p5, "GRID", 978, 34, 200, 60,3,7,7);
-        rsced2 = new rButton (p5, "SCREENSHOT", 776, 34, 200, 60,3,7,7);
+        rsced0 = new rButton (p5, "COLORPICK", 1248-320, 32, 60, 60,3,7,7);
+        rsced1 = new rButton (p5, "GRID", 1248-128, 32, 60, 60,3,7,7);
+        rsced2 = new rButton (p5, "SCREENSHOT", 1248-64, 32, 60, 60,3,7,7);
+        rsced3 = new rButton (p5, "COPY", 1248-256, 32, 60, 60,3,7,7);
+        rsced4 = new rButton (p5, "DEL", 1248-192, 32, 60, 60,3,7,7);
+
+        exit = new rButton(p5, "EXIT", 1248, 32, 60, 60, 3, 7,7 );
 
         sced1 = new cButton(p5,"+",30, 28,50, 3,7,7);
         sced2 = new cButton(p5,"*",90, 28,50, 3,7,7);
@@ -135,7 +140,6 @@ public class GUI {
         sced4 = new cButton(p5,">",210, 28, 50, 3,7,7);
         sced5 = new cButton(p5,"X",270, 28, 50, 3,7,7);
 
-        exit = new rButton(p5, "EXIT", 1178, 34, 196, 60, 3, 7,7 );
 
         page = 0; gridon = true;
     }
@@ -400,8 +404,12 @@ public class GUI {
         p5.background(Colors.getThisColor(1));
 
         scName.display(p5);
+        rsced0.display(p5);
         rsced1.display(p5);
         rsced2.display(p5);
+        rsced3.display(p5);
+        rsced4.display(p5);
+
         exit.display(p5);
 
         p5.fill(Colors.getThisColor(5));

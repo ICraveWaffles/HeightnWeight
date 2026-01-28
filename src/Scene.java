@@ -10,6 +10,7 @@ public class Scene {
     scInstance sel;
     int selPage = 0;
     int ID;
+    public boolean cPickerOn;
 
     public Scene(int ID) {
         this.ID = ID;
@@ -18,6 +19,18 @@ public class Scene {
         this.currentObject = -1;
         this.sel = Scene.scInstance.DISPLAY;
         this.selPage = 0;
+        this.cPickerOn = false;
+    }
+
+    public Scene(Scene sc) {
+        this.name = sc.name;
+        this.ID = sc.ID;
+        this.stands = sc.stands;
+        this.nObjects = sc.nObjects;
+        this.currentObject = sc.currentObject;
+        this.sel = Scene.scInstance.DISPLAY;
+        this.selPage = sc.selPage;
+        this.cPickerOn = false;
     }
 
     public void addObject(Stand s) {

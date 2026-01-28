@@ -98,6 +98,7 @@ public class Main extends PApplet {
             case SCENEEDITOR -> {
                 gui.drawSCENEEDITOR(this, scene);
 
+
                 pushStyle();
                 textSize(24);
                 fill(0);
@@ -328,6 +329,7 @@ public class Main extends PApplet {
                     if (gui.exit.mouseOverButton(this)) {
                         scene.sel = Scene.scInstance.DISPLAY;
                         scene.selPage = 0;
+                        scene.cPickerOn = false;
 
                         gui.tfSelectSearch.text = "";
 
@@ -338,6 +340,13 @@ public class Main extends PApplet {
                         firstClick = false;
                     }
                     if (gui.rsced1.mouseOverButton(this)) gui.gridon = !gui.gridon;
+                    if (gui.rsced3.mouseOverButton(this)) copyScene();
+                    if (gui.rsced4.mouseOverButton(this)) {
+                        gui.currentScreen = GUI.SCREEN.SCENESELECTOR;
+                        deleteScene(scene);
+                    }
+
+
 
                     for (int i = 0; i < gui.tfsced.length; i++) {
                         if (i != 2 && i != 4) {
@@ -377,6 +386,7 @@ public class Main extends PApplet {
                             gui.tfSelectSearch.isPressed(this);
                         }
 
+                        if (gui.rsced0.mouseOverButton(this)) scene.cPickerOn = !scene.cPickerOn;
                         if (gui.sced1.mouseOverButton(this)) instanceOC();
                         if (gui.sced2.mouseOverButton(this)) scene.sel = Scene.scInstance.OCSELECT;
 
@@ -428,8 +438,7 @@ public class Main extends PApplet {
                     }
                     if (scene != null) updateCalculatedValues();
                 }
-            }
-            else if (gui.currentScreen == GUI.SCREEN.OCVIEWER) {
+            } else if (gui.currentScreen == GUI.SCREEN.OCVIEWER) {
                 gui.tfInfoSearch.isPressed(this);
 
                 InfoSlab[] currentList = gui.tfInfoSearch.text.isEmpty() ? slabs : searchInfos;
@@ -689,6 +698,14 @@ public class Main extends PApplet {
             selects[i].page = i / 10;
             selects[i].y = 132 + (selects[i].ID * 58);
         }
+    }
+
+    public void copyScene(){
+        scenes.add(new Scene(scene));
+        scene = scenes.getLast();
+        gui.scenes.get(scenes.size()-1).state = STATE.NORM;
+        gui.scenes.get(scenes.size()).state = STATE.PLUS;
+        gui.scenes.get(scenes.size()).updateSceneButton(scenes.size());
     }
 
     public void deleteScene(Scene sc) {
