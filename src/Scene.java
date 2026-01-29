@@ -23,14 +23,19 @@ public class Scene {
     }
 
     public Scene(Scene sc) {
+
         this.name = sc.name;
         this.ID = sc.ID;
-        this.stands = sc.stands;
         this.nObjects = sc.nObjects;
         this.currentObject = sc.currentObject;
         this.sel = Scene.scInstance.DISPLAY;
         this.selPage = sc.selPage;
         this.cPickerOn = false;
+
+
+        if (sc.stands != null) {
+            this.stands = sc.stands.clone();
+        }
     }
 
     public void addObject(Stand s) {

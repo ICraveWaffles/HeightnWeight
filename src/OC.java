@@ -34,6 +34,20 @@ public class OC extends Stand {
         this.b = 127;
     }
 
+    public OC(OC other) {
+        this.tHeight = other.tHeight;
+        this.weight = other.weight;
+        this.BMI = other.BMI;
+        this.tWidth = other.tWidth;
+        this.bhratio = other.bhratio;
+        this.age = other.age;
+        this.r = other.r;
+        this.g = other.g;
+        this.b = other.b;
+        // copia cualquier otro campo mutable
+    }
+
+
     public OC(String name, float tHeight, float BMI, float weight, float tWidth,
               float age, float bhratio, int r, int g, int b) {
 

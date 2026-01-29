@@ -701,8 +701,10 @@ public class Main extends PApplet {
     }
 
     public void copyScene(){
-        scenes.add(new Scene(scene));
-        scene = scenes.getLast();
+        Scene nuevaEscena = new Scene(this.scene);
+        scenes.add(nuevaEscena);
+        this.scene = nuevaEscena;
+        gui.scName.text = "CopyOf " +this.scene.name;
         gui.scenes.get(scenes.size()-1).state = STATE.NORM;
         gui.scenes.get(scenes.size()).state = STATE.PLUS;
         gui.scenes.get(scenes.size()).updateSceneButton(scenes.size());
@@ -799,7 +801,8 @@ public class Main extends PApplet {
         gui.slSced[6].v = constrain(Math.round(gui.slSced[6].v), 0, 80);
         if (!gui.tfsced[6].selected) gui.tfsced[6].setText(String.format("%.0f", gui.slSced[6].v));
 
-        if (!gui.tfsced[7].text.isEmpty() && !gui.tfsced[8].text.isEmpty() && !gui.tfsced[9].text.isEmpty()) {
+        if (!gui.tfsced[7].text.isEmpty() && !gui.tfsced[8].text.isEmpty() && !gui.tfsced[9].text.isEmpty()
+                && !gui.tfsced[7].text.equals("R") &&!gui.tfsced[8].text.equals("G") &&!gui.tfsced[9].text.equals("B")){
             if (Integer.parseInt(gui.tfsced[7].text) < 0 || Integer.parseInt(gui.tfsced[7].text) > 256) {
                 gui.slSced[7].v = constrain(Math.round(gui.slSced[7].v), 0, 255);
                 if (!gui.tfsced[7].selected) gui.tfsced[7].setText(String.format("%.0f", gui.slSced[7].v));
