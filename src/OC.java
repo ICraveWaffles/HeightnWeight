@@ -44,7 +44,6 @@ public class OC extends Stand {
         this.r = other.r;
         this.g = other.g;
         this.b = other.b;
-        // copia cualquier otro campo mutable
     }
 
 

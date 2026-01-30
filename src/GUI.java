@@ -1,5 +1,8 @@
 import processing.core.PApplet;
+import processing.core.PImage;
+
 import java.util.ArrayList;
+
 
 enum LANG {ENG, ESP}
 
@@ -11,8 +14,9 @@ public class GUI {
     rButton login;
     rButton m1, m2, m3;
     cButton q1, q2, q3, s1;
-    rSwitch sLang, sCol;
+    public rSwitch sLang, sCol;
 
+    HSBColorPicker cPick;
 
     cButton[] navigation = new cButton[4];
     cButton nav1, nav2, nav3, nav4;
@@ -35,7 +39,7 @@ public class GUI {
     Slider slSced[] = new Slider[10];
 
     int page;
-    boolean gridon;
+    boolean gridon, cPickOn;
 
     public enum SCREEN { PRELOGIN, LOGIN, SIGNUP, MAIN, QNA, SETTINGS,  SCENESELECTOR, SCENEEDITOR, OCVIEWER }
 
@@ -45,6 +49,7 @@ public class GUI {
         currentScreen = SCREEN.PRELOGIN;
         lang = LANG.ESP;
         Colors.instanceColors(p5);
+
 
         plog1 = new rButton(p5, "PLOG1", 640, 440, 600, 70, 4, 7, 7);
         plog2 = new rButton(p5, "PLOG2", 640, 540, 600, 70, 4, 7, 7);
@@ -125,7 +130,7 @@ public class GUI {
         slSced[1]=slHeight; slSced[2]=slWeight; slSced[3]=slBMI; slSced[4]=slWidth;
         slSced[5]=slBHRatio; slSced[6]=slAge; slSced[7]=slRed; slSced[8]=slGreen; slSced[9]=slBlue;
 
-        scName = new TextField (p5, null, 494, 34, 260, 50, false);
+        scName = new TextField (p5, null, 480, 34, 260, 50, false);
         rsced0 = new rButton (p5, "COLORPICK", 1248-320, 32, 60, 60,3,7,7);
         rsced1 = new rButton (p5, "GRID", 1248-128, 32, 60, 60,3,7,7);
         rsced2 = new rButton (p5, "SCREENSHOT", 1248-64, 32, 60, 60,3,7,7);
@@ -140,8 +145,10 @@ public class GUI {
         sced4 = new cButton(p5,">",210, 28, 50, 3,7,7);
         sced5 = new cButton(p5,"X",270, 28, 50, 3,7,7);
 
+        cPick = new HSBColorPicker(p5,627, -58, 256, 64);
 
-        page = 0; gridon = true;
+
+        page = 0; gridon = true; cPickOn = false;
     }
 
     public void drawLogo(PApplet p5, int y) {
@@ -243,12 +250,14 @@ public class GUI {
 
     }
 
-    public void drawPRELOGIN(PApplet p5) {
+    public void drawPRELOGIN(PApplet p5, PImage l) {
 
         p5.pushStyle();
 
+        p5.imageMode(p5.CENTER);
+
         p5.background(Colors.getThisColor(2));
-        drawLogo(p5, 260);
+        p5.image(l, 640, 240, 320, 320);
         plog1.display(p5);
         plog2.display(p5);
         p5.popStyle();
@@ -298,16 +307,17 @@ public class GUI {
         p5.popStyle();
     }
 
-    public void drawMAIN(PApplet p5) {
+    public void drawMAIN(PApplet p5, PImage l) {
         p5.pushStyle();
 
         p5.background(Colors.getThisColor(1));
         p5.rectMode(p5.CENTER);
+        p5.imageMode(p5.CENTER);
         p5.textAlign(p5.CENTER, p5.CENTER);
         p5.fill(Colors.getThisColor(4));
         p5.noStroke();
 
-        drawLogo(p5, 140);
+        p5.image(l, 640, 150, 240, 240);
 
         m1.display(p5);
         m2.display(p5);
@@ -395,7 +405,7 @@ public class GUI {
         p5.popStyle();
     }
 
-    public void drawSCENEEDITOR(PApplet p5, Scene scene){
+    public void drawSCENEEDITOR(PApplet p5, Scene scene) {
         p5.pushStyle();
 
         p5.textAlign(p5.LEFT, p5.CENTER);
@@ -403,7 +413,10 @@ public class GUI {
 
         p5.background(Colors.getThisColor(1));
 
-        scName.display(p5);
+        if (!this.cPickOn){
+            scName.setEnabled(false);
+            scName.display(p5);
+        }
         rsced0.display(p5);
         rsced1.display(p5);
         rsced2.display(p5);
@@ -463,6 +476,11 @@ public class GUI {
                 p5.stroke(Colors.getThisColor(7));
                 p5.line(334, j, 344, j);
             }
+        }
+
+        if (cPickOn){
+            cPick.display(p5);
+            cPick.displayColors(p5);
         }
 
         p5.fill(0);

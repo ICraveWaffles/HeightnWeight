@@ -19,6 +19,8 @@ public class Main extends PApplet {
     public SelectSlab[] searchSelects;
     public boolean firstClick = false;
     public int nAllOCs = 0;
+    PImage bLogo;
+    PImage wLogo;
 
     public static void main(String[] args) {
         PApplet.main("Main");
@@ -30,6 +32,7 @@ public class Main extends PApplet {
         PImage bananaPic = loadImage("data/Bananana.png");
         PImage gabinett = loadImage("data/gabinett.png");
         PImage dooor = loadImage("data/door.jpg");
+
 
         banana = new Stand("Plátano", 0.2f, 0.07f, bananaPic);
         cabinet = new Stand("Gabinete", 0.5f, 0.8f, gabinett);
@@ -58,14 +61,28 @@ public class Main extends PApplet {
         gui.tfsced[4].setEnabled(false);
         gui.slSced[2].setEnabled(false);
         gui.slSced[4].setEnabled(false);
+        bLogo = loadImage("data/ocblack.png");
+        wLogo = loadImage("data/ocwhite.png");
     }
 
     public void draw() {
         switch (gui.currentScreen) {
-            case PRELOGIN -> gui.drawPRELOGIN(this);
+            case PRELOGIN -> {
+                if (gui.sCol.on) {
+                    gui.drawPRELOGIN(this, bLogo);
+                } else {
+                    gui.drawPRELOGIN(this, wLogo);
+                }
+            }
             case LOGIN -> gui.drawLOGIN(this);
             case SIGNUP -> gui.drawSIGNUP(this);
-            case MAIN -> gui.drawMAIN(this);
+            case MAIN -> {
+                if (gui.sCol.on) {
+                    gui.drawMAIN(this, wLogo);
+                } else {
+                    gui.drawMAIN(this, bLogo);
+                }
+            }
             case QNA -> gui.drawQNA(this);
             case SCENESELECTOR -> {
                 gui.drawSCENESELECTOR(this);
@@ -302,6 +319,9 @@ public class Main extends PApplet {
             }
             else if (gui.currentScreen == GUI.SCREEN.SCENEEDITOR) {
                 if (firstClick) {
+                    if (gui.cPickOn){
+                        gui.cPick.mousePressed(this);
+                    }
                     if (scene.sel != Scene.scInstance.DISPLAY) {
                         if (gui.tfSelectSearch.text.equals("")) {
                             int start = scene.selPage * 10;
@@ -329,7 +349,7 @@ public class Main extends PApplet {
                     if (gui.exit.mouseOverButton(this)) {
                         scene.sel = Scene.scInstance.DISPLAY;
                         scene.selPage = 0;
-                        scene.cPickerOn = false;
+                        gui.cPickOn = false;
 
                         gui.tfSelectSearch.text = "";
 
@@ -386,7 +406,7 @@ public class Main extends PApplet {
                             gui.tfSelectSearch.isPressed(this);
                         }
 
-                        if (gui.rsced0.mouseOverButton(this)) scene.cPickerOn = !scene.cPickerOn;
+                        if (gui.rsced0.mouseOverButton(this)) gui.cPickOn = !gui.cPickOn;
                         if (gui.sced1.mouseOverButton(this)) instanceOC();
                         if (gui.sced2.mouseOverButton(this)) scene.sel = Scene.scInstance.OCSELECT;
 
@@ -608,6 +628,10 @@ public class Main extends PApplet {
                 }
             }
             updateCalculatedValues();
+            if (gui.cPickOn) {
+                gui.cPick.mouseDragged(this);
+            }
+
         } else if (gui.currentScreen == GUI.SCREEN.SETTINGS) {
             gui.slVolume.checkSlider(this);
         }
@@ -617,6 +641,9 @@ public class Main extends PApplet {
         if (gui.currentScreen == GUI.SCREEN.SCENEEDITOR) {
             updateCalculatedValues();
             if (!firstClick) firstClick = true;
+            if (gui.cPickOn){
+                gui.cPick.mouseReleased();
+            }
         }
     }
 
