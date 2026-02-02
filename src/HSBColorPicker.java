@@ -54,7 +54,7 @@ public class HSBColorPicker {
         float previewY = y + 80;
         float rectSize = 60;
         p5.fill(selectedColor);
-        p5.rect(previewX, previewY, rectSize, rectSize);
+        p5.rect(previewX, previewY-10, rectSize, rectSize);
 
         int r = (int) p5.red(selectedColor);
         int g = (int) p5.green(selectedColor);

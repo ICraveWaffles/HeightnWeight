@@ -414,8 +414,10 @@ public class GUI {
         p5.background(Colors.getThisColor(1));
 
         if (!this.cPickOn){
-            scName.setEnabled(false);
+            scName.setEnabled(true);
             scName.display(p5);
+        } else {
+            scName.setEnabled(false);
         }
         rsced0.display(p5);
         rsced1.display(p5);
