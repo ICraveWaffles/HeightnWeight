@@ -10,6 +10,13 @@ public class Scene {
     scInstance sel;
     int selPage = 0;
     int ID;
+    float pixelSize;
+    float scale;
+
+    final int scH = 600;
+    final int scW = 930;
+    final int scX = 340;
+    final int scY = 110;
 
     public Scene(int ID) {
         this.ID = ID;
@@ -88,30 +95,34 @@ public class Scene {
     }
 
     public void designLayout() {
+
         if (nObjects == 0) return;
 
-        float totalWidth = 0f;
-        float tallest = 0f;
-
+        float totalWorldWidth = 0f;
+        float maxWorldHeight = 0f;
         for (int i = 0; i < nObjects; i++) {
-            totalWidth += stands[i].tWidth*1.3f;
-            tallest = Math.max(tallest, stands[i].tHeight);
+            totalWorldWidth += stands[i].tWidth * 1.3f; // Mantenemos tu factor de 1.3
+            maxWorldHeight = Math.max(maxWorldHeight, stands[i].tHeight);
+        }
+        if (nObjects > 1) {
+            totalWorldWidth += (nObjects - 1) * 0.5f;
         }
 
-        totalWidth += (nObjects - 1) * 0.5f;
-        float scaleW = totalWidth / 900f;
-        float scaleH = tallest / 600f;
-        float pixelSize = Math.max(scaleW, scaleH);
+        float scaleW = totalWorldWidth / (float) scW;
+        float scaleH = maxWorldHeight / (float) scH;
 
-        float currentX = 364f;
-        float baseY = 114f;
+        this.pixelSize = Math.max(scaleW, scaleH);
+        float currentX = scX;
 
         for (int i = 0; i < nObjects; i++) {
-            stands[i].width = stands[i].tWidth*1.3f / pixelSize;
-            stands[i].height = stands[i].tHeight / pixelSize;
+            stands[i].width = (stands[i].tWidth * 1.3f) / this.pixelSize;
+            stands[i].height = stands[i].tHeight / this.pixelSize;
             stands[i].x = currentX;
-            stands[i].y = baseY + (600f - stands[i].height);
-            currentX += stands[i].width + 0.5f / pixelSize;
+            stands[i].y = (scY + scH) - stands[i].height;
+            currentX += stands[i].width + (0.5f / this.pixelSize);
         }
+
+        double log = Math.log10(100 * this.pixelSize);
+        this.scale = (float) (Math.pow(10, Math.floor(log)) / this.pixelSize);
     }
 }

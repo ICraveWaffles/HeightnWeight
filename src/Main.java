@@ -115,7 +115,6 @@ public class Main extends PApplet {
             case SCENEEDITOR -> {
                 gui.drawSCENEEDITOR(this, scene);
 
-
                 pushStyle();
                 textSize(24);
                 fill(0);

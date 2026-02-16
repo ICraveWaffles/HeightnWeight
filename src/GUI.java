@@ -461,24 +461,44 @@ public class GUI {
         }
 
         p5.fill(255);
-        p5.rect(354, 114, 920, 600);
+        p5.rect(scene.scX, scene.scY, scene.scW, scene.scH);
 
-        if (gridon) {
-            p5.strokeWeight(2);
+        if (gridon && scene.nObjects != 0) {
+            if (scene.scale != 0) {
+                p5.strokeWeight(2);
 
-            for (int i = 354; i <= 1274; i += 20) {
-                p5.stroke(0);
-                p5.line(i, 114, i, 714);
+                for (int i = scene.scX; i <= scene.scX + scene.scW; i += (int) scene.scale) {
+                    p5.stroke(0);
+                    p5.line(i, scene.scY, i, scene.scY + scene.scH);
+                }
+                for (int j = scene.scY; j <= scene.scY + scene.scH; j += (int) scene.scale) {
+                    p5.stroke(0);
+                    p5.line(scene.scX, j, scene.scX + scene.scW, j);
+                }
                 p5.stroke(Colors.getThisColor(7));
-                p5.line(i, 94, i, 104);
-            }
-            for (int j = 114; j <= 720; j += 20) {
-                p5.stroke(0);
-                p5.line(354, j, 1274, j);
-                p5.stroke(Colors.getThisColor(7));
-                p5.line(334, j, 344, j);
+                p5.strokeWeight(5);
+                p5.line(scene.scX, scene.scY - 10, scene.scX + scene.scale, scene.scY - 10);
+                float length = (scene.pixelSize * scene.scale);
+                String unit;
+                if (length >= 1000f) {
+                    unit = "km";
+                } else if (length < 1f) {
+                    unit = "mm";
+                } else {
+                    unit = "m";
+                }
+                if (unit.equals("m")) {
+                    p5.text(String.format("%.0f", length) + unit, scene.scX, scene.scY - 30);
+                } else if (unit.equals("mm")) {
+                    p5.text(String.format("%.0f", length * 1000f) + unit, scene.scX, scene.scY - 30);
+                } else {
+                    p5.text(String.format("%.0f", length * 0.001f) + unit, scene.scX, scene.scY - 30);
+                }
             }
         }
+
+
+
 
         if (cPickOn){
             cPick.display(p5);
