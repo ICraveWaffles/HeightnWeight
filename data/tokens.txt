@@ -25,3 +25,5 @@ BHRATIO;Head/Body;Cabeza/Cuerpo
 AGE;Av.Age[years];Edad[años]
 RESET;RESET EVERYTHING;BORRAR TODO
 OUT;DELETE;BORRAR
+OCS;OCs:;Personajes:
+TALL;Tallest:;Más alto:

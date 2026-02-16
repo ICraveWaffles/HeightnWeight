@@ -21,7 +21,7 @@ public class Main extends PApplet {
     public int nAllOCs = 0;
     PImage bLogo;
     PImage wLogo;
-
+    public int captures = 0;
     public static void main(String[] args) {
         PApplet.main("Main");
     }
@@ -97,6 +97,10 @@ public class Main extends PApplet {
                     } else {
                         gui.scenes.get(i).cText = 6;
                     }
+                }
+
+                for (int i = 15 * gui.page; i < Math.min(15 * (gui.page + 1), scenes.size()); i++) {
+                    gui.scenes.get(i).display(this, scenes.get(i), gui.lang == LANG.ENG ? 1 : 2);
                 }
 
                 if (scenes.size() < 15) {
@@ -188,6 +192,7 @@ public class Main extends PApplet {
                         s.display(this);
                     }
                 }
+
                 popStyle();
 
             }
@@ -305,7 +310,6 @@ public class Main extends PApplet {
                                 gui.scenes.get(scenes.size()).updateSceneButton(scenes.size());
                             } else {
                                 scenes.get(i).name = gui.scenes.get(i).token;
-                                gui.scName.text = gui.scenes.get(i).text;
                                 scene = scenes.get(i);
                                 redoSceneEditorValues();
                                 gui.currentScreen = GUI.SCREEN.SCENEEDITOR;
@@ -342,23 +346,22 @@ public class Main extends PApplet {
                             }
                         }
                     }
-                    gui.scName.isPressed(this);
-                    if (!gui.scName.mouseOverTextField(this) && gui.scName.selected) gui.scName.keyPressed('0', ENTER);
 
                     if (gui.exit.mouseOverButton(this)) {
                         scene.sel = Scene.scInstance.DISPLAY;
                         scene.selPage = 0;
                         gui.cPickOn = false;
-
                         gui.tfSelectSearch.text = "";
-
                         gui.currentScreen = GUI.SCREEN.SCENESELECTOR;
-                        gui.scenes.get(scene.ID).text = gui.scName.text;
-
                         scene = null;
                         firstClick = false;
                     }
                     if (gui.rsced1.mouseOverButton(this)) gui.gridon = !gui.gridon;
+                    if (gui.rsced2.mouseOverButton(this)){
+                        PImage ss = get(scene.scX, scene.scY, scene.scW, scene.scH);
+                        ss.save(scene.name+captures+".png");
+                        captures++;
+                    }
                     if (gui.rsced3.mouseOverButton(this)) copyScene();
                     if (gui.rsced4.mouseOverButton(this)) {
                         gui.currentScreen = GUI.SCREEN.SCENESELECTOR;
@@ -538,9 +541,7 @@ public class Main extends PApplet {
             gui.tfsignup4.keyPressed(key, keyCode);
         } else if (gui.currentScreen == GUI.SCREEN.SCENEEDITOR) {
             if (scene.sel != Scene.scInstance.OCSELECT) {
-                if (gui.scName.selected) {
-                    gui.scName.keyPressed(key, keyCode);
-                }
+
                 for (int i = 0; i < gui.tfsced.length; i++) {
                     if (i == 2 || i == 4) continue;
                     if (!gui.tfsced[i].selected) continue;
@@ -600,9 +601,7 @@ public class Main extends PApplet {
                 if (gui.tfSelectSearch.selected) {
                     isTfOn = true;
                 }
-                if (gui.scName.selected) {
-                    isTfOn = true;
-                }
+
 
                 print(isTfOn);
 
@@ -727,10 +726,12 @@ public class Main extends PApplet {
     }
 
     public void copyScene(){
-        Scene nuevaEscena = new Scene(this.scene);
-        scenes.add(nuevaEscena);
-        this.scene = nuevaEscena;
-        gui.scName.text = "CopyOf " +this.scene.name;
+        Scene newsc = new Scene(this.scene);
+        scenes.add(newsc);
+        this.scene = newsc;
+        for (int i = 0; i < scenes.size();i++){
+            scenes.get(i).ID = i;
+        }
         gui.scenes.get(scenes.size()-1).state = STATE.NORM;
         gui.scenes.get(scenes.size()).state = STATE.PLUS;
         gui.scenes.get(scenes.size()).updateSceneButton(scenes.size());

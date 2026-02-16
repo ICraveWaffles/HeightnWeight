@@ -82,16 +82,16 @@ public class Scene {
         return !isIn;
     }
 
-    public OC getTallestObject() {
-        if (nObjects == 0) return null;
+    public String getTallestObject() {
+        if (nObjects == 0) return "NULL";
         Stand max = stands[0];
 
         for (int i = 1; i < nObjects; i++) {
-            if (stands[i].tHeight > max.height) {
+            if (stands[i].tHeight > max.tHeight) {
                 max = stands[i];
             }
         }
-        return (OC) max;
+        return max.name;
     }
 
     public void designLayout() {

@@ -1,12 +1,13 @@
 import processing.core.PApplet;
 
-enum STATE{NULL, NORM, PLUS};
+enum STATE{NULL, NORM, PLUS, BASE};
 
 public class rButton {
 
     public float x, y, w, h;
     public int fillColor, strokeColor;
     public int fillColorOver, fillColorDisabled;
+    public int ID;
     public final String token;
     public String text;
     public int cText;
@@ -25,7 +26,7 @@ public class rButton {
         this.fillColorOver = f+1;
         this.strokeColor = s;
         this.cText = t;
-        this.state = STATE.NORM;
+        this.state = STATE.BASE;
     }
 
     public void display(PApplet p5){
@@ -34,7 +35,7 @@ public class rButton {
         p5.rectMode(p5.CENTER);
         p5.textAlign(p5.CENTER, p5.CENTER);
 
-        if (this.state == STATE.NORM) {
+        if (this.state == STATE.NORM || this.state == STATE.BASE) {
             if (!enabled) {
                 p5.fill(Colors.getThisColor(0));
             } else if (mouseOverButton(p5)) {
@@ -48,7 +49,7 @@ public class rButton {
 
             p5.fill(Colors.getThisColor(cText));
             p5.textFont(Fonts.getThisFont(1));
-            p5.text(text, this.x, this.y);
+            p5.text(this.state == STATE.BASE ?text : "", this.x, this.y - (this.state == STATE.NORM? 30 : 0));
         } else if (this.state == STATE.PLUS){
             p5.fill(Colors.getThisColor(5));
             p5.stroke(Colors.getThisColor(strokeColor));
@@ -87,6 +88,16 @@ public class rButton {
         p5.textFont(Fonts.getThisFont(1));
         p5.text(text, this.x, this.y);
 
+        p5.popStyle();
+    }
+
+    public void display (PApplet p5, Scene sc, int l){
+        p5.pushStyle();
+        p5.textAlign(p5.CENTER);
+        p5.fill(Colors.getThisColor(sc.nObjects != 0? 7 : 8));
+        p5.text(Languages.translate("OCS", l) +sc.nObjects, this.x, this.y-10);
+        p5.text((Languages.translate("TALL", l)) , this.x, this.y + 30);
+        p5.text(sc.getTallestObject(), this.x, this.y + 50);
         p5.popStyle();
     }
 

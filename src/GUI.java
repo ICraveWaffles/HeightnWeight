@@ -29,7 +29,6 @@ public class GUI {
 
     TextField tfsignup1, tfsignup2, tfsignup3, tfsignup4;
     TextField tflogin1, tflogin2;
-    TextField scName;
     TextField tfName, tfHeight, tfWeight, tfBMI, tfWidth, tfBHRatio, tfAge, tfRed, tfGreen, tfBlue;
     TextField[] tfsced = new TextField[10];
     TextField tfSelectSearch, tfInfoSearch;
@@ -49,7 +48,6 @@ public class GUI {
         currentScreen = SCREEN.PRELOGIN;
         lang = LANG.ESP;
         Colors.instanceColors(p5);
-
 
         plog1 = new rButton(p5, "PLOG1", 640, 440, 600, 70, 4, 7, 7);
         plog2 = new rButton(p5, "PLOG2", 640, 540, 600, 70, 4, 7, 7);
@@ -114,8 +112,10 @@ public class GUI {
                     int x = i * 250 + 120;
                     int y = j * 212 + 200;
                     scenes.add(buttonIndex,new rButton(p5, "{}", x, y, 200, 180, 4, 7, 6));
+                    scenes.get(i).ID = buttonIndex;
                     if (buttonIndex !=0) scenes.get(buttonIndex).state = STATE.NULL;
                     if (buttonIndex == 1) scenes.get(buttonIndex).state = STATE.PLUS;
+                    if (buttonIndex == 0) scenes.get(buttonIndex).state = STATE.NORM;
                     buttonIndex++;
                 }
             }
@@ -130,7 +130,6 @@ public class GUI {
         slSced[1]=slHeight; slSced[2]=slWeight; slSced[3]=slBMI; slSced[4]=slWidth;
         slSced[5]=slBHRatio; slSced[6]=slAge; slSced[7]=slRed; slSced[8]=slGreen; slSced[9]=slBlue;
 
-        scName = new TextField (p5, null, 480, 34, 260, 50, false);
         rsced0 = new rButton (p5, "COLORPICK", 1248-320, 32, 60, 60,3,7,7);
         rsced1 = new rButton (p5, "GRID", 1248-128, 32, 60, 60,3,7,7);
         rsced2 = new rButton (p5, "SCREENSHOT", 1248-64, 32, 60, 60,3,7,7);
@@ -413,12 +412,6 @@ public class GUI {
 
         p5.background(Colors.getThisColor(1));
 
-        if (!this.cPickOn){
-            scName.setEnabled(true);
-            scName.display(p5);
-        } else {
-            scName.setEnabled(false);
-        }
         rsced0.display(p5);
         rsced1.display(p5);
         rsced2.display(p5);
@@ -488,18 +481,14 @@ public class GUI {
                     unit = "m";
                 }
                 if (unit.equals("m")) {
-                    p5.text(String.format("%.0f", length) + unit, scene.scX, scene.scY - 30);
+                    p5.text(String.format("%.0f", length) + unit, scene.scX, scene.scY - 26);
                 } else if (unit.equals("mm")) {
-                    p5.text(String.format("%.0f", length * 1000f) + unit, scene.scX, scene.scY - 30);
+                    p5.text(String.format("%.0f", length * 1000f) + unit, scene.scX, scene.scY - 26);
                 } else {
-                    p5.text(String.format("%.0f", length * 0.001f) + unit, scene.scX, scene.scY - 30);
+                    p5.text(String.format("%.0f", length * 0.001f) + unit, scene.scX, scene.scY - 26);
                 }
             }
         }
-
-
-
-
         if (cPickOn){
             cPick.display(p5);
             cPick.displayColors(p5);
@@ -609,5 +598,4 @@ public class GUI {
         p5.popMatrix();
         p5.popStyle();
     }
-
 }
