@@ -13,7 +13,7 @@ public class Main extends PApplet {
     public Scene scene;
     public Stand[] allStands = new Stand[3];
     public OC[] allOCs;
-    public InfoSlab[] slabs = new InfoSlab[0];
+    public InfoSlab[] infos = new InfoSlab[0];
     public InfoSlab[] searchInfos = new InfoSlab[0];
     public SelectSlab[] selects = new SelectSlab[0];
     public SelectSlab[] searchSelects;
@@ -197,7 +197,7 @@ public class Main extends PApplet {
 
                 InfoSlab[] currentList;
                 if (gui.tfInfoSearch.text.isEmpty()) {
-                    currentList = slabs;
+                    currentList = infos;
                 } else {
                     currentList = searchInfos;
                 }
@@ -461,7 +461,7 @@ public class Main extends PApplet {
             } else if (gui.currentScreen == GUI.SCREEN.OCVIEWER) {
                 gui.tfInfoSearch.isPressed(this);
 
-                InfoSlab[] currentList = gui.tfInfoSearch.text.isEmpty() ? slabs : searchInfos;
+                InfoSlab[] currentList = gui.tfInfoSearch.text.isEmpty() ? infos : searchInfos;
                 int maxPage = (currentList.length == 0) ? 0 : (currentList.length - 1) / 5;
 
                 if (gui.nav1.mouseOverButton(this)) scedPage = 0;
@@ -649,11 +649,11 @@ public class Main extends PApplet {
 
     public void addNewOCtoBase(OC oc) {
         allOCs = java.util.Arrays.copyOf(allOCs, nAllOCs + 1);
-        slabs = java.util.Arrays.copyOf(slabs, nAllOCs + 1);
+        infos = java.util.Arrays.copyOf(infos, nAllOCs + 1);
         selects = java.util.Arrays.copyOf(selects, nAllOCs + 1);
         oc.ID = nAllOCs;
         allOCs[nAllOCs] = oc;
-        slabs[nAllOCs] = new InfoSlab(oc, this);
+        infos[nAllOCs] = new InfoSlab(oc, this);
         selects[nAllOCs] = new SelectSlab(this, oc);
         selects[nAllOCs].isEnabled = false;
         nAllOCs++;
@@ -692,14 +692,14 @@ public class Main extends PApplet {
         }
         for (int i = index; i < nAllOCs - 1; i++) {
             allOCs[i] = allOCs[i + 1];
-            slabs[i] = slabs[i + 1];
+            infos[i] = infos[i + 1];
             selects[i] = selects[i + 1];
         }
 
         nAllOCs--;
 
         allOCs = java.util.Arrays.copyOf(allOCs, nAllOCs);
-        slabs = java.util.Arrays.copyOf(slabs, nAllOCs);
+        infos = java.util.Arrays.copyOf(infos, nAllOCs);
         selects = java.util.Arrays.copyOf(selects, nAllOCs);
 
         defragment();
@@ -717,9 +717,9 @@ public class Main extends PApplet {
 
             allOCs[i].ID = i;
 
-            slabs[i].ID = i % 5;
-            slabs[i].page = i / 5;
-            slabs[i].x = 480 + ((slabs[i].ID - 1)) * 200;
+            infos[i].ID = i % 5;
+            infos[i].page = i / 5;
+            infos[i].x = 480 + ((infos[i].ID - 1)) * 200;
 
             selects[i].ID = i % 10;
             selects[i].page = i / 10;
@@ -767,7 +767,7 @@ public class Main extends PApplet {
     public void reset() {
         allOCs = new OC[0];
         scenes = new ArrayList<>();
-        slabs = new InfoSlab[0];
+        infos = new InfoSlab[0];
         selects = new SelectSlab[0];
         nAllOCs = 0;
         for (int i = 1; i < gui.scenes.size(); i++) {
@@ -946,14 +946,14 @@ public class Main extends PApplet {
         ArrayList<InfoSlab> tempList = new ArrayList<>();
         int searchIndex = 0;
 
-        if (slabs != null) {
-            for (int i = 0; i < slabs.length; i++) {
+        if (infos != null) {
+            for (int i = 0; i < infos.length; i++) {
 
-                if (slabs[i] != null && slabs[i].oc != null && slabs[i].oc.name != null) {
+                if (infos[i] != null && infos[i].oc != null && infos[i].oc.name != null) {
 
-                    if (slabs[i].oc.name.toLowerCase().contains(searchStr)) {
-                        InfoSlab newSlab = new InfoSlab(slabs[i].oc, this);
-                        newSlab.oc = slabs[i].oc;
+                    if (infos[i].oc.name.toLowerCase().contains(searchStr)) {
+                        InfoSlab newSlab = new InfoSlab(infos[i].oc, this);
+                        newSlab.oc = infos[i].oc;
                         newSlab.ID = searchIndex;
                         newSlab.page = searchIndex / 5;
                         newSlab.x = 480 + ((newSlab.ID - 1) - newSlab.page * 5) * 200;
