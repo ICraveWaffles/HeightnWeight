@@ -25,9 +25,9 @@ public class rSwitch extends rButton {
         return on;
     }
 
-    public void display(PApplet p5) {
+    public void display(PApplet p5, int l) {
         if (this.on){ this.text = textOn;}
         else this.text = textOff;
-        super.display(p5);
+        super.display(p5, l==1);
     }
 }

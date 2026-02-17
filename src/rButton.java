@@ -29,7 +29,7 @@ public class rButton {
         this.state = STATE.BASE;
     }
 
-    public void display(PApplet p5){
+    public void display(PApplet p5, boolean b){
         p5.pushStyle();
 
         p5.rectMode(p5.CENTER);
@@ -49,13 +49,12 @@ public class rButton {
 
             p5.fill(Colors.getThisColor(cText));
             p5.textFont(Fonts.getThisFont(1));
-            p5.text(this.state == STATE.BASE ?text : "", this.x, this.y - (this.state == STATE.NORM? 30 : 0));
+            p5.text(this.state == STATE.BASE ?Languages.translate(text, b?1:2) : "", this.x, this.y - (this.state == STATE.NORM? 30 : 0));
         } else if (this.state == STATE.PLUS){
             p5.fill(Colors.getThisColor(5));
             p5.stroke(Colors.getThisColor(strokeColor));
             p5.strokeWeight(2);
             p5.rect(this.x, this.y, this.w, this.h, 10);
-
 
             p5.fill(Colors.getThisColor(cText));
             p5.textFont(Fonts.getThisFont(1));

@@ -22,6 +22,8 @@ public class Main extends PApplet {
     PImage bLogo;
     PImage wLogo;
     public int captures = 0;
+    OC pendingDeleteOC = null;
+    Scene pendingDeleteSc = null;
     public static void main(String[] args) {
         PApplet.main("Main");
     }
@@ -192,7 +194,10 @@ public class Main extends PApplet {
                         s.display(this);
                     }
                 }
-
+                if (gui.delSc.on){
+                    background(Colors.getThisColor(8), 50);
+                    gui.delSc.display(this, "", gui.lang == LANG.ESP? 2 : 1);
+                }
                 popStyle();
 
             }
@@ -215,6 +220,10 @@ public class Main extends PApplet {
 
                 for (int i = start; i < end; i++) {
                     currentList[i].display(this);
+                }
+                if (gui.delOC.on){
+                    background(Colors.getThisColor(8), 50);
+                    gui.delOC.display(this, pendingDeleteOC.name, gui.lang == LANG.ESP? 2 : 1);
                 }
             }
             case SETTINGS -> gui.drawSETTINGS(this);
@@ -363,17 +372,29 @@ public class Main extends PApplet {
                         captures++;
                     }
                     if (gui.rsced3.mouseOverButton(this)) copyScene();
-                    if (gui.rsced4.mouseOverButton(this)) {
-                        gui.currentScreen = GUI.SCREEN.SCENESELECTOR;
-                        deleteScene(scene);
+                    if (gui.delSc.on) {
+                        int result = gui.delSc.uSure(this);
+
+                        if (result == 1) {
+                            deleteScene(scene);
+                            gui.currentScreen = GUI.SCREEN.SCENESELECTOR;
+                            pendingDeleteSc = null;
+
+                        } else if (result == 2) { // 2 = NO
+                            pendingDeleteSc = null;
+                        }
+                    } else if (gui.rsced4.mouseOverButton(this)) {
+                        gui.delSc.activate();
+                        pendingDeleteSc = scene;
                     }
-
-
 
                     for (int i = 0; i < gui.tfsced.length; i++) {
                         if (i != 2 && i != 4) {
                             gui.tfsced[i].isPressed(this);
-                            if (!gui.tfsced[i].mouseOverTextField(this) && gui.tfsced[i].selected) gui.tfsced[i].keyPressed('0', ENTER);
+                            if (!gui.tfsced[i].mouseOverTextField(this) && gui.tfsced[i].selected) {
+                                gui.tfsced[i].selected = false;
+                                updateCalculatedValues();
+                            }
                         }
                     }
 
@@ -477,17 +498,27 @@ public class Main extends PApplet {
                     scedPage = 0;
                 }
 
-                int start = scedPage * 5;
-                int end = Math.min(currentList.length, start + 5);
-
-                for (int i = start; i < end; i++) {
-                    if (currentList[i].delete.mouseOverButton(this)) {
-                        OC ocToDelete = currentList[i].oc;
-                        deleteOCfromBase(ocToDelete);
+                if (gui.delOC.on) {
+                    int result = gui.delOC.uSure(this);
+                    if (result == 1 && pendingDeleteOC != null) {
+                        deleteOCfromBase(pendingDeleteOC);
                         if (!gui.tfInfoSearch.text.isEmpty()) {
                             updateInfoSearchArr(gui.tfInfoSearch.text);
                         }
-                        break;
+                        pendingDeleteOC = null;
+                    } else if (result == 2) {
+                        pendingDeleteOC = null;
+                    }
+                } else {
+                    int start = scedPage * 5;
+                    int end = Math.min(currentList.length, start + 5);
+
+                    for (int i = start; i < end; i++) {
+                        if (currentList[i].delete.mouseOverButton(this)) {
+                            pendingDeleteOC = currentList[i].oc;
+                            gui.delOC.activate();
+                            break;
+                        }
                     }
                 }
             }
@@ -503,17 +534,6 @@ public class Main extends PApplet {
                 }
                 if (gui.deleteEverything.mouseOverButton(this)) reset();
                 if (gui.exit.mouseOverButton(this)) gui.currentScreen = GUI.SCREEN.MAIN;
-            }
-        }
-        else if (mouseButton == RIGHT) {
-            if (gui.currentScreen == GUI.SCREEN.SCENESELECTOR) {
-                for (int i = 15 * gui.page; i < Math.min(15 * (gui.page + 1), gui.scenes.size()); i++) {
-                    if (gui.scenes.get(i).mouseOverButton(this)) {
-                        if (gui.scenes.get(i).state == STATE.NORM) {
-                            deleteScene(scenes.get(i));
-                        }
-                    }
-                }
             }
         }
     }
@@ -541,49 +561,76 @@ public class Main extends PApplet {
             gui.tfsignup4.keyPressed(key, keyCode);
         } else if (gui.currentScreen == GUI.SCREEN.SCENEEDITOR) {
             if (scene.sel != Scene.scInstance.OCSELECT) {
+                boolean anyTextFieldSelected = false;
 
                 for (int i = 0; i < gui.tfsced.length; i++) {
                     if (i == 2 || i == 4) continue;
-                    if (!gui.tfsced[i].selected) continue;
 
-                    gui.tfsced[i].keyPressed(key, keyCode);
+                    if (gui.tfsced[i].selected) {
+                        anyTextFieldSelected = true;
+                        gui.tfsced[i].keyPressed(key, keyCode);
 
-                    if (keyCode == ENTER) {
-                        String txt = gui.tfsced[i].getText().replace(',', '.');
+                        if (keyCode == ENTER) {
+                            String txt = gui.tfsced[i].getText().replace(',', '.').trim();
+                            try {
+                                if (!txt.isEmpty()) {
+                                    if (i >= 6) {
+                                        int val = (int) Float.parseFloat(txt);
+                                        val = (int) constrain(val, gui.slSced[i].minV, gui.slSced[i].maxV);
+                                        gui.slSced[i].v = val;
 
-                        if (!txt.isEmpty() && txt.matches("\\d+(\\.\\d{0,3})?")) {
-                            if (i >= 6 && i < 10) {
-                                int value = (int) constrain(
-                                        Float.parseFloat(txt),
-                                        gui.slSced[i].minV,
-                                        gui.slSced[i].maxV
-                                );
-                                gui.slSced[i].v = value;
-                                gui.tfsced[i].setText(String.valueOf(value));
-                            } else {
-                                float value = constrain(
-                                        Float.parseFloat(txt),
-                                        gui.slSced[i].minV,
-                                        gui.slSced[i].maxV
-                                );
-                                gui.slSced[i].v = value;
-                                gui.tfsced[i].setText(String.format("%.3f", value));
+                                        if (i == 6) {
+                                            gui.slSced[5].v = 8.0f / (1.0f + (float)Math.exp(-0.0741f * val));
+                                            gui.tfsced[5].setText(String.format("%.3f", gui.slSced[5].v));
+                                        }
+                                    }
+                                    else {
+                                        float val = Float.parseFloat(txt);
+                                        val = constrain(val, gui.slSced[i].minV, gui.slSced[i].maxV);
+                                        gui.slSced[i].v = val;
+                                        if (i == 5) {
+                                            float ratio = val;
+                                            if (ratio >= 7.99f) ratio = 7.99f;
+                                            if (ratio <= 0.1f) ratio = 0.1f;
+                                            gui.slSced[6].v = (float)Math.log(ratio / (8.0f - ratio)) / 0.0741f;
+
+                                            gui.slSced[6].v = constrain(Math.round(gui.slSced[6].v), 0, 80);
+                                            gui.tfsced[6].setText(String.valueOf((int)gui.slSced[6].v));
+                                        }
+                                    }
+                                }
+                            } catch (NumberFormatException e) {
+                                println("Error: Entrada no numérica en campo " + i);
                             }
+
+
+                            if (i != 5 && i != 6) {
+                                gui.tfsced[i].selected = false;
+                            }
+                            updateCalculatedValues();
                         }
                     }
                 }
-                updateCalculatedValues();
+
+                if (!anyTextFieldSelected) {
+                    if (key == '1' && scene.isInScene(banana.uniqueID)) scene.addObject(banana);
+                    if (key == '2' && scene.isInScene(cabinet.uniqueID)) scene.addObject(cabinet);
+                    if (key == '3' && scene.isInScene(door.uniqueID)) scene.addObject(door);
+                }
+
             } else {
-                if (gui.tfSelectSearch.selected){
+                if (gui.tfSelectSearch.selected) {
                     gui.tfSelectSearch.keyPressed(key, keyCode);
-                    if (!gui.tfSelectSearch.text.isEmpty()) updateSelectSearchArr(gui.tfSelectSearch.text);
+                    if (!gui.tfSelectSearch.text.isEmpty()) {
+                        updateSelectSearchArr(gui.tfSelectSearch.text);
+                    }
                     scene.selPage = 0;
                 }
             }
-    } else if (gui.currentScreen == GUI.SCREEN.OCVIEWER){
+        } else if (gui.currentScreen == GUI.SCREEN.OCVIEWER){
             if (gui.tfInfoSearch.selected) {
                 gui.tfInfoSearch.keyPressed(key, keyCode);
-                updateInfoSearchArr(gui.tfInfoSearch.text);
+                if (!gui.tfInfoSearch.text.isEmpty()) updateInfoSearchArr(gui.tfInfoSearch.text);
                 scedPage = 0;
             }
         }
@@ -781,9 +828,12 @@ public class Main extends PApplet {
     }
 
     public void updateCalculatedValues() {
-        float height = round(gui.slSced[1].v, 3);
-        gui.slSced[1].v = height;
-        if (!gui.tfsced[1].selected) gui.tfsced[1].setText(String.format("%.3f", height));
+        float height = gui.slSced[1].v;
+        if (!gui.tfsced[1].selected) {
+            gui.tfsced[1].setText(String.format("%.2f", height));
+        }
+
+        if (height <= 0) height = 0.01f;
 
         float bmi = gui.slSced[3].v;
         gui.slSced[2].minV = height * height;
@@ -791,7 +841,6 @@ public class Main extends PApplet {
         gui.slSced[2].v = bmi * height * height;
 
         float weight = gui.slSced[2].v;
-
         if (!gui.tfsced[2].selected) {
             if (Math.abs(weight) < 1 || Math.abs(weight) >= 1000) {
                 gui.tfsced[2].setText(String.format("%.3e", weight));
@@ -803,54 +852,67 @@ public class Main extends PApplet {
         gui.slSced[4].v = constrain((float)(height * Math.pow(bmi, 0.7979) / 81.906),
                 (float)(height * Math.pow(1, 0.7979) / 81.906),
                 (float)(height * Math.pow(250, 0.7979) / 81.906));
-        gui.slSced[4].v = round(gui.slSced[4].v, 3);
 
         if (!gui.tfsced[4].selected) gui.tfsced[4].setText(String.format("%.3f", gui.slSced[4].v));
-        if (!gui.tfsced[5].selected) gui.tfsced[5].setText(String.format("%.3f", gui.slSced[5].v));
+
+        if (!gui.tfsced[5].selected) {
+            if (gui.tfsced[5].text.trim().isEmpty()) {
+                gui.tfsced[5].setText(String.format("%.3f", gui.slSced[5].v));
+            } else {
+                gui.tfsced[5].setText(String.format("%.3f", gui.slSced[5].v));
+            }
+        }
+
         if (!gui.tfsced[6].selected) gui.tfsced[6].setText(String.format("%.0f", gui.slSced[6].v));
 
         if (selectedSl == gui.slSced[5]) {
             gui.tfsced[5].setEnabled(true);
             gui.tfsced[6].setEnabled(false);
             float ratio = gui.slSced[5].v;
-            gui.slSced[6].v = Math.abs(-(1/0.0741f) * (float)Math.log((ratio - 0.125f) / 0.125f));
+            if (ratio >= 7.99f) ratio = 7.99f;
+            if (ratio <= 4.01f) ratio = 4.01f;
+            gui.slSced[6].v = (float)Math.log((ratio - 4.0f) / (8.0f - ratio)) / 0.0741f;
         } else if (selectedSl == gui.slSced[6]) {
             gui.tfsced[5].setEnabled(false);
             gui.tfsced[6].setEnabled(true);
             float age = gui.slSced[6].v;
-            gui.slSced[5].v = 0.125f + 0.125f * (float)Math.exp(-0.0741f * age);
+            gui.slSced[5].v = 4.0f + 4.0f / (1.0f + (float)Math.exp(-0.0741f * age));
         }
-
-        if (gui.tfsced[1].text.isEmpty()) {gui.tfsced[1].text ="0"; gui.slSced[1].v = 0;}
-        if (gui.tfsced[3].text.isEmpty()) {gui.tfsced[3].text ="0"; gui.slSced[3].v = 0;}
-
 
         gui.slSced[6].v = constrain(Math.round(gui.slSced[6].v), 0, 80);
-        if (!gui.tfsced[6].selected) gui.tfsced[6].setText(String.format("%.0f", gui.slSced[6].v));
 
-        if (!gui.tfsced[7].text.isEmpty() && !gui.tfsced[8].text.isEmpty() && !gui.tfsced[9].text.isEmpty()
-                && !gui.tfsced[7].text.equals("R") &&!gui.tfsced[8].text.equals("G") &&!gui.tfsced[9].text.equals("B")){
-            if (Integer.parseInt(gui.tfsced[7].text) < 0 || Integer.parseInt(gui.tfsced[7].text) > 256) {
-                gui.slSced[7].v = constrain(Math.round(gui.slSced[7].v), 0, 255);
-                if (!gui.tfsced[7].selected) gui.tfsced[7].setText(String.format("%.0f", gui.slSced[7].v));
-            }
-            if (Integer.parseInt(gui.tfsced[8].text) < 0 || Integer.parseInt(gui.tfsced[7].text) > 256) {
-                gui.slSced[8].v = constrain(Math.round(gui.slSced[8].v), 0, 255);
-                if (!gui.tfsced[8].selected) gui.tfsced[8].setText(String.format("%.0f", gui.slSced[8].v));
-            }
-            if (Integer.parseInt(gui.tfsced[9].text) < 0 || Integer.parseInt(gui.tfsced[7].text) > 256) {
-                gui.slSced[9].v = constrain(Math.round(gui.slSced[9].v), 0, 255);
-                if (!gui.tfsced[9].selected) gui.tfsced[9].setText(String.format("%.0f", gui.slSced[9].v));
-            }
-        } else {
-            if (gui.tfsced[7].text.isEmpty()){ gui.tfsced[7].text = "0"; gui.slSced[7].v = 0;}
-            if (gui.tfsced[8].text.isEmpty()){ gui.tfsced[8].text = "0"; gui.slSced[8].v = 0;}
-            if (gui.tfsced[9].text.isEmpty()){ gui.tfsced[9].text = "0"; gui.slSced[9].v = 0;}
+        if (!gui.tfsced[3].selected && gui.tfsced[3].text.trim().isEmpty()) {
+            gui.tfsced[3].setText(String.format("%.2f", gui.slSced[3].v));
         }
-        gui.slSced[5].v = constrain(round(gui.slSced[5].v, 3), 0.125f, 0.25f);
-        if (!gui.tfsced[5].selected) gui.tfsced[5].setText(String.format("%.3f", gui.slSced[5].v));
 
-        if (scene != null && scene.nObjects > 0 && scene.stands[scene.currentObject] instanceof OC pHolder) {
+        try {
+            if (!gui.tfsced[7].selected) {
+                if (gui.tfsced[7].text.trim().isEmpty()) {
+                    gui.tfsced[7].setText("0");
+                    gui.slSced[7].v = 0;
+                } else if (!gui.tfsced[7].text.equals("R")) {
+                    gui.tfsced[7].setText(String.valueOf((int)gui.slSced[7].v));
+                }
+            }
+            if (!gui.tfsced[8].selected) {
+                if (gui.tfsced[8].text.trim().isEmpty()) {
+                    gui.tfsced[8].setText("0");
+                    gui.slSced[8].v = 0;
+                } else if (!gui.tfsced[8].text.equals("G")) {
+                    gui.tfsced[8].setText(String.valueOf((int)gui.slSced[8].v));
+                }
+            }
+            if (!gui.tfsced[9].selected) {
+                if (gui.tfsced[9].text.trim().isEmpty()) {
+                    gui.tfsced[9].setText("0");
+                    gui.slSced[9].v = 0;
+                } else if (!gui.tfsced[9].text.equals("B")) {
+                    gui.tfsced[9].setText(String.valueOf((int)gui.slSced[9].v));
+                }
+            }
+        } catch (Exception e) {}
+
+        if (scene != null && scene.nObjects > 0 && scene.currentObject != -1 && scene.stands[scene.currentObject] instanceof OC pHolder) {
             pHolder.name = gui.tfsced[0].text;
             pHolder.tHeight = gui.slSced[1].v;
             pHolder.weight = gui.slSced[2].v;
@@ -902,7 +964,7 @@ public class Main extends PApplet {
         gui.slSced[3].v = 25;
         gui.slSced[4].v = (float) Math.pow(25, 0.7979) / 81.906f;
         gui.slSced[6].v = 25;
-        gui.slSced[5].v = 0.1295f;
+        gui.slSced[5].v = (float) Math.pow(0.1295f, -1);
         gui.slSced[7].v = 127;
         gui.slSced[8].v = 127;
         gui.slSced[9].v = 127;

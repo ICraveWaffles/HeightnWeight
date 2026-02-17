@@ -27,3 +27,11 @@ RESET;RESET EVERYTHING;BORRAR TODO
 OUT;DELETE;BORRAR
 OCS;OCs:;Personajes:
 TALL;Tallest:;Más alto:
+YES;YES;SÍ
+NO;NO;NO
+ES;EN;ES
+EN;EN;ES
+D;DAY;DÍA
+N;TOGGLE;CAMBIAR
+DELOC;Do you want to delete:; ¿Quieres eliminar:
+DELSC;Do you want to delete this scene?;¿Quieres eliminar esta escena?

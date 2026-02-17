@@ -33,9 +33,9 @@ public class GUI {
     TextField[] tfsced = new TextField[10];
     TextField tfSelectSearch, tfInfoSearch;
 
-
     Slider slVolume, slHeight, slWeight, slBMI, slWidth,slBHRatio,slAge, slRed, slGreen, slBlue;
     Slider slSced[] = new Slider[10];
+    Popup delOC; Popup delSc; Popup delAll;
 
     int page;
     boolean gridon, cPickOn;
@@ -99,7 +99,7 @@ public class GUI {
         slWeight = new Slider (p5, "WEIGHT", 150,220, 250, 8, 0.01f, 25000 , 83.7f);
         slBMI = new Slider (p5, "BMI", 150,280, 250, 8, 1, 250 , 25);
         slWidth = new Slider (p5, "WIDTH", 150,340, 250, 8, 2, 10 , 5);
-        slBHRatio = new Slider (p5, "BHRATIO", 150,430, 250, 8, 0.125f, 0.25f , 0.15f);
+        slBHRatio = new Slider (p5, "BHRATIO", 150,430, 250, 8, 4, 8 , 8);
         slAge = new Slider (p5, "AGE", 150,490, 250, 8, 0, 80 , 20);
         slRed = new Slider (p5, "R", 150,580, 250, 8, 0, 255 , 127);
         slGreen = new Slider (p5, "G", 150,640, 250, 8, 0, 255 , 127);
@@ -146,6 +146,9 @@ public class GUI {
 
         cPick = new HSBColorPicker(p5,627, -58, 256, 64);
 
+        delOC = new Popup(p5, "DELOC");
+        delSc = new Popup(p5, "DELSC");
+        delAll = new Popup(p5, "DELALL");
 
         page = 0; gridon = true; cPickOn = false;
     }
@@ -256,9 +259,9 @@ public class GUI {
         p5.imageMode(p5.CENTER);
 
         p5.background(Colors.getThisColor(2));
-        p5.image(l, 640, 240, 320, 320);
-        plog1.display(p5);
-        plog2.display(p5);
+        //p5.image(l, 640, 240, 320, 320);
+        plog1.display(p5,lang == LANG.ENG);
+        plog2.display(p5,lang == LANG.ENG);
         p5.popStyle();
 
     }
@@ -277,8 +280,8 @@ public class GUI {
 
         tflogin1.display(p5);
         tflogin2.display(p5);
-        login.display(p5);
-        exit.display(p5);
+        login.display(p5,lang == LANG.ENG);
+        exit.display(p5,lang == LANG.ENG);
 
         p5.popStyle();
 
@@ -300,8 +303,8 @@ public class GUI {
         tfsignup3.display(p5);
         tfsignup4.display(p5);
 
-        signup.display(p5);
-        exit.display(p5);
+        signup.display(p5,lang == LANG.ENG);
+        exit.display(p5,lang == LANG.ENG);
 
         p5.popStyle();
     }
@@ -316,11 +319,11 @@ public class GUI {
         p5.fill(Colors.getThisColor(4));
         p5.noStroke();
 
-        p5.image(l, 640, 150, 240, 240);
+        //p5.image(l, 640, 150, 240, 240);
 
-        m1.display(p5);
-        m2.display(p5);
-        m3.display(p5);
+        m1.display(p5,lang == LANG.ENG);
+        m2.display(p5,lang == LANG.ENG);
+        m3.display(p5,lang == LANG.ENG);
 
         q1.display(p5);
         s1.display(p5);
@@ -342,7 +345,7 @@ public class GUI {
         drawTextField(p5, 230, "Lorem ipsum etcetcetc.");
         q2.display(p5);
         q3.display(p5);
-        exit.display(p5);
+        exit.display(p5,lang == LANG.ENG);
 
         p5.popStyle();
     }
@@ -372,10 +375,10 @@ public class GUI {
 
         slVolume.display(p5);
         p5.text((int) slVolume.v,  880, 270);
-        sCol.display(p5);
-        sLang.display(p5);
-        deleteEverything.display(p5);
-        exit.display(p5);
+        sCol.display(p5,lang == LANG.ENG);
+        sLang.display(p5,lang == LANG.ENG);
+        deleteEverything.display(p5,lang == LANG.ENG);
+        exit.display(p5,lang == LANG.ENG);
 
         p5.popStyle();
     }
@@ -392,14 +395,14 @@ public class GUI {
         p5.textFont(Fonts.getThisFont(1));
 
         for (int i = (page*15); i < (page+1)*15; i++){
-            if (scenes.get(i).state == STATE.NORM)  scenes.get(i).display(p5);
-            if (scenes.get(i).state == STATE.PLUS)  scenes.get(i).display(p5);
+            if (scenes.get(i).state == STATE.NORM)  scenes.get(i).display(p5,lang == LANG.ENG);
+            if (scenes.get(i).state == STATE.PLUS)  scenes.get(i).display(p5,lang == LANG.ENG);
         }
 
         for (int i = 0; i < navigation.length; i++){
             navigation[i].display(p5);
         }
-        exit.display(p5);
+        exit.display(p5,lang == LANG.ENG);
 
         p5.popStyle();
     }
@@ -412,13 +415,13 @@ public class GUI {
 
         p5.background(Colors.getThisColor(1));
 
-        rsced0.display(p5);
-        rsced1.display(p5);
-        rsced2.display(p5);
-        rsced3.display(p5);
-        rsced4.display(p5);
+        rsced0.display(p5,lang == LANG.ENG);
+        rsced1.display(p5,lang == LANG.ENG);
+        rsced2.display(p5,lang == LANG.ENG);
+        rsced3.display(p5,lang == LANG.ENG);
+        rsced4.display(p5,lang == LANG.ENG);
 
-        exit.display(p5);
+        exit.display(p5,lang == LANG.ENG);
 
         p5.fill(Colors.getThisColor(5));
         p5.strokeWeight(4);
@@ -593,9 +596,10 @@ public class GUI {
             navigation[i].display(p5);
         }
         tfInfoSearch.display(p5);
-        exit.display(p5);
+        exit.display(p5,lang == LANG.ENG);
 
         p5.popMatrix();
         p5.popStyle();
+
     }
 }

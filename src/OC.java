@@ -76,7 +76,7 @@ public class OC extends Stand {
         p5.stroke(0);
         p5.strokeWeight(2);
 
-        float headH = height * bhratio;
+        float headH = (float) (height * (Math.pow(bhratio, -1)));
         float remainingH = height - headH;
         float neckH = remainingH * 0.05f;
         float bodyH = remainingH * 0.95f;
