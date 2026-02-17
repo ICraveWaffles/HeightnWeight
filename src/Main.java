@@ -17,6 +17,7 @@ public class Main extends PApplet {
     public InfoSlab[] searchInfos = new InfoSlab[0];
     public SelectSlab[] selects = new SelectSlab[0];
     public SelectSlab[] searchSelects;
+
     public boolean firstClick = false;
     public int nAllOCs = 0;
     PImage bLogo;
@@ -226,7 +227,31 @@ public class Main extends PApplet {
                     gui.delOC.display(this, pendingDeleteOC.name, gui.lang == LANG.ESP? 2 : 1);
                 }
             }
-            case SETTINGS -> gui.drawSETTINGS(this);
+            case SETTINGS -> {
+                gui.drawSETTINGS(this);
+                if (gui.delAll.on){
+                    background(255,0,0);
+                    if (gui.delAll.yes.mouseOverButton(this)) {
+                        gui.delAll.yes.x = 450 + random(-1, 1);
+                        gui.delAll.yes.y = 400 + random(-1, 1);
+                    } else {
+                        gui.delAll.yes.x = 450;
+                        gui.delAll.yes.y = 400;
+                    }
+                    gui.delAll.display(this, "", gui.lang == LANG.ESP?2:1);
+                }
+                if (gui.delDelAll.on){
+                    background(127, 0, 0);
+                    if (gui.delDelAll.yes.mouseOverButton(this)) {
+                        gui.delDelAll.yes.x = 450 + random(-2, 2);
+                        gui.delDelAll.yes.y = 440 + random(-2, 2);
+                    } else {
+                        gui.delDelAll.yes.x = 450;
+                        gui.delDelAll.yes.y = 440;
+                    }
+                    gui.delDelAll.display(this, "", gui.lang == LANG.ESP?2:1);
+                }
+            }
         }
         if (scene != null) scene.designLayout();
     }
@@ -380,7 +405,7 @@ public class Main extends PApplet {
                             gui.currentScreen = GUI.SCREEN.SCENESELECTOR;
                             pendingDeleteSc = null;
 
-                        } else if (result == 2) { // 2 = NO
+                        } else if (result == 2) {
                             pendingDeleteSc = null;
                         }
                     } else if (gui.rsced4.mouseOverButton(this)) {
@@ -400,29 +425,39 @@ public class Main extends PApplet {
 
                     if (this.scene != null) {
                         if (scene.sel != Scene.scInstance.OCSELECT) {
-                            for (int i = 1; i < gui.slSced.length; i++) {
-                                if (i == 2 || i == 4) continue;
-                                if (gui.slSced[i].mouseOnSlider(this, scene)) {
-                                    gui.slSced[i].checkSlider(this, scene);
-                                    selectedSl = gui.slSced[i];
-                                    if (i >= 7 && i < 10) gui.tfsced[i].setText(String.valueOf((int) gui.slSced[i].v));
-                                    else gui.tfsced[i].setText(String.format("%.2f", gui.slSced[i].v));
-                                } else {
-                                    String txt = gui.tfsced[i].getText().replace(',', '.');
-                                    if (txt.matches("\\d*(\\.\\d{0,2})?") && !txt.isEmpty()) {
-                                        if (i >= 6 && i < 10) {
-                                            int value = (int) Float.parseFloat(txt);
-                                            value = (int) constrain(value, gui.slSced[i].minV, gui.slSced[i].maxV);
-                                            gui.slSced[i].v = value;
-                                            gui.tfsced[i].setText(String.valueOf(value));
-                                        } else {
+                            if (selectedSl != null) {
+                                selectedSl.checkSlider(this, scene);
+                                for (int i = 1; i < gui.slSced.length; i++) {
+                                    if (gui.slSced[i] == selectedSl) {
+                                        if (i >= 7 && i < 10) gui.tfsced[i].setText(String.valueOf((int) selectedSl.v));
+                                        else gui.tfsced[i].setText(String.format("%.2f", selectedSl.v));
+                                        break;
+                                    }
+                                }
+                            } else {
+                                for (int i = 1; i < gui.slSced.length; i++) {
+                                    if (i == 2 || i == 4) continue;
+
+                                    if (gui.slSced[i].mouseOnSlider(this, scene)) {
+                                        selectedSl = gui.slSced[i];
+                                        selectedSl.checkSlider(this, scene);
+                                        break;
+                                    } else {
+                                        String txt = gui.tfsced[i].getText().replace(',', '.');
+                                        if (txt.matches("\\d*(\\.\\d{0,2})?") && !txt.isEmpty()) {
                                             float value = Float.parseFloat(txt);
                                             value = constrain(value, gui.slSced[i].minV, gui.slSced[i].maxV);
-                                            gui.slSced[i].v = value;
-                                            gui.tfsced[i].setText(String.format("%.2f", value));
+
+                                            if (i >= 6 && i < 10) {
+                                                gui.slSced[i].v = (int) value;
+                                                gui.tfsced[i].setText(String.valueOf((int) value));
+                                            } else {
+                                                gui.slSced[i].v = value;
+                                                gui.tfsced[i].setText(String.format("%.2f", value));
+                                            }
                                         }
+                                        updateCalculatedValues();
                                     }
-                                    updateCalculatedValues();
                                 }
                             }
                         } else {
@@ -523,16 +558,39 @@ public class Main extends PApplet {
                 }
             }
             else if (gui.currentScreen == GUI.SCREEN.SETTINGS) {
-                if (gui.sLang.mouseOverButton(this)) {
-                    gui.sLang.toggle();
-                    gui.lang = (gui.lang == LANG.ESP) ? LANG.ENG : LANG.ESP;
-                    translateEverything();
+                if (!gui.delDelAll.on && !gui.delAll.on) {
+                    if (gui.sLang.mouseOverButton(this)) {
+                        gui.sLang.toggle();
+                        gui.lang = (gui.lang == LANG.ESP) ? LANG.ENG : LANG.ESP;
+                        translateEverything();
+                    }
+                    if (gui.sCol.mouseOverButton(this)) {
+                        gui.sCol.toggle();
+                        Colors.switchMode();
+                    }
                 }
-                if (gui.sCol.mouseOverButton(this)) {
-                    gui.sCol.toggle();
-                    Colors.switchMode();
+
+                if (gui.delDelAll.on) {
+                    int result = gui.delDelAll.uSure(this);
+
+                    if (result == 1) {
+                        reset();
+                    } else if (result == 2){
+                        gui.delDelAll.on = false;
+                        gui.delDelAll.yes.y -= 40;
+                    }
+                } else if (gui.delAll.on) {
+                    int result = gui.delAll.uSure(this);
+
+                    if (result == 1) {
+                        gui.delDelAll.on = true;
+                        gui.delDelAll.yes.y += 40;
+                    } else if (result == 2){
+                        gui.delAll.on = false;
+                    }
+                } else if (gui.nuke.mouseOverButton(this)) {
+                    gui.delAll.activate();
                 }
-                if (gui.deleteEverything.mouseOverButton(this)) reset();
                 if (gui.exit.mouseOverButton(this)) gui.currentScreen = GUI.SCREEN.MAIN;
             }
         }
@@ -689,6 +747,7 @@ public class Main extends PApplet {
             if (gui.cPickOn){
                 gui.cPick.mouseReleased();
             }
+            selectedSl = null;
         }
     }
 
@@ -963,7 +1022,7 @@ public class Main extends PApplet {
         gui.slSced[2].v = (float) Math.pow(1.83f, 2) * 25;
         gui.slSced[3].v = 25;
         gui.slSced[4].v = (float) Math.pow(25, 0.7979) / 81.906f;
-        gui.slSced[6].v = 25;
+        gui.slSced[6].v = 45;
         gui.slSced[5].v = (float) Math.pow(0.1295f, -1);
         gui.slSced[7].v = 127;
         gui.slSced[8].v = 127;
@@ -1073,7 +1132,7 @@ public class Main extends PApplet {
         gui.plog2.text = Languages.translate("PLOG2", l);
         gui.login.text = Languages.translate("LOGIN", l);
         gui.signup.text = Languages.translate("SIGNUP", l);
-        gui.deleteEverything.text = Languages.translate("RESET", l);
+        gui.nuke.text = Languages.translate("RESET", l);
 
         gui.m1.text = Languages.translate("M1", l);
         gui.m2.text = Languages.translate("M2", l);

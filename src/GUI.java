@@ -22,7 +22,7 @@ public class GUI {
     cButton nav1, nav2, nav3, nav4;
     public ArrayList<rButton> scenes = new ArrayList<>();
     rButton exit;
-    rButton deleteEverything;
+    rButton nuke;
 
     cButton sced1, sced2, sced3, sced4, sced5;
     rButton rsced0, rsced1, rsced2, rsced3, rsced4;
@@ -35,7 +35,7 @@ public class GUI {
 
     Slider slVolume, slHeight, slWeight, slBMI, slWidth,slBHRatio,slAge, slRed, slGreen, slBlue;
     Slider slSced[] = new Slider[10];
-    Popup delOC; Popup delSc; Popup delAll;
+    Popup delOC; Popup delSc; Popup delAll, delDelAll;
 
     int page;
     boolean gridon, cPickOn;
@@ -63,7 +63,7 @@ public class GUI {
 
         sLang = new rSwitch(p5, "ES", "EN", 840, 360, 100,40,4, 7,7);
         sCol = new rSwitch(p5, "N", "D", 840, 420, 100,40,4, 7,7);
-        deleteEverything = new rButton(p5, "RESET", 640, 490, 500, 60, 7,6,6);
+        nuke = new rButton(p5, "RESET", 640, 490, 500, 60, 7,6,6);
 
         q2 = new cButton(p5, "<", 50, 360, 50, 3, 7,7);
         q3 = new cButton(p5, ">", 1230, 370, 50, 3, 7,7);
@@ -99,8 +99,8 @@ public class GUI {
         slWeight = new Slider (p5, "WEIGHT", 150,220, 250, 8, 0.01f, 25000 , 83.7f);
         slBMI = new Slider (p5, "BMI", 150,280, 250, 8, 1, 250 , 25);
         slWidth = new Slider (p5, "WIDTH", 150,340, 250, 8, 2, 10 , 5);
-        slBHRatio = new Slider (p5, "BHRATIO", 150,430, 250, 8, 4, 8 , 8);
-        slAge = new Slider (p5, "AGE", 150,490, 250, 8, 0, 80 , 20);
+        slBHRatio = new Slider (p5, "BHRATIO", 150,430, 250, 8, 6, 8 , 7.725f);
+        slAge = new Slider (p5, "AGE", 150,490, 250, 8, 0, 80 , 45);
         slRed = new Slider (p5, "R", 150,580, 250, 8, 0, 255 , 127);
         slGreen = new Slider (p5, "G", 150,640, 250, 8, 0, 255 , 127);
         slBlue = new Slider (p5, "B", 150,700, 250, 8, 0, 255 , 127);
@@ -149,6 +149,7 @@ public class GUI {
         delOC = new Popup(p5, "DELOC");
         delSc = new Popup(p5, "DELSC");
         delAll = new Popup(p5, "DELALL");
+        delDelAll = new Popup (p5, "USURE??");
 
         page = 0; gridon = true; cPickOn = false;
     }
@@ -377,7 +378,7 @@ public class GUI {
         p5.text((int) slVolume.v,  880, 270);
         sCol.display(p5,lang == LANG.ENG);
         sLang.display(p5,lang == LANG.ENG);
-        deleteEverything.display(p5,lang == LANG.ENG);
+        nuke.display(p5,lang == LANG.ENG);
         exit.display(p5,lang == LANG.ENG);
 
         p5.popStyle();

@@ -26,8 +26,8 @@ public class OC extends Stand {
         this.weight = (float) Math.pow(this.tHeight, 2) * this.BMI;
         this.tWidth = (float) Math.pow(this.BMI, 0.7979f) / 81.906f;
 
-        this.age = 25f;
-        this.bhratio = 0.5f;
+        this.age = 45;
+        this.bhratio = 7.725f;
 
         this.r = 127;
         this.g = 127;
