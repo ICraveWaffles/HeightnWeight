@@ -1,5 +1,6 @@
 import processing.core.PApplet;
 import processing.core.PImage;
+import processing.sound.*;
 import java.util.ArrayList;
 
 public class Main extends PApplet {
@@ -25,6 +26,10 @@ public class Main extends PApplet {
     public int captures = 0;
     OC pendingDeleteOC = null;
     Scene pendingDeleteSc = null;
+
+    SoundFile type;
+    SoundFile detype;
+
     public static void main(String[] args) {
         PApplet.main("Main");
     }
@@ -66,6 +71,9 @@ public class Main extends PApplet {
         gui.slSced[4].setEnabled(false);
         bLogo = loadImage("data/ocblack.png");
         wLogo = loadImage("data/ocwhite.png");
+
+        type = new SoundFile(this, "data/type.wav");
+        detype = new SoundFile(this, "data/detype.wav");
     }
 
     public void draw() {
@@ -609,6 +617,11 @@ public class Main extends PApplet {
     }
 
     public void keyPressed() {
+        if (key == BACKSPACE){
+            detype.play();
+        } else {
+            type.play();
+        }
         if (gui.currentScreen == GUI.SCREEN.LOGIN) {
             gui.tflogin1.keyPressed(key, keyCode);
             gui.tflogin2.keyPressed(key, keyCode);
@@ -627,7 +640,6 @@ public class Main extends PApplet {
                     if (gui.tfsced[i].selected) {
                         anyTextFieldSelected = true;
                         gui.tfsced[i].keyPressed(key, keyCode);
-
                         if (keyCode == ENTER) {
                             String txt = gui.tfsced[i].getText().replace(',', '.').trim();
                             try {

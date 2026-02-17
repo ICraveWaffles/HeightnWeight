@@ -260,7 +260,7 @@ public class GUI {
         p5.imageMode(p5.CENTER);
 
         p5.background(Colors.getThisColor(2));
-        //p5.image(l, 640, 240, 320, 320);
+        p5.image(l, 640, 240, 320, 320);
         plog1.display(p5,lang == LANG.ENG);
         plog2.display(p5,lang == LANG.ENG);
         p5.popStyle();
@@ -319,8 +319,7 @@ public class GUI {
         p5.textAlign(p5.CENTER, p5.CENTER);
         p5.fill(Colors.getThisColor(4));
         p5.noStroke();
-
-        //p5.image(l, 640, 150, 240, 240);
+        p5.image(l, 640, 150, 240, 240);
 
         m1.display(p5,lang == LANG.ENG);
         m2.display(p5,lang == LANG.ENG);
@@ -491,6 +490,7 @@ public class GUI {
                 } else {
                     p5.text(String.format("%.0f", length * 0.001f) + unit, scene.scX, scene.scY - 26);
                 }
+
             }
         }
         if (cPickOn){
@@ -538,12 +538,17 @@ public class GUI {
                         scene.stands[scene.currentObject].height + 3);
             } else if (scene.stands[scene.currentObject] instanceof OC){
                 OC oc = (OC)scene.stands[scene.currentObject];
-                if (scene.stands[scene.currentObject].width > scene.stands[scene.currentObject].height*oc.bhratio){
-                    p5.ellipse(oc.x+oc.width / 2, oc.y + (oc.height*oc.bhratio)/2, oc.height*oc.bhratio+6, oc.height*oc.bhratio+6);
+                if (scene.stands[scene.currentObject].width > scene.stands[scene.currentObject].height/oc.bhratio){
+                    p5.ellipse(oc.x+oc.width / 2, oc.y + (oc.height/oc.bhratio)/2, oc.height/oc.bhratio+6, oc.height/oc.bhratio+6);
                 } else {
-                    p5.ellipse(oc.x+oc.width / 2, oc.y + (oc.height*oc.bhratio)/2, oc.width+6, oc.height*oc.bhratio+6);
+                    p5.ellipse(oc.x+oc.width / 2, oc.y + (oc.height/oc.bhratio)/2, oc.width+6, oc.height/oc.bhratio+6);
                 }
             }
+        }
+        if (scene.nObjects == 0){
+            p5.textFont(Fonts.getThisFont(2));
+            p5.text(Languages.translate("NOOC1", this.lang == LANG.ENG?1:2),10, 80);
+            p5.text(Languages.translate("NOOC2", this.lang == LANG.ENG?1:2),10, 100);
         }
 
         p5.popStyle();

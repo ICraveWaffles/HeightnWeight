@@ -37,3 +37,5 @@ DELOC;Do you want to delete:; ¿Quieres eliminar:
 DELSC;Do you want to delete this scene?;¿Quieres eliminar esta escena?
 DELALL;Are you sure you want to delete everything?;¿Seguro que quieres eliminar todo?
 USURE??;Are you REALLY sure?;¿Estás SEGURO que quieres eliminar todo?
+NOOC1;This scene is empty!;¡Esta escena está vacía!
+NOOC2;Add or create a new OC now!;¡Añade o crea un personaje ahora!
