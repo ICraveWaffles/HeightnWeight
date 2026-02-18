@@ -27,8 +27,8 @@ public class Main extends PApplet {
     OC pendingDeleteOC = null;
     Scene pendingDeleteSc = null;
 
-    SoundFile type;
-    SoundFile detype;
+
+
 
     public static void main(String[] args) {
         PApplet.main("Main");
@@ -64,6 +64,7 @@ public class Main extends PApplet {
             throw new RuntimeException(e);
         }
         translateEverything();
+        Sounds.instanceSounds(this);
 
         gui.tfsced[2].setEnabled(false);
         gui.tfsced[4].setEnabled(false);
@@ -71,9 +72,6 @@ public class Main extends PApplet {
         gui.slSced[4].setEnabled(false);
         bLogo = loadImage("data/ocblack.png");
         wLogo = loadImage("data/ocwhite.png");
-
-        type = new SoundFile(this, "data/type.wav");
-        detype = new SoundFile(this, "data/detype.wav");
     }
 
     public void draw() {
@@ -325,7 +323,7 @@ public class Main extends PApplet {
                 if (gui.q1.mouseOverButton(this)) gui.currentScreen = GUI.SCREEN.QNA;
                 if (gui.s1.mouseOverButton(this)) gui.currentScreen = GUI.SCREEN.SETTINGS;
                 if (gui.m1.mouseOverButton(this)) gui.currentScreen = GUI.SCREEN.SCENESELECTOR;
-                if (gui.m2.mouseOverButton(this)) gui.currentScreen = GUI.SCREEN.OCVIEWER;
+                if (gui.m2.mouseOverButton(this)) {gui.currentScreen = GUI.SCREEN.OCVIEWER; Sounds.emit(6);}
                 if (gui.m3.mouseOverButton(this)) gui.currentScreen = GUI.SCREEN.PRELOGIN;
             }
             else if (gui.currentScreen == GUI.SCREEN.QNA) {
@@ -336,14 +334,15 @@ public class Main extends PApplet {
                     gui.currentScreen = GUI.SCREEN.MAIN;
                     gui.page = 0;
                 }
-                if (gui.nav1.mouseOverButton(this) && gui.nav1.enabled) gui.page = 0;
-                if (gui.nav2.mouseOverButton(this) && gui.nav2.enabled && gui.page > 0) gui.page--;
-                if (gui.nav3.mouseOverButton(this) && gui.nav3.enabled && gui.page < 9) gui.page++;
-                if (gui.nav4.mouseOverButton(this) && gui.nav4.enabled) gui.page = 9;
+                if (gui.nav1.mouseOverButton(this) && gui.nav1.enabled) {gui.page = 0;Sounds.emit(2);}
+                if (gui.nav2.mouseOverButton(this) && gui.nav2.enabled && gui.page > 0) {gui.page--;Sounds.emit(3);}
+                if (gui.nav3.mouseOverButton(this) && gui.nav3.enabled && gui.page < 9) {gui.page++;Sounds.emit(4);}
+                if (gui.nav4.mouseOverButton(this) && gui.nav4.enabled) {gui.page = 9; Sounds.emit(5);}
 
                 for (int i = 15 * gui.page; i < Math.min(15 * (gui.page + 1), gui.scenes.size()); i++) {
                     if (gui.scenes.get(i).mouseOverButton(this)) {
                         if (gui.scenes.get(i).state != STATE.NULL) {
+                            Sounds.emit(6);
                             if (gui.scenes.get(i).state == STATE.PLUS) {
                                 scenes.add(new Scene(scenes.size()));
                                 gui.scenes.get(i).state = STATE.NORM;
@@ -390,6 +389,7 @@ public class Main extends PApplet {
                     }
 
                     if (gui.exit.mouseOverButton(this)) {
+                        Sounds.emit(7);
                         scene.sel = Scene.scInstance.DISPLAY;
                         scene.selPage = 0;
                         gui.cPickOn = false;
@@ -410,6 +410,7 @@ public class Main extends PApplet {
 
                         if (result == 1) {
                             deleteScene(scene);
+                            Sounds.emit(9);
                             gui.currentScreen = GUI.SCREEN.SCENESELECTOR;
                             pendingDeleteSc = null;
 
@@ -418,6 +419,7 @@ public class Main extends PApplet {
                         }
                     } else if (gui.rsced4.mouseOverButton(this)) {
                         gui.delSc.activate();
+                        Sounds.emit(8);
                         pendingDeleteSc = scene;
                     }
 
@@ -477,6 +479,7 @@ public class Main extends PApplet {
                         if (gui.sced2.mouseOverButton(this)) scene.sel = Scene.scInstance.OCSELECT;
 
                         if (gui.sced4.enabled && gui.sced4.mouseOverButton(this)) {
+                            Sounds.emit(4);
                             if (scene.sel == Scene.scInstance.DISPLAY) {
                                 if (scene.nObjects > 0) {
                                     scene.currentObject = (scene.currentObject + 1) % scene.nObjects;
@@ -493,6 +496,7 @@ public class Main extends PApplet {
                         }
 
                         if (gui.sced3.enabled && gui.sced3.mouseOverButton(this)) {
+                            Sounds.emit(3);
                             if (scene.sel == Scene.scInstance.DISPLAY) {
                                 if (scene.nObjects > 0) {
                                     scene.currentObject = (scene.currentObject - 1 + scene.nObjects) % scene.nObjects;
@@ -530,12 +534,13 @@ public class Main extends PApplet {
                 InfoSlab[] currentList = gui.tfInfoSearch.text.isEmpty() ? infos : searchInfos;
                 int maxPage = (currentList.length == 0) ? 0 : (currentList.length - 1) / 5;
 
-                if (gui.nav1.mouseOverButton(this)) scedPage = 0;
-                if (gui.nav2.mouseOverButton(this) && scedPage > 0) scedPage--;
-                if (gui.nav3.mouseOverButton(this) && scedPage < maxPage) scedPage++;
-                if (gui.nav4.mouseOverButton(this)) scedPage = maxPage;
+                if (gui.nav1.mouseOverButton(this)) {scedPage = 0;Sounds.emit(2);}
+                if (gui.nav2.mouseOverButton(this) && scedPage > 0) {scedPage--;Sounds.emit(3);}
+                if (gui.nav3.mouseOverButton(this) && scedPage < maxPage) {scedPage++;Sounds.emit(4);}
+                if (gui.nav4.mouseOverButton(this)) {scedPage = maxPage;Sounds.emit(5);}
 
                 if (gui.exit.mouseOverButton(this)) {
+                    Sounds.emit(7);
                     gui.currentScreen = GUI.SCREEN.MAIN;
                     gui.tfInfoSearch.text = "";
                     scedPage = 0;
@@ -617,11 +622,6 @@ public class Main extends PApplet {
     }
 
     public void keyPressed() {
-        if (key == BACKSPACE){
-            detype.play();
-        } else {
-            type.play();
-        }
         if (gui.currentScreen == GUI.SCREEN.LOGIN) {
             gui.tflogin1.keyPressed(key, keyCode);
             gui.tflogin2.keyPressed(key, keyCode);

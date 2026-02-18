@@ -4,14 +4,23 @@ import static processing.core.PConstants.BACKSPACE;
 public class TextField {
 
     int x, y, h, w;
+
     int bgColor, fgColor, selectedColor, borderColor;
+
     int borderWeight = 1;
+
     String token;
+
     String text = "";
+
     String trueText;
+
     int textSize = 20;
+
     boolean selected = false;
+
     boolean enabled = true;
+
     boolean intOnly = false;
 
     public TextField(PApplet p5, String token, int x, int y, int w, int h, boolean intOnly) {
@@ -32,28 +41,35 @@ public class TextField {
     public void display(PApplet p5) {
         p5.pushStyle();
         p5.rectMode(p5.CENTER);
+
         if (!enabled) p5.fill(220);
         else if (selected) p5.fill(selectedColor);
         else p5.fill(bgColor);
+
         p5.strokeWeight(borderWeight);
         p5.stroke(borderColor);
         p5.rect(x, y, w, h, 5);
+
         p5.fill(fgColor);
         p5.textSize(textSize);
         p5.textAlign(p5.CENTER, p5.CENTER);
+
         if (text.isEmpty() && !selected && trueText != null) {
             p5.text(trueText, x, y);
         } else {
             p5.text(text, x, y);
         }
+
         p5.popStyle();
     }
 
     public void keyPressed(char key, int keyCode) {
+
         if (!enabled || !selected) return;
 
         if (keyCode == BACKSPACE) {
             removeText();
+            Sounds.emit(1);
             return;
         }
 
@@ -62,7 +78,7 @@ public class TextField {
         boolean isSymbol = "!@#$%^&*()-_+=[]{};:'\"\\|,.<>/?`~·".indexOf(key) >= 0;
 
         if (intOnly) {
-            if (isNumber) addText(key);
+            if (isNumber || key == '.' || key == ',') addText(key);
         } else {
             if (isLetter || isNumber || isSymbol || key == ' ') addText(key);
         }
@@ -75,22 +91,29 @@ public class TextField {
 
     public void addText(char c) {
 
-        if (c == ',' || c == '.') {
-            if (text.contains(".") || text.contains(",")|| text.isEmpty()) {
-                return;
-            }
-            if (c == ',' && intOnly) {
-                c = '.';
-            }
+        boolean written = false;
+
+        if (intOnly) {
+
+            if (c == '.') c = ',';
+
+            if (!((c >= '0' && c <= '9') || c == ',')) return;
+
+            if (c == ',' && text.contains(",")) return;
         }
 
-        if (intOnly && text.equals("0")) {
+        if (intOnly && text.equals("0") && c != ',') {
             text = String.valueOf(c);
+            written = true;
         } else if (text.length() < (w / (textSize * 0.6))) {
             text += c;
+            written = true;
+        }
+
+        if (written) {
+            Sounds.emit(0);
         }
     }
-
 
     public void removeText() {
         if (!text.isEmpty()) text = text.substring(0, text.length() - 1);
@@ -116,12 +139,15 @@ public class TextField {
     }
 
     public void isPressed(PApplet p5) {
+
         if (!enabled) {
             selected = false;
             return;
         }
+
         selected = mouseOverTextField(p5);
-        if (text.equals(trueText)){
+
+        if (text.equals(trueText)) {
             this.text = "";
         }
     }
