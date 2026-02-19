@@ -27,9 +27,6 @@ public class Main extends PApplet {
     OC pendingDeleteOC = null;
     Scene pendingDeleteSc = null;
 
-
-
-
     public static void main(String[] args) {
         PApplet.main("Main");
     }
@@ -278,17 +275,19 @@ public class Main extends PApplet {
 
     public void redoSceneEditorValues() {
         if (scene.currentObject != -1) {
-            OC pHolder = (OC) scene.stands[scene.currentObject];
-            gui.slSced[1].v = pHolder.tHeight;
-            gui.slSced[2].v = pHolder.weight;
-            gui.slSced[3].v = pHolder.BMI;
-            gui.slSced[4].v = pHolder.tWidth;
-            gui.slSced[5].v = pHolder.bhratio;
-            gui.slSced[6].v = pHolder.age;
-            gui.slSced[7].v = pHolder.r;
-            gui.slSced[8].v = pHolder.g;
-            gui.slSced[9].v = pHolder.b;
-            changeTFValues(pHolder);
+            if (scene.stands[scene.currentObject] instanceof OC){
+                OC pHolder = (OC) scene.stands[scene.currentObject];
+                gui.slSced[1].v = pHolder.tHeight;
+                gui.slSced[2].v = pHolder.weight;
+                gui.slSced[3].v = pHolder.BMI;
+                gui.slSced[4].v = pHolder.tWidth;
+                gui.slSced[5].v = pHolder.bhratio;
+                gui.slSced[6].v = pHolder.age;
+                gui.slSced[7].v = pHolder.r;
+                gui.slSced[8].v = pHolder.g;
+                gui.slSced[9].v = pHolder.b;
+                changeTFValues(pHolder);
+            }
         }
     }
 
@@ -587,6 +586,7 @@ public class Main extends PApplet {
                     int result = gui.delDelAll.uSure(this);
 
                     if (result == 1) {
+                        Sounds.emit(16);
                         reset();
                     } else if (result == 2){
                         gui.delDelAll.on = false;
@@ -596,12 +596,14 @@ public class Main extends PApplet {
                     int result = gui.delAll.uSure(this);
 
                     if (result == 1) {
+                        Sounds.emit(15);
                         gui.delDelAll.on = true;
                         gui.delDelAll.yes.y += 40;
                     } else if (result == 2){
                         gui.delAll.on = false;
                     }
                 } else if (gui.nuke.mouseOverButton(this)) {
+                    Sounds.emit(14);
                     gui.delAll.activate();
                 }
                 if (gui.exit.mouseOverButton(this)) gui.currentScreen = GUI.SCREEN.MAIN;
@@ -749,6 +751,7 @@ public class Main extends PApplet {
 
         } else if (gui.currentScreen == GUI.SCREEN.SETTINGS) {
             gui.slVolume.checkSlider(this);
+            Sounds.redoAmp(gui.slVolume.v);
         }
     }
 
@@ -844,6 +847,7 @@ public class Main extends PApplet {
     }
 
     public void copyScene(){
+        Sounds.emit(17);
         Scene newsc = new Scene(this.scene);
         scenes.add(newsc);
         this.scene = newsc;
@@ -1030,6 +1034,7 @@ public class Main extends PApplet {
     }
 
     private void setZwolfDefaults(OC pHolder) {
+
         gui.slSced[1].v = 1.83f;
         gui.slSced[2].v = (float) Math.pow(1.83f, 2) * 25;
         gui.slSced[3].v = 25;

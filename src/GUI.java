@@ -545,7 +545,7 @@ public class GUI {
                 }
             }
         }
-        if (scene.nObjects == 0){
+        if (scene.nObjects == 0 && scene.sel == Scene.scInstance.DISPLAY){
             p5.textFont(Fonts.getThisFont(2));
             p5.text(Languages.translate("NOOC1", this.lang == LANG.ENG?1:2),10, 80);
             p5.text(Languages.translate("NOOC2", this.lang == LANG.ENG?1:2),10, 100);

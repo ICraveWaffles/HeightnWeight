@@ -43,6 +43,7 @@ public class Scene {
     }
 
     public void addObject(Stand s) {
+        Sounds.emit(11);
         if (nObjects == stands.length) {
             stands = java.util.Arrays.copyOf(stands, stands.length + 1);
         }
@@ -52,6 +53,7 @@ public class Scene {
     }
 
     public void deleteObject(Stand oc) {
+        Sounds.emit(12);
         int index = -1;
         for (int i = 0; i < nObjects; i++) {
             if (stands[i] == oc) {

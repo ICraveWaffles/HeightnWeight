@@ -13,6 +13,8 @@ public class rButton {
     public int cText;
     public boolean enabled;
     STATE state;
+    boolean lastPress = false;
+
 
     public rButton(PApplet p5,String token, float x, float y, float w, float h, int f, int s, int t){
         this.token = token;
@@ -101,8 +103,13 @@ public class rButton {
     }
 
     public boolean mouseOverButton(PApplet p5){
-        return (p5.mouseX >= this.x-this.w/2) && (p5.mouseX <= this.x + this.w/2) &&
+        boolean thing = (p5.mouseX >= this.x-this.w/2) && (p5.mouseX <= this.x + this.w/2) &&
                 (p5.mouseY >= this.y-this.h/2) && (p5.mouseY <= this.y + this.h/2);
+        if (thing && p5.mousePressed && !lastPress){
+            Sounds.emit(1);
+        }
+        lastPress = p5.mousePressed;
+        return thing;
 
     }
 
