@@ -17,8 +17,6 @@ public class OC extends Stand {
         this.ID = ID;
         Random random = new Random();
         this.uniqueID = 100000 + random.nextInt(900000);
-
-
         this.name = "Zwolf";
 
         this.tHeight = 1.828f;

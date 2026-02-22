@@ -1,4 +1,7 @@
 import processing.core.PApplet;
+import java.awt.*;
+import java.awt.datatransfer.*;
+
 
 public class cButton {
 
@@ -50,14 +53,25 @@ public class cButton {
         p5.strokeWeight(2);
         p5.circle(this.x, this.y, this.d);
 
-        p5.fill(Colors.getThisColor(cText));
-        p5.textFont(Fonts.getThisFont(0));
-        p5.text(bText, this.x , this.y-2);
+        if (!this.bText.contains("LINK")) {
+            p5.fill(Colors.getThisColor(cText));
+            p5.textFont(Fonts.getThisFont(0));
+            p5.text(bText, this.x, this.y - 2);
+        }
         p5.popStyle();
     }
 
     public boolean mouseOverButton(PApplet p5){
         boolean over = p5.dist(this.x, this.y, p5.mouseX, p5.mouseY) <= this.d/2;
+        if (bText.contains("LINK")&&over){
+            if (bText.contains("ES")){
+                copyLink("Insert Spanish Link Here");
+            } else if (bText.contains("EN")) {
+                copyLink("Insert English Link Here");
+            } else if (bText.contains("RICK")){
+                copyLink("https://www.youtube.com/watch?v=iik25wqIuFo&list=RDiik25wqIuFo&start_radio=1");
+            }
+        }
 
         if (over && enabled && p5.mousePressed && !lastPress) {
             Sounds.emit(0);
@@ -65,6 +79,12 @@ public class cButton {
 
         lastPress = p5.mousePressed;
         return over;
+    }
+
+    private void copyLink(String txt) {
+        StringSelection selection = new StringSelection(txt);
+        Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
+        clipboard.setContents(selection, null);
     }
 
     public boolean updateHandCursor(PApplet p5){

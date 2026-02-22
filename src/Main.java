@@ -38,7 +38,6 @@ public class Main extends PApplet {
         PImage gabinett = loadImage("data/gabinett.png");
         PImage dooor = loadImage("data/door.jpg");
 
-
         banana = new Stand("Plátano", 0.2f, 0.07f, bananaPic);
         cabinet = new Stand("Gabinete", 0.5f, 0.8f, gabinett);
         door = new Stand("Puerta", 0.6f, 2f, dooor);
@@ -72,6 +71,11 @@ public class Main extends PApplet {
     }
 
     public void draw() {
+        if (!gui.rsced2.mouseOverButton(this)) {
+            gui.phase = 255 * PApplet.sin(frameCount * 0.1f);
+        } else {
+            gui.phase = 0;
+        }
         switch (gui.currentScreen) {
             case PRELOGIN -> {
                 if (gui.sCol.on) {
@@ -108,18 +112,13 @@ public class Main extends PApplet {
                 for (int i = 15 * gui.page; i < Math.min(15 * (gui.page + 1), scenes.size()); i++) {
                     gui.scenes.get(i).display(this, scenes.get(i), gui.lang == LANG.ENG ? 1 : 2);
                 }
+                int totalSlots = scenes.size() + 1;
+                int maxPage = (totalSlots - 1) / 15;
 
-                if (scenes.size() < 15) {
-                    gui.nav1.setEnabled(false);
-                    gui.nav2.setEnabled(false);
-                    gui.nav3.setEnabled(false);
-                    gui.nav4.setEnabled(false);
-                } else {
-                    gui.nav1.setEnabled(true);
-                    gui.nav2.setEnabled(true);
-                    gui.nav3.setEnabled(true);
-                    gui.nav4.setEnabled(true);
-                }
+                gui.nav1.setEnabled(gui.page > 0);
+                gui.nav2.setEnabled(gui.page > 0);
+                gui.nav3.setEnabled(gui.page < maxPage);
+                gui.nav4.setEnabled(gui.page < maxPage);
             }
 
             case SCENEEDITOR -> {
@@ -215,9 +214,15 @@ public class Main extends PApplet {
                     currentList = searchInfos;
                 }
 
-                int maxPage = (currentList.length == 0) ? 0 : (currentList.length - 1) / 5;
+                int totalSlots = currentList.length;
+                int maxPage = (totalSlots == 0) ? 0 : (totalSlots - 1) / 5;
 
                 if (scedPage > maxPage) scedPage = maxPage;
+
+                gui.nav1.setEnabled(scedPage > 0);
+                gui.nav2.setEnabled(scedPage > 0);
+                gui.nav3.setEnabled(scedPage < maxPage);
+                gui.nav4.setEnabled(scedPage < maxPage);
 
                 int start = scedPage * 5;
                 int end = Math.min(currentList.length, start + 5);
@@ -225,6 +230,7 @@ public class Main extends PApplet {
                 for (int i = start; i < end; i++) {
                     currentList[i].display(this);
                 }
+
                 if (gui.delOC.on){
                     background(Colors.getThisColor(8), 50);
                     gui.delOC.display(this, pendingDeleteOC.name, gui.lang == LANG.ESP? 2 : 1);
@@ -399,6 +405,7 @@ public class Main extends PApplet {
                     }
                     if (gui.rsced1.mouseOverButton(this)) gui.gridon = !gui.gridon;
                     if (gui.rsced2.mouseOverButton(this)){
+                        gui.phase = 0;
                         PImage ss = get(scene.scX, scene.scY, scene.scW, scene.scH);
                         ss.save(scene.name+captures+".png");
                         captures++;
@@ -549,6 +556,7 @@ public class Main extends PApplet {
                     int result = gui.delOC.uSure(this);
                     if (result == 1 && pendingDeleteOC != null) {
                         deleteOCfromBase(pendingDeleteOC);
+                        Sounds.emit(9);
                         if (!gui.tfInfoSearch.text.isEmpty()) {
                             updateInfoSearchArr(gui.tfInfoSearch.text);
                         }
@@ -564,6 +572,7 @@ public class Main extends PApplet {
                         if (currentList[i].delete.mouseOverButton(this)) {
                             pendingDeleteOC = currentList[i].oc;
                             gui.delOC.activate();
+                            Sounds.emit(8);
                             break;
                         }
                     }
@@ -1017,7 +1026,7 @@ public class Main extends PApplet {
     public void instanceOC() {
         OC pHolder = new OC(nAllOCs);
         setZwolfDefaults(pHolder);
-        pHolder.name = "Zwolf" + pHolder.ID;
+        pHolder.name = "Zwolf";
         changeTFValues(pHolder);
         addNewOCtoBase(pHolder);
         scene.addObject(pHolder);

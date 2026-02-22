@@ -8,12 +8,12 @@ enum LANG {ENG, ESP}
 
 public class GUI {
 
-    public LANG lang;
+    LANG lang;
     rButton plog1, plog2;
     rButton signup;
     rButton login;
     rButton m1, m2, m3;
-    cButton q1, q2, q3, s1;
+    cButton q1, s1, q2, q3;
     public rSwitch sLang, sCol;
 
     HSBColorPicker cPick;
@@ -43,7 +43,7 @@ public class GUI {
     public enum SCREEN { PRELOGIN, LOGIN, SIGNUP, MAIN, QNA, SETTINGS,  SCENESELECTOR, SCENEEDITOR, OCVIEWER }
 
     public SCREEN currentScreen;
-
+    float phase;
     public GUI(PApplet p5) {
         currentScreen = SCREEN.PRELOGIN;
         lang = LANG.ESP;
@@ -64,9 +64,6 @@ public class GUI {
         sLang = new rSwitch(p5, "ES", "EN", 840, 360, 100,40,4, 7,7);
         sCol = new rSwitch(p5, "N", "D", 840, 420, 100,40,4, 7,7);
         nuke = new rButton(p5, "RESET", 640, 490, 500, 60, 7,6,6);
-
-        q2 = new cButton(p5, "<", 50, 360, 50, 3, 7,7);
-        q3 = new cButton(p5, ">", 1230, 370, 50, 3, 7,7);
 
         nav1 = new cButton(p5, "<<",550, 30, 50, 3, 7, 7);
         nav2 = new cButton(p5, "<",610, 30, 50, 3, 7, 7);
@@ -151,7 +148,12 @@ public class GUI {
         delAll = new Popup(p5, "DELALL");
         delDelAll = new Popup (p5, "USURE??");
 
+        q2 = new cButton(p5, "ENGLINK", 400, 320, 30, 3,7,7);
+        q3 = new cButton(p5, "ESPLINK", 400, 400, 30, 3,7,7);
+
         page = 0; gridon = true; cPickOn = false;
+        phase = 255 * PApplet.sin(p5.frameCount*0.1f);
+
     }
 
     public void drawLogo(PApplet p5, int y) {
@@ -236,7 +238,6 @@ public class GUI {
         p5.fill(Colors.getThisColor(3));
         p5.stroke(Colors.getThisColor(7));
         p5.strokeWeight(3);
-
 
         p5.circle(x, y, 50);
         p5.fill(Colors.getThisColor(7));
@@ -338,13 +339,22 @@ public class GUI {
         p5.rectMode(p5.CENTER);
         p5.textAlign(p5.CENTER, p5.CENTER);
         p5.fill(Colors.getThisColor(5));
-        p5.noStroke();
+        p5.stroke(Colors.getThisColor(6));
+        p5.strokeWeight(4);
 
-        p5.rect(640, 360, 1080,560, 20);
 
-        drawTextField(p5, 230, "Lorem ipsum etcetcetc.");
+        p5.rect(640, 360, 526,366, 20);
+
         q2.display(p5);
         q3.display(p5);
+        p5.fill(Colors.getThisColor(6));
+        p5.textFont(Fonts.getThisFont(0));
+        p5.text("LINKS/ENLACES", 640, 240);
+        p5.textFont(Fonts.getThisFont(1));
+        p5.text("Tutorial en castellano", 562, 400);
+        p5.text("English tutorial", 522, 320);
+
+
         exit.display(p5,lang == LANG.ENG);
 
         p5.popStyle();
@@ -522,9 +532,6 @@ public class GUI {
         p5.text("0 <===O===> 255", 10, 695);
 
         */
-
-        float phase = 255 *p5.sin(p5.frameCount*0.1f);
-
         if (scene.nObjects>0) {
             p5.noFill();
             p5.stroke(255, 0, 0, phase);
@@ -556,7 +563,6 @@ public class GUI {
 
     public void drawOCVIEWER(PApplet p5){
         p5.pushStyle();
-        p5.pushMatrix();
 
         p5.background(Colors.getThisColor(1));
 
@@ -604,7 +610,6 @@ public class GUI {
         tfInfoSearch.display(p5);
         exit.display(p5,lang == LANG.ENG);
 
-        p5.popMatrix();
         p5.popStyle();
 
     }

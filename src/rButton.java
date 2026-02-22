@@ -50,8 +50,97 @@ public class rButton {
             p5.rect(this.x, this.y, this.w, this.h, 10);
 
             p5.fill(Colors.getThisColor(cText));
-            p5.textFont(Fonts.getThisFont(1));
-            p5.text(this.state == STATE.BASE ?Languages.translate(text, b?1:2) : "", this.x, this.y - (this.state == STATE.NORM? 30 : 0));
+
+            if (token.equals("COLORPICK")){
+                for (int i = 0; i < 2*w/3; i++) {
+                    float t = i / (2*w/3);
+                    p5.stroke(p5.lerpColor(Colors.getThisColor(7), Colors.getThisColor(3), t));
+                    p5.line(x+i-w/3, y-h/3, x+i-w/3, y+h/3);
+                }
+            } else if (token.equals("GRID")){
+                float margin = 6;
+                float gridW = w - margin*2;
+                float gridH = h - margin*2;
+                float left = x - gridW/2;
+                float top  = y - gridH/2;
+                float stepX = gridW / 5.0f;
+                float stepY = gridH / 5.0f;
+                for (int i = 0; i <= 5; i++) {
+                    float lx = left + i * stepX;
+                    p5.line(lx, top, lx, top + gridH);
+                    float ly = top + i * stepY;
+                    p5.line(left, ly, left + gridW, ly);
+                }
+            } else if (token.equals("SCREENSHOT")){
+                float inner = w * 0.65f;
+                float left = x - inner/2;
+                float right = x + inner/2;
+                float top = y - inner/2;
+                float bottom = y + inner/2;
+                float corner = inner * 0.22f;
+
+                p5.strokeCap(PApplet.ROUND);
+                p5.strokeJoin(PApplet.ROUND);
+                p5.noFill();
+
+                p5.line(left, top, left + corner, top);
+                p5.line(left, top, left, top + corner);
+                p5.line(right - corner, top, right, top);
+                p5.line(right, top, right, top + corner);
+                p5.line(left, bottom - corner, left, bottom);
+                p5.line(left, bottom, left + corner, bottom);
+                p5.line(right - corner, bottom, right, bottom);
+                p5.line(right, bottom - corner, right, bottom);
+
+                p5.circle(x, y, inner * 0.28f);
+            } else if (token.equals("DEL")) {
+                float inner = w * 0.65f;
+                float left = x - inner/2;
+                float right = x + inner/2;
+                float top = y - inner/2;
+                float bottom = y + inner/2;
+                float cross = inner * 0.2f;
+
+                p5.line(left + cross,  top + cross,    right - cross, bottom - cross);
+                p5.line(right - cross, top + cross,    left + cross,  bottom - cross);
+            } else if (token.equals("COPY")){
+                float inner = w * 0.65f;
+                float s = inner * 0.7f;
+                float r = s * 0.18f;
+                float x1 = x - s*0.15f;
+                float y1 = y - s*0.15f;
+                float x2 = x + s*0.15f;
+                float y2 = y + s*0.15f;
+                p5.noFill();
+                p5.rectMode(PApplet.CENTER);
+                p5.rect(x1, y1, s, s, r);
+                p5.fill(Colors.getThisColor(7));
+                p5.rect(x2, y2, s, s, r);
+            } else if (token.equals("EXIT")){
+                float inner = w * 0.7f;
+                float left   = x - inner/2;
+                float right  = x + inner/2;
+                float top    = y - inner/2;
+                float bottom = y + inner/2;
+                float gap = inner * 0.22f;
+                p5.noFill();
+                p5.strokeCap(PApplet.ROUND);
+                p5.strokeJoin(PApplet.ROUND);
+                p5.beginShape();
+                p5.vertex(left + gap, top);
+                p5.vertex(right, top);
+                p5.vertex(right, bottom);
+                p5.vertex(left + gap, bottom);
+                p5.endShape();
+                float a = inner * 0.28f;
+                p5.line(x - a, y, x + a, y);
+                p5.line(x + a, y, x + a*0.35f, y - a*0.65f);
+                p5.line(x + a, y, x + a*0.35f, y + a*0.65f);
+            }
+            else {
+                p5.textFont(Fonts.getThisFont(1));
+                p5.text(this.state == STATE.BASE ? Languages.translate(text, b ? 1 : 2) : "", this.x, this.y - (this.state == STATE.NORM ? 30 : 0));
+            }
         } else if (this.state == STATE.PLUS){
             p5.fill(Colors.getThisColor(5));
             p5.stroke(Colors.getThisColor(strokeColor));
