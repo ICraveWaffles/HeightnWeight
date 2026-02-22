@@ -3,7 +3,6 @@ import processing.core.PImage;
 
 import java.util.ArrayList;
 
-
 enum LANG {ENG, ESP}
 
 public class GUI {
@@ -44,75 +43,86 @@ public class GUI {
 
     public SCREEN currentScreen;
     float phase;
+
     public GUI(PApplet p5) {
+
         currentScreen = SCREEN.PRELOGIN;
         lang = LANG.ESP;
         Colors.instanceColors(p5);
 
-        plog1 = new rButton(p5, "PLOG1", 640, 440, 600, 70, 4, 7, 7);
-        plog2 = new rButton(p5, "PLOG2", 640, 540, 600, 70, 4, 7, 7);
+        plog1 = new rButton(p5, "PLOG1", 960, 660, 900, 105, 4, 7, 7);
+        plog2 = new rButton(p5, "PLOG2", 960, 810, 900, 105, 4, 7, 7);
 
-        login = new rButton(p5, "LOGIN",640, 435, 300, 100, 3, 7,  7);
-        signup = new rButton(p5, "SIGNUP",640, 565, 300, 100, 3, 7,  7);
+        login = new rButton(p5, "LOGIN",960, 652, 450, 150, 3, 7,7);
+        signup = new rButton(p5, "SIGNUP",960, 848, 450, 150, 3, 7,7);
 
-        m1 = new rButton(p5, "M1",640, 340, 640, 60, 3, 7,7 );
-        m2 = new rButton(p5, "M2",640, 440, 640, 60, 3, 7,7 );
-        m3 = new rButton(p5, "M3",640, 540, 640, 60, 3, 7,7 );
-        q1 = new cButton(p5, "?", 30, 30, 50, 3, 7,7);
-        s1 = new cButton(p5, "O", 30, 90, 50, 3,7,7);
+        m1 = new rButton(p5, "M1",960, 510, 960, 90, 3, 7,7);
+        m2 = new rButton(p5, "M2",960, 660, 960, 90, 3, 7,7);
+        m3 = new rButton(p5, "M3",960, 810, 960, 90, 3, 7,7);
 
-        sLang = new rSwitch(p5, "ES", "EN", 840, 360, 100,40,4, 7,7);
-        sCol = new rSwitch(p5, "N", "D", 840, 420, 100,40,4, 7,7);
-        nuke = new rButton(p5, "RESET", 640, 490, 500, 60, 7,6,6);
+        q1 = new cButton(p5, "?", 45, 45, 75, 3, 7,7);
+        s1 = new cButton(p5, "O", 45, 135, 75, 3,7,7);
 
-        nav1 = new cButton(p5, "<<",550, 30, 50, 3, 7, 7);
-        nav2 = new cButton(p5, "<",610, 30, 50, 3, 7, 7);
-        nav3 = new cButton(p5, ">",670, 30, 50, 3, 7, 7);
-        nav4 = new cButton(p5, ">>",730, 30, 50, 3, 7, 7);
+        sLang = new rSwitch(p5, "ES", "EN", 1260, 540, 150,60,4, 7,7);
+        sCol = new rSwitch(p5, "N", "D", 1260, 630, 150,60,4, 7,7);
+        nuke = new rButton(p5, "RESET", 960, 735, 750, 90, 7,6,6);
 
-        tfsignup1 = new TextField(p5, "USERNAME", 640, 120, 540, 60, false);
-        tfsignup2 = new TextField(p5, "EMAIL", 640, 200, 540, 60, false);
-        tfsignup3 = new TextField(p5, "PASSWORD (1)", 640, 360, 540, 60, false);
-        tfsignup4 = new TextField(p5, "PASSWORD (2)", 640, 440, 540, 60, false);
+        nav1 = new cButton(p5, "<<",825, 45, 75, 3, 7, 7);
+        nav2 = new cButton(p5, "<",915, 45, 75, 3, 7, 7);
+        nav3 = new cButton(p5, ">",1005, 45, 75, 3, 7, 7);
+        nav4 = new cButton(p5, ">>",1095, 45, 75, 3, 7, 7);
 
-        tflogin1 = new TextField(p5, "USERNAME", 640, 230, 540, 60, false);
-        tflogin2 = new TextField(p5, "PASSWORD", 640, 310, 540, 60, false);
+        tfsignup1 = new TextField(p5, "USERNAME", 960, 180, 810, 90, false);
+        tfsignup2 = new TextField(p5, "EMAIL", 960, 300, 810, 90, false);
+        tfsignup3 = new TextField(p5, "PASSWORD (1)", 960, 540, 810, 90, false);
+        tfsignup4 = new TextField(p5, "PASSWORD (2)", 960, 660, 810, 90, false);
 
-        tfSelectSearch = new TextField (p5, "", 152, 97, 280, 50, false);
-        tfInfoSearch = new TextField (p5, "", 150, 32, 280, 50, false);
-        tfName = new TextField(p5, "NAME", 152, 80, 250, 30, false);
-        tfHeight = new TextField(p5, "HEIGHT", 222, 130, 110, 20, true);
-        tfWeight = new TextField(p5, "WEIGHT", 222, 200, 110, 20, true);
-        tfBMI = new TextField(p5, "BMI", 222, 250, 110, 20, true);
-        tfWidth = new TextField(p5, "WIDTH", 222, 320, 110, 20, true);
-        tfBHRatio = new TextField(p5, "BHRATIO", 222, 400, 110, 20, true);
-        tfAge = new TextField(p5, "AGE", 222, 460, 110, 20, true);
-        tfRed = new TextField(p5, "R", 222, 550, 110, 20, true);
-        tfGreen = new TextField(p5, "G", 222, 610, 110, 20, true);
-        tfBlue = new TextField(p5, "B", 222, 670, 110, 20, true);
+        tflogin1 = new TextField(p5, "USERNAME", 960, 345, 810, 90, false);
+        tflogin2 = new TextField(p5, "PASSWORD", 960, 465, 810, 90, false);
 
-        slVolume = new Slider(p5, "SOUND", 640, 300, 500, 12, 0, 100, 50, false, false);
-        slHeight = new Slider (p5, "HEIGHT", 150,160, 250, 8, 0.01f, 10000 , 1.83f,true, true );
-        slWeight = new Slider (p5, "WEIGHT", 150,220, 250, 8, 0.01f, 25000 , 83.7f);
-        slBMI = new Slider (p5, "BMI", 150,280, 250, 8, 1, 250 , 25);
-        slWidth = new Slider (p5, "WIDTH", 150,340, 250, 8, 2, 10 , 5);
-        slBHRatio = new Slider (p5, "BHRATIO", 150,430, 250, 8, 6, 8 , 7.725f);
-        slAge = new Slider (p5, "AGE", 150,490, 250, 8, 0, 80 , 45);
-        slRed = new Slider (p5, "R", 150,580, 250, 8, 0, 255 , 127);
-        slGreen = new Slider (p5, "G", 150,640, 250, 8, 0, 255 , 127);
-        slBlue = new Slider (p5, "B", 150,700, 250, 8, 0, 255 , 127);
+        tfSelectSearch = new TextField (p5, "", 228, 145, 420, 75, false);
+        tfInfoSearch = new TextField (p5, "", 225, 48, 420, 75, false);
+        tfName = new TextField(p5, "NAME", 228, 120, 375, 45, false);
+        tfHeight = new TextField(p5, "HEIGHT", 333, 195, 165, 30, true);
+        tfWeight = new TextField(p5, "WEIGHT", 333, 300, 165, 30, true);
+        tfBMI = new TextField(p5, "BMI", 333, 375, 165, 30, true);
+        tfWidth = new TextField(p5, "WIDTH", 333, 480, 165, 30, true);
+        tfBHRatio = new TextField(p5, "BHRATIO", 333, 600, 165, 30, true);
+        tfAge = new TextField(p5, "AGE", 333, 690, 165, 30, true);
+        tfRed = new TextField(p5, "R", 333, 825, 165, 30, true);
+        tfGreen = new TextField(p5, "G", 333, 915, 165, 30, true);
+        tfBlue = new TextField(p5, "B", 333, 1005, 165, 30, true);
+
+        slVolume = new Slider(p5, "SOUND", 960, 450, 750, 18, 0, 100, 50, false, false);
+        slHeight = new Slider (p5, "HEIGHT", 225,240, 375, 12, 0.01f, 10000 , 1.83f,true, true );
+        slWeight = new Slider (p5, "WEIGHT", 225,330, 375, 12, 0.01f, 25000 , 83.7f);
+        slBMI = new Slider (p5, "BMI", 225,420, 375, 12, 1, 250 , 25);
+        slWidth = new Slider (p5, "WIDTH", 225,510, 375, 12, 2, 10 , 5);
+        slBHRatio = new Slider (p5, "BHRATIO", 225,645, 375, 12, 6, 8 , 7.725f);
+        slAge = new Slider (p5, "AGE", 225,735, 375, 12, 0, 80 , 45);
+        slRed = new Slider (p5, "R", 225,870, 375, 12, 0, 255 , 127);
+        slGreen = new Slider (p5, "G", 225,960, 375, 12, 0, 255 , 127);
+        slBlue = new Slider (p5, "B", 225,1050, 375, 12, 0, 255 , 127);
 
         int buttonIndex = 0;
+
         for (int h = 0; h < 30; h++) {
             for (int j = 0; j < 3; j++) {
                 for (int i = 0; i < 5; i++) {
-                    int x = i * 250 + 120;
-                    int y = j * 212 + 200;
-                    scenes.add(buttonIndex,new rButton(p5, "{}", x, y, 200, 180, 4, 7, 6));
-                    scenes.get(i).ID = buttonIndex;
-                    if (buttonIndex !=0) scenes.get(buttonIndex).state = STATE.NULL;
-                    if (buttonIndex == 1) scenes.get(buttonIndex).state = STATE.PLUS;
-                    if (buttonIndex == 0) scenes.get(buttonIndex).state = STATE.NORM;
+
+                    int x = i * 375 + 180;
+                    int y = j * 318 + 300;
+
+                    rButton b = new rButton(p5, "{}", x, y, 300, 270, 4, 7, 6);
+
+                    b.ID = buttonIndex;
+
+                    if (buttonIndex != 0) b.state = STATE.NULL;
+                    if (buttonIndex == 1) b.state = STATE.PLUS;
+                    if (buttonIndex == 0) b.state = STATE.NORM;
+
+                    scenes.add(b);
+
                     buttonIndex++;
                 }
             }
@@ -123,50 +133,49 @@ public class GUI {
         tfsced[0] = tfName; tfsced[1] = tfHeight; tfsced[2] = tfWeight; tfsced[3] = tfBMI; tfsced[4] = tfWidth;
         tfsced[5] = tfBHRatio; tfsced[6] = tfAge; tfsced[7] = tfRed; tfsced[8] = tfGreen; tfsced[9] = tfBlue;
 
-
         slSced[1]=slHeight; slSced[2]=slWeight; slSced[3]=slBMI; slSced[4]=slWidth;
         slSced[5]=slBHRatio; slSced[6]=slAge; slSced[7]=slRed; slSced[8]=slGreen; slSced[9]=slBlue;
 
-        rsced0 = new rButton (p5, "COLORPICK", 1248-320, 32, 60, 60,3,7,7);
-        rsced1 = new rButton (p5, "GRID", 1248-128, 32, 60, 60,3,7,7);
-        rsced2 = new rButton (p5, "SCREENSHOT", 1248-64, 32, 60, 60,3,7,7);
-        rsced3 = new rButton (p5, "COPY", 1248-256, 32, 60, 60,3,7,7);
-        rsced4 = new rButton (p5, "DEL", 1248-192, 32, 60, 60,3,7,7);
+        rsced0 = new rButton (p5, "COLORPICK", 1392, 48, 90, 90,3,7,7);
+        rsced1 = new rButton (p5, "GRID", 1680, 48, 90, 90,3,7,7);
+        rsced2 = new rButton (p5, "SCREENSHOT", 1776, 48, 90, 90,3,7,7);
+        rsced3 = new rButton (p5, "COPY", 1488, 48, 90, 90,3,7,7);
+        rsced4 = new rButton (p5, "DEL", 1584, 48, 90, 90,3,7,7);
 
-        exit = new rButton(p5, "EXIT", 1248, 32, 60, 60, 3, 7,7 );
+        exit = new rButton(p5, "EXIT", 1872, 48, 90, 90, 3, 7,7 );
 
-        sced1 = new cButton(p5,"+",30, 28,50, 3,7,7);
-        sced2 = new cButton(p5,"*",90, 28,50, 3,7,7);
-        sced3 = new cButton(p5,"<",150, 28, 50, 3,7,7);
-        sced4 = new cButton(p5,">",210, 28, 50, 3,7,7);
-        sced5 = new cButton(p5,"X",270, 28, 50, 3,7,7);
+        sced1 = new cButton(p5,"+",45, 42,75, 3,7,7);
+        sced2 = new cButton(p5,"*",135, 42,75, 3,7,7);
+        sced3 = new cButton(p5,"<",225, 42, 75, 3,7,7);
+        sced4 = new cButton(p5,">",315, 42, 75, 3,7,7);
+        sced5 = new cButton(p5,"X",405, 42, 75, 3,7,7);
 
-        cPick = new HSBColorPicker(p5,627, -58, 256, 64);
+        cPick = new HSBColorPicker(p5,940, -87, 384, 96);
 
         delOC = new Popup(p5, "DELOC");
         delSc = new Popup(p5, "DELSC");
         delAll = new Popup(p5, "DELALL");
         delDelAll = new Popup (p5, "USURE??");
 
-        q2 = new cButton(p5, "ENGLINK", 400, 320, 30, 3,7,7);
-        q3 = new cButton(p5, "ESPLINK", 400, 400, 30, 3,7,7);
+        q2 = new cButton(p5, "ENGLINK", 600, 480, 45, 3,7,7);
+        q3 = new cButton(p5, "ESPLINK", 600, 600, 45, 3,7,7);
 
         page = 0; gridon = true; cPickOn = false;
         phase = 255 * PApplet.sin(p5.frameCount*0.1f);
-
     }
 
     public void drawLogo(PApplet p5, int y) {
+
         p5.pushStyle();
 
         p5.noStroke();
         p5.textAlign(p5.CENTER, p5.CENTER);
         p5.textFont(Fonts.getThisFont(0));
         p5.fill(Colors.getThisColor(7));
-        p5.circle(640, y, 170);
+        p5.circle(960, y, 255);
 
         p5.fill(Colors.getThisColor(6));
-        p5.text("OCBox", 640, y);
+        p5.text("OCBox", 960, y);
 
         p5.popStyle();
     }
@@ -182,33 +191,13 @@ public class GUI {
         p5.textFont(Fonts.getThisFont(1));
         p5.fill(Colors.getThisColor(4));
 
-        p5.rect(x, y, 600, 70, 5);
+        p5.rect(x, y, 900, 105, 7);
         p5.fill(Colors.getThisColor(7));
         p5.text(s, x, y);
 
         p5.popStyle();
     }
 
-    public void drawDarkButton(PApplet p5, int x, int y, int w, int h, String s){
-        p5.pushStyle();
-
-        p5.rectMode(p5.CENTER);
-        p5.textAlign(p5.CENTER, p5.CENTER);
-        p5.textFont(Fonts.getThisFont(0));
-        p5.stroke(Colors.getThisColor(7));
-        p5.strokeWeight(4);
-        p5.fill(Colors.getThisColor(3));
-
-        p5.rect(x, y, w, h, 10);
-        p5.fill(Colors.getThisColor(7));
-        p5.text(s, x, y);
-
-        p5.popStyle();
-    }
-
-    public void drawExit(PApplet p5){
-        drawDarkButton(p5, 1180, 34, 200, 60, "SALIR");
-    }
 
     public void drawTextField(PApplet p5, int y, String s) {
         p5.pushStyle();
@@ -221,37 +210,11 @@ public class GUI {
         p5.stroke(Colors.getThisColor(6));
         p5.strokeWeight(1);
 
-
-        p5.rect(640, y, 540, 60, 2);
+        p5.rect(960, y, 810, 90, 3);
         p5.fill(Colors.getThisColor(6));
-        p5.text(s, 640, y);
+        p5.text(s, 960, y);
 
         p5.popStyle();
-    }
-
-    public void drawSymbolButton(PApplet p5, int x, int y, String c) {
-        p5.pushStyle();
-
-        p5.textAlign(p5.CENTER, p5.CENTER);
-        p5.textFont(Fonts.getThisFont(1));
-
-        p5.fill(Colors.getThisColor(3));
-        p5.stroke(Colors.getThisColor(7));
-        p5.strokeWeight(3);
-
-        p5.circle(x, y, 50);
-        p5.fill(Colors.getThisColor(7));
-        p5.text(c, x, y);
-
-        p5.popStyle();
-    }
-
-    public void drawNavigation(PApplet p5){
-        drawSymbolButton(p5, 550, 30, "<<<");
-        drawSymbolButton(p5, 610, 30, "<");
-        drawSymbolButton(p5, 670, 30, ">");
-        drawSymbolButton(p5, 730, 30, ">>>");
-
     }
 
     public void drawPRELOGIN(PApplet p5, PImage l) {
@@ -259,13 +222,14 @@ public class GUI {
         p5.pushStyle();
 
         p5.imageMode(p5.CENTER);
-
         p5.background(Colors.getThisColor(2));
-        p5.image(l, 640, 240, 320, 320);
+
+        p5.image(l, 960, 360, 480, 480);
+
         plog1.display(p5,lang == LANG.ENG);
         plog2.display(p5,lang == LANG.ENG);
-        p5.popStyle();
 
+        p5.popStyle();
     }
 
     public void drawLOGIN(PApplet p5) {
@@ -278,7 +242,7 @@ public class GUI {
         p5.fill(Colors.getThisColor(4));
         p5.noStroke();
 
-        p5.rect(640, 360, 600,360, 20);
+        p5.rect(960, 540, 900,540, 30);
 
         tflogin1.display(p5);
         tflogin2.display(p5);
@@ -286,10 +250,10 @@ public class GUI {
         exit.display(p5,lang == LANG.ENG);
 
         p5.popStyle();
-
     }
 
     public void drawSIGNUP(PApplet p5) {
+
         p5.pushStyle();
 
         p5.background(Colors.getThisColor(2));
@@ -298,7 +262,7 @@ public class GUI {
         p5.fill(Colors.getThisColor(4));
         p5.noStroke();
 
-        p5.rect(640, 360, 600,600, 20);
+        p5.rect(960, 540, 900,900, 30);
 
         tfsignup1.display(p5);
         tfsignup2.display(p5);
@@ -312,6 +276,7 @@ public class GUI {
     }
 
     public void drawMAIN(PApplet p5, PImage l) {
+
         p5.pushStyle();
 
         p5.background(Colors.getThisColor(1));
@@ -320,7 +285,8 @@ public class GUI {
         p5.textAlign(p5.CENTER, p5.CENTER);
         p5.fill(Colors.getThisColor(4));
         p5.noStroke();
-        p5.image(l, 640, 150, 240, 240);
+
+        p5.image(l, 960, 225, 360, 360);
 
         m1.display(p5,lang == LANG.ENG);
         m2.display(p5,lang == LANG.ENG);
@@ -332,7 +298,9 @@ public class GUI {
         p5.popStyle();
     }
 
+
     public void drawQNA(PApplet p5) {
+
         p5.pushStyle();
 
         p5.background(Colors.getThisColor(1));
@@ -340,20 +308,20 @@ public class GUI {
         p5.textAlign(p5.CENTER, p5.CENTER);
         p5.fill(Colors.getThisColor(5));
         p5.stroke(Colors.getThisColor(6));
-        p5.strokeWeight(4);
+        p5.strokeWeight(6);
 
-
-        p5.rect(640, 360, 526,366, 20);
+        p5.rect(960, 540, 789,549, 30);
 
         q2.display(p5);
         q3.display(p5);
+
         p5.fill(Colors.getThisColor(6));
         p5.textFont(Fonts.getThisFont(0));
-        p5.text("LINKS/ENLACES", 640, 240);
-        p5.textFont(Fonts.getThisFont(1));
-        p5.text("Tutorial en castellano", 562, 400);
-        p5.text("English tutorial", 522, 320);
+        p5.text("LINKS/ENLACES", 960, 360);
 
+        p5.textFont(Fonts.getThisFont(1));
+        p5.text("Tutorial en castellano", 843, 600);
+        p5.text("English tutorial", 783, 480);
 
         exit.display(p5,lang == LANG.ENG);
 
@@ -361,6 +329,7 @@ public class GUI {
     }
 
     public void drawSETTINGS(PApplet p5) {
+
         p5.pushStyle();
 
         p5.background(Colors.getThisColor(1));
@@ -368,23 +337,25 @@ public class GUI {
         p5.textAlign(p5.CENTER, p5.CENTER);
         p5.fill(Colors.getThisColor(3));
         p5.stroke(Colors.getThisColor(7));
-        p5.strokeWeight(2);
+        p5.strokeWeight(3);
 
-        p5.rect(640, 360, 720,360, 20);
+        p5.rect(960, 540, 1080,540, 30);
 
         p5.fill(Colors.getThisColor(7));
+
         if (lang == LANG.ESP) {
-            p5.text("AJUSTES", 640, 240);
-            p5.text("Idioma:", 448, 360);
-            p5.text("Modo:", 434, 420);
+            p5.text("AJUSTES", 960, 360);
+            p5.text("Idioma:", 672, 540);
+            p5.text("Modo:", 651, 630);
         }else{
-            p5.text("SETTINGS", 640, 240);
-            p5.text("Language:", 462, 360);
-            p5.text("Mode:", 434, 420);
+            p5.text("SETTINGS", 960, 360);
+            p5.text("Language:", 693, 540);
+            p5.text("Mode:", 651, 630);
         }
 
         slVolume.display(p5);
-        p5.text((int) slVolume.v,  880, 270);
+        p5.text((int) slVolume.v, 1320, 405);
+
         sCol.display(p5,lang == LANG.ENG);
         sLang.display(p5,lang == LANG.ENG);
         nuke.display(p5,lang == LANG.ENG);
@@ -401,7 +372,7 @@ public class GUI {
         p5.rectMode(p5.CENTER);
         p5.textAlign(p5.CENTER, p5.CENTER);
         p5.stroke(Colors.getThisColor(7));
-        p5.strokeWeight(4);
+        p5.strokeWeight(6);
         p5.textFont(Fonts.getThisFont(1));
 
         for (int i = (page*15); i < (page+1)*15; i++){
@@ -412,12 +383,14 @@ public class GUI {
         for (int i = 0; i < navigation.length; i++){
             navigation[i].display(p5);
         }
+
         exit.display(p5,lang == LANG.ENG);
 
         p5.popStyle();
     }
 
     public void drawSCENEEDITOR(PApplet p5, Scene scene) {
+
         p5.pushStyle();
 
         p5.textAlign(p5.LEFT, p5.CENTER);
@@ -434,33 +407,42 @@ public class GUI {
         exit.display(p5,lang == LANG.ENG);
 
         p5.fill(Colors.getThisColor(5));
-        p5.strokeWeight(4);
+        p5.strokeWeight(6);
         p5.stroke(Colors.getThisColor(7));
-        p5.rect(6, 60, 292, 652, 20);
+
+        p5.rect(9, 90, 438, 978, 30);
 
         sced1.display(p5);
         sced2.display(p5);
         sced3.display(p5);
         sced4.display(p5);
         sced5.display(p5);
+
         if (scene.nObjects != 0) {
             if (scene.sel != Scene.scInstance.OCSELECT) {
+
                 if (scene.stands[scene.currentObject] instanceof OC) {
+
                     for (int i = 0; i < 10; i++) {
                         tfsced[i].display(p5);
                     }
+
                     for (int i = 5; i < 10; i++) {
                         if (slSced[i] != null) {
                             slSced[i].display(p5);
                         }
                     }
+
                     slSced[1].display(p5);
                     slSced[3].display(p5);
                 }
-            }else {
+
+            } else {
                 tfSelectSearch.display(p5);
             }
+
         } else {
+
             if (scene.sel == Scene.scInstance.OCSELECT){
                 tfSelectSearch.display(p5);
             }
@@ -469,23 +451,34 @@ public class GUI {
         p5.fill(255);
         p5.rect(scene.scX, scene.scY, scene.scW, scene.scH);
 
+
         if (gridon && scene.nObjects != 0) {
+
             if (scene.scale != 0) {
-                p5.strokeWeight(2);
+
+                p5.strokeWeight(3);
 
                 for (int i = scene.scX; i <= scene.scX + scene.scW; i += (int) scene.scale) {
                     p5.stroke(0);
                     p5.line(i, scene.scY, i, scene.scY + scene.scH);
                 }
+
                 for (int j = scene.scY; j <= scene.scY + scene.scH; j += (int) scene.scale) {
                     p5.stroke(0);
                     p5.line(scene.scX, j, scene.scX + scene.scW, j);
                 }
+
                 p5.stroke(Colors.getThisColor(7));
-                p5.strokeWeight(5);
-                p5.line(scene.scX, scene.scY - 10, scene.scX + scene.scale, scene.scY - 10);
+                p5.strokeWeight(8);
+
+                p5.line(scene.scX,
+                        scene.scY - 15,
+                        scene.scX + scene.scale,
+                        scene.scY - 15);
+
                 float length = (scene.pixelSize * scene.scale);
                 String unit;
+
                 if (length >= 1000f) {
                     unit = "km";
                 } else if (length < 1f) {
@@ -493,16 +486,27 @@ public class GUI {
                 } else {
                     unit = "m";
                 }
-                if (unit.equals("m")) {
-                    p5.text(String.format("%.0f", length) + unit, scene.scX, scene.scY - 26);
-                } else if (unit.equals("mm")) {
-                    p5.text(String.format("%.0f", length * 1000f) + unit, scene.scX, scene.scY - 26);
-                } else {
-                    p5.text(String.format("%.0f", length * 0.001f) + unit, scene.scX, scene.scY - 26);
-                }
 
+                if (unit.equals("m")) {
+                    p5.text(String.format("%.0f", length) + unit,
+                            scene.scX,
+                            scene.scY - 39);
+
+                } else if (unit.equals("mm")) {
+
+                    p5.text(String.format("%.0f", length * 1000f) + unit,
+                            scene.scX,
+                            scene.scY - 39);
+
+                } else {
+
+                    p5.text(String.format("%.0f", length * 0.001f) + unit,
+                            scene.scX,
+                            scene.scY - 39);
+                }
             }
         }
+
         if (cPickOn){
             cPick.display(p5);
             cPick.displayColors(p5);
@@ -510,107 +514,101 @@ public class GUI {
 
         p5.fill(0);
 
-
-        //p5.text("Name: []",10, 80 );
-        // p5.text("Height: []",10, 130);
-        //p5.text("0.1 <===O===> 20",10, 155);
-        // p5.text("0.1 <===O===> 20",10, 215);
-        //p5.text("IMC: ",10, 250);
-        //p5.text("0.1 <===O===> 20",10, 275);
-        /*p5.text("0.1 <===O===> 20",10, 335);
-
-        p5.text("Head/Body Ratio: []",10, 400);
-        p5.text("0.1 <===O===> 20",10, 425);
-        p5.text("Estimated age: []",10, 460);
-        p5.text("0.1 <===O===> 20",10, 485);
-
-        p5.text("R: []", 10, 550);
-        p5.text("0 <===O===> 255", 10, 575);
-        p5.text("G: []", 10, 610);
-        p5.text("0 <===O===> 255", 10, 635);
-        p5.text("B: []", 10, 670);
-        p5.text("0 <===O===> 255", 10, 695);
-
-        */
         if (scene.nObjects>0) {
+
             p5.noFill();
             p5.stroke(255, 0, 0, phase);
-            p5.strokeWeight(4);
+            p5.strokeWeight(6);
             p5.rectMode(p5.CORNER);
 
-            if (scene.stands[scene.currentObject] != null && !(scene.stands[scene.currentObject] instanceof OC)) {
-                p5.rect(scene.stands[scene.currentObject].x - 2,
-                        scene.stands[scene.currentObject].y - 2,
-                        scene.stands[scene.currentObject].width + 3,
-                        scene.stands[scene.currentObject].height + 3);
+            if (scene.stands[scene.currentObject] != null &&
+                    !(scene.stands[scene.currentObject] instanceof OC)) {
+
+                p5.rect(scene.stands[scene.currentObject].x - 3,
+                        scene.stands[scene.currentObject].y - 3,
+                        scene.stands[scene.currentObject].width + 4,
+                        scene.stands[scene.currentObject].height + 4);
+
             } else if (scene.stands[scene.currentObject] instanceof OC){
+
                 OC oc = (OC)scene.stands[scene.currentObject];
-                if (scene.stands[scene.currentObject].width > scene.stands[scene.currentObject].height/oc.bhratio){
-                    p5.ellipse(oc.x+oc.width / 2, oc.y + (oc.height/oc.bhratio)/2, oc.height/oc.bhratio+6, oc.height/oc.bhratio+6);
+
+                if (scene.stands[scene.currentObject].width >
+                        scene.stands[scene.currentObject].height/oc.bhratio){
+
+                    p5.ellipse(
+                            oc.x+oc.width / 2,
+                            oc.y + (oc.height/oc.bhratio)/2,
+                            oc.height/oc.bhratio+9,
+                            oc.height/oc.bhratio+9);
+
                 } else {
-                    p5.ellipse(oc.x+oc.width / 2, oc.y + (oc.height/oc.bhratio)/2, oc.width+6, oc.height/oc.bhratio+6);
+
+                    p5.ellipse(
+                            oc.x+oc.width / 2,
+                            oc.y + (oc.height/oc.bhratio)/2,
+                            oc.width+9,
+                            oc.height/oc.bhratio+9);
                 }
             }
         }
         if (scene.nObjects == 0 && scene.sel == Scene.scInstance.DISPLAY){
-            p5.textFont(Fonts.getThisFont(2));
-            p5.text(Languages.translate("NOOC1", this.lang == LANG.ENG?1:2),10, 80);
-            p5.text(Languages.translate("NOOC2", this.lang == LANG.ENG?1:2),10, 100);
-        }
 
+            p5.textFont(Fonts.getThisFont(2));
+            p5.text(
+                    Languages.translate("NOOC1", this.lang == LANG.ENG?1:2),
+                    15, 120);
+            p5.text(
+                    Languages.translate("NOOC2", this.lang == LANG.ENG?1:2),
+                    15, 150);
+        }
         p5.popStyle();
     }
 
     public void drawOCVIEWER(PApplet p5){
+
         p5.pushStyle();
-
         p5.background(Colors.getThisColor(1));
-
         p5.textFont(Fonts.getThisFont(1));
         p5.textMode(p5.LEFT);
         p5.stroke(Colors.getThisColor(6));
-        p5.strokeWeight(3);
+        p5.strokeWeight(4);
         p5.fill(Colors.getThisColor(2));
 
-        int x = 10;
-        p5.rect(x, 76, 256, 632, 15);
-        p5.line(x, 128, x + (256), 128);
-        p5.line(x, 124, x + (256), 124);
-
+        int x = 15;
+        p5.rect(x, 114, 384, 948, 22);
+        p5.line(x, 192, x + (384), 192);
+        p5.line(x, 186, x + (384), 186);
         p5.fill(Colors.getThisColor(6));
 
-        p5.textMode(p5.LEFT);
         if (lang == LANG.ESP) {
-            p5.text("Nombre", x + 10, 110);
-            p5.text("Altura [m]", x + 10, 170);
-            p5.text("Peso [kg]", x + 10, 230);
-            p5.text("IMC", x + 10, 290);
-            p5.text("Anchura [m]", x + 10, 360);
+            p5.text("Nombre", x + 15, 165);
+            p5.text("Altura [m]", x + 15, 255);
+            p5.text("Peso [kg]", x + 15, 345);
+            p5.text("IMC", x + 15, 435);
+            p5.text("Anchura [m]", x + 15, 540);
             p5.textFont(Fonts.getThisFont(2));
-            p5.text("Ratio cabeza/cuerpo", x + 10, 420);
-            p5.text("Edad aproximada [años]", x + 10, 480);
+            p5.text("Ratio cabeza/cuerpo", x + 15, 630);
+            p5.text("Edad aproximada [años]", x + 15, 720);
             p5.textFont(Fonts.getThisFont(1));
-            p5.text("ID único", x + 10, 670);
-        } else if (lang == LANG.ENG) {
-            p5.text("Name", x + 10, 110);
-            p5.text("Height[m]", x + 10, 170);
-            p5.text("Weight[kg]", x + 10, 230);
-            p5.text("Body Mass Index", x + 10, 290);
-            p5.text("Width [m]", x + 10, 360);
+            p5.text("ID único", x + 15, 1005);
+        } else {
+            p5.text("Name", x + 15, 165);
+            p5.text("Height[m]", x + 15, 255);
+            p5.text("Weight[kg]", x + 15, 345);
+            p5.text("Body Mass Index", x + 15, 435);
+            p5.text("Width [m]", x + 15, 540);
             p5.textFont(Fonts.getThisFont(2));
-            p5.text("Head/Body ratio", x + 10, 420);
-            p5.text("Average Age [years]", x + 10, 480);
+            p5.text("Head/Body ratio", x + 15, 630);
+            p5.text("Average Age [years]", x + 15, 720);
             p5.textFont(Fonts.getThisFont(1));
-            p5.text("Unique ID", x + 10, 670);
+            p5.text("Unique ID", x + 15, 1005);
         }
-
         for (int i = 0; i < navigation.length; i++){
             navigation[i].display(p5);
         }
         tfInfoSearch.display(p5);
         exit.display(p5,lang == LANG.ENG);
-
         p5.popStyle();
-
     }
 }

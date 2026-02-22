@@ -187,7 +187,7 @@ public class rButton {
         p5.fill(Colors.getThisColor(sc.nObjects != 0? 7 : 8));
         p5.text(Languages.translate("OCS", l) +sc.nObjects, this.x, this.y-10);
         p5.text((Languages.translate("TALL", l)) , this.x, this.y + 30);
-        p5.text(sc.getTallestObject(), this.x, this.y + 50);
+        p5.text(sc.getTallestObject(), this.x, this.y + 60);
         p5.popStyle();
     }
 
@@ -205,18 +205,9 @@ public class rButton {
     public void updateSceneButton(int buttonIndex) {
         int i = buttonIndex % 5;
         int j = (buttonIndex / 5) % 3;
-
         int x = i * 250 + 120;
         int y = j * 212 + 200;
-
         this.x = x;
         this.y = y;
     }
-
-    public boolean updateHandCursor(PApplet p5){
-        return mouseOverButton(p5) && enabled;
-    }
-
-
-
 }

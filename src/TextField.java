@@ -4,23 +4,14 @@ import static processing.core.PConstants.BACKSPACE;
 public class TextField {
 
     int x, y, h, w;
-
     int bgColor, fgColor, selectedColor, borderColor;
-
     int borderWeight = 1;
-
     String token;
-
     String text = "";
-
     String trueText;
-
-    int textSize = 20;
-
+    int textSize = 30;
     boolean selected = false;
-
     boolean enabled = true;
-
     boolean intOnly = false;
 
     public TextField(PApplet p5, String token, int x, int y, int w, int h, boolean intOnly) {

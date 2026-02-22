@@ -95,6 +95,7 @@ public class Main extends PApplet {
             }
             case QNA -> gui.drawQNA(this);
             case SCENESELECTOR -> {
+                refactorSceneButtons();
                 gui.drawSCENESELECTOR(this);
 
                 for (int i = 0; i < scenes.size(); i++) {
@@ -128,13 +129,11 @@ public class Main extends PApplet {
                 textSize(24);
                 fill(0);
                 if (scene.sel != Scene.scInstance.OCSELECT && scene.nObjects != 0 && scene.stands[scene.currentObject] instanceof OC) {
-                    if (gui.lang == LANG.ESP) {
-                        text("Peso(kg): ", 25, 210 - 4);
-                        text("Ancho(m): ", 25, 330 - 4);
-                    } else {
-                        text("Weight(kg): ", 25, 210 - 4);
-                        text("Width(m): ", 25, 330 - 4);
-                    }
+                    String txtWeight = (gui.lang == LANG.ESP) ? "Peso(kg): " : "Weight(kg): ";
+                    String txtWidth  = (gui.lang == LANG.ESP) ? "Ancho(m): " : "Width(m): ";
+
+                    text(txtWeight, 37.5f, 309);
+                    text(txtWidth,  37.5f, 489);
                 }
                 popStyle();
 
@@ -241,22 +240,22 @@ public class Main extends PApplet {
                 if (gui.delAll.on){
                     background(255,0,0);
                     if (gui.delAll.yes.mouseOverButton(this)) {
-                        gui.delAll.yes.x = 450 + random(-1, 1);
-                        gui.delAll.yes.y = 400 + random(-1, 1);
+                        gui.delAll.yes.x = 675 + random(-1, 1);
+                        gui.delAll.yes.y = 600 + random(-1, 1);
                     } else {
-                        gui.delAll.yes.x = 450;
-                        gui.delAll.yes.y = 400;
+                        gui.delAll.yes.x = 675;
+                        gui.delAll.yes.y = 600;
                     }
                     gui.delAll.display(this, "", gui.lang == LANG.ESP?2:1);
                 }
                 if (gui.delDelAll.on){
                     background(127, 0, 0);
                     if (gui.delDelAll.yes.mouseOverButton(this)) {
-                        gui.delDelAll.yes.x = 450 + random(-2, 2);
-                        gui.delDelAll.yes.y = 440 + random(-2, 2);
+                        gui.delDelAll.yes.x = 675 + random(-2, 2);
+                        gui.delDelAll.yes.y = 660 + random(-2, 2);
                     } else {
-                        gui.delDelAll.yes.x = 450;
-                        gui.delDelAll.yes.y = 440;
+                        gui.delDelAll.yes.x = 675;
+                        gui.delDelAll.yes.y = 600;
                     }
                     gui.delDelAll.display(this, "", gui.lang == LANG.ESP?2:1);
                 }
@@ -742,23 +741,44 @@ public class Main extends PApplet {
     }
 
     public void mouseDragged() {
+
         if (gui.currentScreen == GUI.SCREEN.SCENEEDITOR) {
             if (firstClick) {
+                Slider selectedSl = null;
                 for (int i = 0; i < gui.slSced.length; i++) {
                     if (i == 2 || i == 4) continue;
                     if (gui.slSced[i] != null && gui.slSced[i].mouseOnSlider(this)) {
+                        selectedSl = gui.slSced[i];
                         gui.slSced[i].checkSlider(this, scene);
-                        if (i >= 7 && i < 10) gui.tfsced[i].setText(String.valueOf((int) gui.slSced[i].v));
-                        else gui.tfsced[i].setText(String.format("%.2f", gui.slSced[i].v));
+                        if (i >= 7 && i < 10) gui.tfsced[i].setText(String.valueOf((int) gui.slSced[i].getValue()));
+                        else gui.tfsced[i].setText(String.format("%.2f", gui.slSced[i].getValue()));
                     }
+                }
+                if (selectedSl == gui.slSced[5]) {
+                    gui.tfsced[5].setEnabled(true);
+                    gui.tfsced[6].setEnabled(false);
+                    float ratio = gui.slSced[5].getValue();
+                    if (ratio >= 7.99f) ratio = 7.99f;
+                    if (ratio <= 4.01f) ratio = 4.01f;
+                    float age = (float)Math.log((ratio - 4.0f) / (8.0f - ratio)) / 0.0741f;
+                    gui.slSced[6].setValue(age);
+                    gui.tfsced[6].setText(String.format("%.2f", gui.slSced[6].getValue()));
+                }
+                else if (selectedSl == gui.slSced[6]) {
+                    gui.tfsced[5].setEnabled(false);
+                    gui.tfsced[6].setEnabled(true);
+                    float age = gui.slSced[6].getValue();
+                    float ratio = 4.0f + 4.0f / (1.0f + (float)Math.exp(-0.0741f * age));
+                    gui.slSced[5].setValue(ratio);
+                    gui.tfsced[5].setText(String.format("%.2f", gui.slSced[5].getValue()));
                 }
             }
             updateCalculatedValues();
             if (gui.cPickOn) {
                 gui.cPick.mouseDragged(this);
             }
-
-        } else if (gui.currentScreen == GUI.SCREEN.SETTINGS) {
+        }
+        else if (gui.currentScreen == GUI.SCREEN.SETTINGS) {
             gui.slVolume.checkSlider(this);
             Sounds.redoAmp(gui.slVolume.v);
         }
@@ -847,11 +867,11 @@ public class Main extends PApplet {
 
             infos[i].ID = i % 5;
             infos[i].page = i / 5;
-            infos[i].x = 480 + ((infos[i].ID - 1)) * 200;
+            infos[i].x = 720 + ((infos[i].ID - 1)) * 300;
 
             selects[i].ID = i % 10;
             selects[i].page = i / 10;
-            selects[i].y = 132 + (selects[i].ID * 58);
+            selects[i].y = 198 + (selects[i].ID * 87);
         }
     }
 
@@ -886,12 +906,15 @@ public class Main extends PApplet {
             gui.scenes.get(i).updateSceneButton(i);
         }
         gui.scenes.get(scenes.size()).updateSceneButton(scenes.size());
+        refactorSceneButtons();
+    }
 
-        for (Scene s : scenes) {
-            int k = s.ID % 5;
-            int j = (s.ID / 5) % 3;
-            gui.scenes.get(s.ID).x = k * 250 + 120;
-            gui.scenes.get(s.ID).y = j * 212 + 200;
+    private void refactorSceneButtons(){
+        for (int i = 0; i < scenes.size() + 1; i++) {
+            int k = i % 5;
+            int j = (i / 5) % 3;
+            gui.scenes.get(i).x = k * 375 + 180;
+            gui.scenes.get(i).y = j * 318 + 300;
         }
     }
 
@@ -1103,7 +1126,7 @@ public class Main extends PApplet {
                         newSlab.oc = infos[i].oc;
                         newSlab.ID = searchIndex;
                         newSlab.page = searchIndex / 5;
-                        newSlab.x = 480 + ((newSlab.ID - 1) - newSlab.page * 5) * 200;
+                        newSlab.x = 720 + ((newSlab.ID - 1) - newSlab.page * 5) * 300;
                         tempList.add(newSlab);
                         searchIndex++;
                     }
@@ -1134,7 +1157,7 @@ public class Main extends PApplet {
                         newSlab.ID = searchIndex % 10;
                         newSlab.page = searchIndex / 10;
 
-                        newSlab.y = 132 + (newSlab.ID * 58);
+                        newSlab.y = 198 + (newSlab.ID * 87);
 
                         tempList.add(newSlab);
                         searchIndex++;
