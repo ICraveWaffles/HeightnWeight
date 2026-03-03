@@ -39,3 +39,5 @@ DELALL;Are you sure you want to delete everything?;¿Seguro que quieres eliminar
 USURE??;Are you REALLY sure?;¿Estás SEGURO que quieres eliminar todo?
 NOOC1;This scene is empty!;¡Esta escena está vacía!
 NOOC2;Add or create a new OC now!;¡Añade o crea un personaje ahora!
+STAND1;A Stand is currently selected!;Un Estante está seleccionado!
+STAND2;You may not edit Stands;Los Estantes no se pueden editar.

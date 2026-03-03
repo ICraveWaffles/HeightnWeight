@@ -553,14 +553,14 @@ public class GUI {
             }
         }
         if (scene.nObjects == 0 && scene.sel == Scene.scInstance.DISPLAY){
-
             p5.textFont(Fonts.getThisFont(2));
-            p5.text(
-                    Languages.translate("NOOC1", this.lang == LANG.ENG?1:2),
-                    15, 120);
-            p5.text(
-                    Languages.translate("NOOC2", this.lang == LANG.ENG?1:2),
-                    15, 150);
+            p5.text(Languages.translate("NOOC1", this.lang == LANG.ENG?1:2), 15, 120);
+            p5.text(Languages.translate("NOOC2", this.lang == LANG.ENG?1:2), 15, 150);
+        } else if (!(scene.stands[scene.currentObject] instanceof OC)&& scene.sel== Scene.scInstance.DISPLAY) {
+            p5.textFont(Fonts.getThisFont(2));
+            p5.text(Languages.translate("STAND1", this.lang == LANG.ENG?1:2), 15, 120);
+            p5.text(Languages.translate("STAND2", this.lang == LANG.ENG?1:2), 15, 150);
+
         }
         p5.popStyle();
     }

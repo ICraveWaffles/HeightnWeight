@@ -1,6 +1,5 @@
 import processing.core.PApplet;
 import processing.core.PImage;
-import processing.sound.*;
 import java.util.ArrayList;
 
 public class Main extends PApplet {
@@ -60,7 +59,7 @@ public class Main extends PApplet {
             throw new RuntimeException(e);
         }
         translateEverything();
-        Sounds.instanceSounds(this);
+        Sounds.instanceSounds();
 
         gui.tfsced[2].setEnabled(false);
         gui.tfsced[4].setEnabled(false);

@@ -2,6 +2,7 @@
   <library name="core-4.4.10">
     <CLASSES>
       <root url="jar://$PROJECT_DIR$/../../../../Program Files/Processing/app/resources/core/library/core-4.4.10.jar!/" />
+      <root url="jar://$USER_HOME$/Documents/Processing/libraries/sound/library/sound.jar!/" />
     </CLASSES>
     <JAVADOC />
     <SOURCES />
