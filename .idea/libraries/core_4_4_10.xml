@@ -3,6 +3,7 @@
     <CLASSES>
       <root url="jar://$PROJECT_DIR$/../../../../Program Files/Processing/app/resources/core/library/core-4.4.10.jar!/" />
       <root url="jar://$USER_HOME$/Documents/Processing/libraries/sound/library/sound.jar!/" />
+      <root url="jar://$USER_HOME$/Downloads/mysql-connector-j-8.3.0.jar!/" />
     </CLASSES>
     <JAVADOC />
     <SOURCES />

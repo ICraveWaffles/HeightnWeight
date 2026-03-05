@@ -1,8 +1,12 @@
+import database.Database;
 import processing.core.PApplet;
 import processing.core.PImage;
 import java.util.ArrayList;
 
 public class Main extends PApplet {
+
+    Database b;
+
     Fonts fonts;
     GUI gui;
     boolean sceneEditorInitialized = false;
@@ -51,6 +55,10 @@ public class Main extends PApplet {
     }
 
     public void setup() {
+        b = new Database("admin", "12345", "ocbase");
+        b.connect();
+
+
         fonts = new Fonts(this);
         gui = new GUI(this);
         try {
@@ -67,7 +75,9 @@ public class Main extends PApplet {
         gui.slSced[4].setEnabled(false);
         bLogo = loadImage("data/ocblack.png");
         wLogo = loadImage("data/ocwhite.png");
+
     }
+
 
     public void draw() {
         if (!gui.rsced2.mouseOverButton(this)) {
