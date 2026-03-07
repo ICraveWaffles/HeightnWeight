@@ -1,4 +1,5 @@
 import processing.core.PApplet;
+import processing.core.PImage;
 
 public class HSBColorPicker {
 
@@ -15,6 +16,9 @@ public class HSBColorPicker {
     boolean draggingSlider = false;
     boolean draggingPicker = false;
     final float pickerYOffset = 120;
+
+    PImage pickerImage;
+    boolean pickerDirty = true;
 
     public HSBColorPicker(PApplet p5, float x, float y, float w, float h) {
 
@@ -39,20 +43,11 @@ public class HSBColorPicker {
 
         hueSlider.display(p5);
 
-        p5.colorMode(p5.HSB,255);
-
-        for(float xm = x; xm < x+w; xm+=1f){
-
-            float bri = p5.map(xm,x,x+w,0,255);
-
-            for(float ym = y + pickerYOffset; ym < y + h + pickerYOffset; ym+=1f){
-
-                float sat = p5.map(ym, y + pickerYOffset, y + h + pickerYOffset, 0,255);
-
-                p5.stroke(hueValue,sat,bri);
-                p5.point(xm,ym);
-            }
+        if(pickerDirty){
+            updatePickerImage(p5);
         }
+
+        p5.image(pickerImage, x, y + pickerYOffset);
 
         p5.stroke(brightnessValue < 128 ? 255 : 0);
         p5.line(xClick, yClick-6, xClick, yClick+6);
@@ -83,6 +78,34 @@ public class HSBColorPicker {
         p5.text("B: "+b, previewX+rectSize+15, previewY+60);
 
         p5.popStyle();
+    }
+
+    private void updatePickerImage(PApplet p5){
+
+        int wInt = (int)w;
+        int hInt = (int)h;
+
+        pickerImage = p5.createImage(wInt, hInt, p5.RGB);
+
+        p5.colorMode(p5.HSB,255);
+
+        pickerImage.loadPixels();
+
+        for(int ix = 0; ix < wInt; ix++){
+
+            float bri = p5.map(ix,0,wInt,0,255);
+
+            for(int iy = 0; iy < hInt; iy++){
+
+                float sat = p5.map(iy,0,hInt,0,255);
+
+                pickerImage.pixels[iy*wInt + ix] =
+                        p5.color(hueValue, sat, bri);
+            }
+        }
+
+        pickerImage.updatePixels();
+        pickerDirty = false;
     }
 
     public void updateColor(PApplet p5){
@@ -121,6 +144,7 @@ public class HSBColorPicker {
             draggingSlider = true;
             hueSlider.checkSlider(p5);
             hueValue = hueSlider.getValue();
+            pickerDirty = true;
         }
         else if(isOverPicker(p5)){
             draggingPicker = true;
@@ -136,6 +160,7 @@ public class HSBColorPicker {
         if(draggingSlider){
             hueSlider.checkSlider(p5);
             hueValue = hueSlider.getValue();
+            pickerDirty = true;
         }
         else if(draggingPicker){
             xClick = p5.constrain(p5.mouseX, x, x+w);

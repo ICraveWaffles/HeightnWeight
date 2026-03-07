@@ -9,8 +9,8 @@ public class Sounds {
 
     public static void instanceSounds() {
         sounds = new Clip[18];
-        sounds[0] = loadClip("data/type.wav");
-        sounds[1] = loadClip("data/detype.wav");
+        sounds[0] = loadClip("data/Left.wav");
+        sounds[1] = loadClip("data/Right.wav");
         sounds[2] = loadClip("data/FarLeft.wav");
         sounds[3] = loadClip("data/Left.wav");
         sounds[4] = loadClip("data/Right.wav");
