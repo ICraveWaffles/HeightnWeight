@@ -7,20 +7,24 @@ public class Database {
     Connection connection;
     Statement query;
 
-    String user, pw, dbName;
+    String user, password, databaseName;
 
     boolean connected = false;
 
-    public Database(String user, String pw, String dbName){
+    public Database(String user, String password, String databaseName){
         this.user = user;
-        this.pw = pw;
-        this.dbName = dbName;
+        this.password = password;
+        this.databaseName = databaseName;
     }
 
     public void connect(){
         try {
             Class.forName("com.mysql.jdbc.Driver");
-            connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/"+dbName, user, pw);
+            connection = DriverManager.getConnection(
+                    "jdbc:mysql://localhost:3306/" + databaseName,
+                    user,
+                    password
+            );
             query = connection.createStatement();
             System.out.print("Successfully connected to database");
             connected = true;
@@ -30,24 +34,28 @@ public class Database {
         }
     }
 
-    public String getInfo(String table, String column, String pk, String id){
+    public String getInfo(String objectName, String attributeName, String primaryKey, String primaryKeyValue){
         try{
-            String q =  "SELECT " + column +
-                    " FROM " + table +
-                    " WHERE "+ pk  + " = '" + id + "' ";
+            String q = "SELECT " + attributeName +
+                    " FROM " + objectName +
+                    " WHERE " + primaryKey + " = '" + primaryKeyValue + "'";
+
             System.out.println(q);
-            ResultSet rs= query.executeQuery(q);
+
+            ResultSet rs = query.executeQuery(q);
             rs.next();
-            return rs.getString(column);
+
+            return rs.getString(attributeName);
         }
         catch(Exception e){
             System.out.println(e);
         }
-        return "neverUser";
+        return null;
     }
 
-    public int getRowCount(String tableName){
-        String q = "SELECT COUNT(*) AS num FROM " + tableName;
+    public int getRowCount(String objectName){
+        String q = "SELECT COUNT(*) AS num FROM " + objectName;
+
         try{
             ResultSet rs = query.executeQuery(q);
             rs.next();
@@ -56,28 +64,85 @@ public class Database {
         catch(Exception e){
             System.out.println(e);
         }
+
         return 0;
     }
 
-    public String[] getColumnValues(String tableName, String columnName){
-        int n = getRowCount(tableName);
-        String[] info = new String[n];
-        String q = "SELECT " + columnName +
-                " FROM " + tableName +
-                " ORDER BY " + columnName + " ASC";
+    public String[] getColumnValues(String objectName, String attributeName){
+        int rowCount = getRowCount(objectName);
+        String[] values = new String[rowCount];
+
+        String q = "SELECT " + attributeName +
+                " FROM " + objectName;
+
         System.out.println(q);
+
         try{
             ResultSet rs = query.executeQuery(q);
-            int f = 0;
+
+            int index = 0;
+
             while(rs.next()){
-                info[f] = rs.getString(1);
-                f++;
+                values[index] = rs.getString(attributeName);
+                index++;
             }
         }
         catch(Exception e){
             System.out.println(e);
         }
-        return info;
+
+        return values;
     }
 
+    public void insert(String objectName, String attributeNames, String values){
+
+        String q = "INSERT INTO " + objectName +
+                " (" + attributeNames + ") VALUES (" + values + ")";
+
+        try{
+            query.executeUpdate(q);
+        }
+        catch(Exception e){
+            System.out.println(e);
+        }
+    }
+
+    public void update(String objectName, String attributeName, String newValue, String primaryKey, String primaryKeyValue){
+
+        String q = "UPDATE " + objectName +
+                " SET " + attributeName + " = '" + newValue + "'" +
+                " WHERE " + primaryKey + " = '" + primaryKeyValue + "'";
+
+        try{
+            query.executeUpdate(q);
+        }
+        catch(Exception e){
+            System.out.println(e);
+        }
+    }
+
+    public void delete(String objectName, String primaryKey, String primaryKeyValue){
+
+        String q = "DELETE FROM " + objectName +
+                " WHERE " + primaryKey + " = '" + primaryKeyValue + "'";
+
+        try{
+            query.executeUpdate(q);
+        }
+        catch(Exception e){
+            System.out.println(e);
+        }
+    }
+
+    public void close(){
+
+        try{
+            if(connection != null){
+                connection.close();
+            }
+        }
+        catch(Exception e){
+            System.out.println(e);
+        }
+    }
 }

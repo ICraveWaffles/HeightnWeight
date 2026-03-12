@@ -37,17 +37,7 @@ public class Main extends PApplet {
     public void settings() {
         fullScreen();
         smooth(100);
-        PImage bananaPic = loadImage("data/Bananana.png");
-        PImage gabinett = loadImage("data/gabinett.png");
-        PImage dooor = loadImage("data/door.jpg");
 
-        banana = new Stand("Plátano", 0.2f, 0.07f, bananaPic);
-        cabinet = new Stand("Gabinete", 0.5f, 0.8f, gabinett);
-        door = new Stand("Puerta", 0.6f, 2f, dooor);
-
-        allStands[0] = banana;
-        allStands[1] = cabinet;
-        allStands[2] = door;
 
         allOCs = new OC[0];
         scenes.add(new Scene(0));
@@ -58,6 +48,17 @@ public class Main extends PApplet {
         b = new Database("admin", "12345", "ocbase");
         b.connect();
 
+        for (int i = 1; i < 4;i++){
+            allStands[i-1] = new Stand();
+            allStands[i-1].uniqueID = -i;
+            allStands[i-1].ID = -i;
+            allStands[i-1].tHeight = Float.parseFloat(b.getInfo("stand", "tHeight", "ID", "-"+i));
+            allStands[i-1].tWidth = Float.parseFloat(b.getInfo("stand", "tWidth", "ID", "-"+i));
+            allStands[i-1].name = b.getInfo("stand", "name", "ID", "-"+i);
+        }
+        allStands[0].pic = loadImage("data/Bananana.png");;
+        allStands[1].pic = loadImage("data/gabinett.png");;
+        allStands[2].pic = loadImage("data/door.jpg");
 
         fonts = new Fonts(this);
         gui = new GUI(this);
@@ -702,9 +703,13 @@ public class Main extends PApplet {
                 }
 
                 if (!anyTextFieldSelected) {
-                    if (key == '1' && scene.isInScene(banana.uniqueID)) scene.addObject(banana);
-                    if (key == '2' && scene.isInScene(cabinet.uniqueID)) scene.addObject(cabinet);
-                    if (key == '3' && scene.isInScene(door.uniqueID)) scene.addObject(door);
+                    int index = -1;
+                    if (key >= '1' && key <= '9') index = key - '1';
+                    if (key == '0') index = 9;
+                    if (index >= 0 && index < allStands.length) {
+                        if (scene.isInScene(allStands[index].uniqueID))
+                            scene.addObject(allStands[index]);
+                    }
                 }
 
             } else {
@@ -737,15 +742,15 @@ public class Main extends PApplet {
                 if (gui.tfSelectSearch.selected) {
                     isTfOn = true;
                 }
-
-
-                print(isTfOn);
-
-                if (!isTfOn) {
-                    if (key == '1' && scene.isInScene(banana.uniqueID)) scene.addObject(banana);
-                    if (key == '2' && scene.isInScene(cabinet.uniqueID)) scene.addObject(cabinet);
-                    if (key == '3'&& scene.isInScene(door.uniqueID)) scene.addObject(door);
+            if (!isTfOn) {
+                int index = -1;
+                if (key >= '1' && key <= '9') index = key - '1';
+                if (key == '0') index = 9;
+                if (index >= 0 && index < allStands.length) {
+                    if (scene.isInScene(allStands[index].uniqueID))
+                        scene.addObject(allStands[index]);
                 }
+            }
             }
     }
 
