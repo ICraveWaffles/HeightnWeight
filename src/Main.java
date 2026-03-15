@@ -6,6 +6,8 @@ import java.util.ArrayList;
 public class Main extends PApplet {
 
     Database b;
+    String username;
+    String email;
 
     Fonts fonts;
     GUI gui;
@@ -48,18 +50,6 @@ public class Main extends PApplet {
         b = new Database("admin", "12345", "ocbase");
         b.connect();
 
-        for (int i = 1; i < 4;i++){
-            allStands[i-1] = new Stand();
-            allStands[i-1].uniqueID = -i;
-            allStands[i-1].ID = -i;
-            allStands[i-1].tHeight = Float.parseFloat(b.getInfo("stand", "tHeight", "ID", "-"+i));
-            allStands[i-1].tWidth = Float.parseFloat(b.getInfo("stand", "tWidth", "ID", "-"+i));
-            allStands[i-1].name = b.getInfo("stand", "name", "ID", "-"+i);
-        }
-        allStands[0].pic = loadImage("data/Bananana.png");;
-        allStands[1].pic = loadImage("data/gabinett.png");;
-        allStands[2].pic = loadImage("data/door.jpg");
-
         fonts = new Fonts(this);
         gui = new GUI(this);
         try {
@@ -77,6 +67,18 @@ public class Main extends PApplet {
         bLogo = loadImage("data/ocblack.png");
         wLogo = loadImage("data/ocwhite.png");
 
+
+        for (int i = 1; i < 4;i++){
+            allStands[i-1] = new Stand();
+            allStands[i-1].uniqueID = -i;
+            allStands[i-1].ID = -i;
+            allStands[i-1].tHeight = Float.parseFloat(b.getInfo("stand", "tHeight", "ID", "-"+i));
+            allStands[i-1].tWidth = Float.parseFloat(b.getInfo("stand", "tWidth", "ID", "-"+i));
+            allStands[i-1].name = b.getInfo("stand", "name", "ID", "-"+i);
+        }
+        allStands[0].pic = loadImage("data/Bananana.png");;
+        allStands[1].pic = loadImage("data/gabinett.png");;
+        allStands[2].pic = loadImage("data/door.jpg");
     }
 
 
@@ -102,6 +104,11 @@ public class Main extends PApplet {
                 } else {
                     gui.drawMAIN(this, bLogo);
                 }
+                pushStyle();
+                textFont(Fonts.getThisFont(0));
+                textAlign(CENTER);
+                text(username, 1720, 40);
+                popStyle();
             }
             case QNA -> gui.drawQNA(this);
             case SCENESELECTOR -> {
@@ -314,8 +321,27 @@ public class Main extends PApplet {
                 if (gui.exit.mouseOverButton(this)) exit();
             }
             else if (gui.currentScreen == GUI.SCREEN.LOGIN) {
-                if (gui.exit.mouseOverButton(this)) gui.currentScreen = GUI.SCREEN.PRELOGIN;
-                if (gui.login.mouseOverButton(this)) gui.currentScreen = GUI.SCREEN.MAIN;
+                if (gui.exit.mouseOverButton(this)) {
+                    gui.currentScreen = GUI.SCREEN.PRELOGIN;
+                }
+                if (gui.login.mouseOverButton(this)) {
+                    if (gui.tflogin2.text.equals(b.getInfo("user", "password", "email", gui.tflogin1.text))) {
+                        username = b.getInfo("user", "username", "email", gui.tflogin1.text);
+                        email = gui.tflogin1.text;
+                        print (username);
+                        print (email);
+                        gui.currentScreen = GUI.SCREEN.MAIN;
+                    }
+                    else if (gui.tflogin2.text.equals(b.getInfo("user", "password", "username", gui.tflogin1.text))) {
+                        username = gui.tflogin1.text;
+                        email = b.getInfo("user", "password", "username", gui.tflogin1.text);
+                        print (username);
+                        print (email);
+                        gui.currentScreen = GUI.SCREEN.MAIN;
+                    } else {
+                        print("INCORRECT PASSWORD");
+                    }
+                }
                 gui.tflogin1.isPressed(this);
                 gui.tflogin2.isPressed(this);
                 if (!gui.tflogin1.mouseOverTextField(this) && gui.tflogin1.selected) gui.tflogin1.keyPressed('0', ENTER);
@@ -323,7 +349,39 @@ public class Main extends PApplet {
             }
             else if (gui.currentScreen == GUI.SCREEN.SIGNUP) {
                 if (gui.exit.mouseOverButton(this)) gui.currentScreen = GUI.SCREEN.PRELOGIN;
-                if (gui.signup.mouseOverButton(this)) gui.currentScreen = GUI.SCREEN.MAIN;
+
+                if (gui.signup.mouseOverButton(this)) {
+                    String mail = gui.tfsignup1.text;
+                    String user = gui.tfsignup2.text;
+                    String pass1 = gui.tfsignup3.text;
+                    String pass2 = gui.tfsignup4.text;
+
+                    if (mail.isEmpty() || user.isEmpty() || pass1.isEmpty()) {
+                        println("Error: Campos vacíos");
+                    }
+                    else if (!isValidEmail(mail)) {
+                        println("Error: El formato del E-mail no es válido.");
+                    }
+                    else if (user.contains("@")) {
+                        println("Error: El nombre de usuario no puede contener '@'");
+                    }
+                    else if (!pass1.equals(pass2)) {
+                        println("Error: Las contraseñas no coinciden");
+                    }
+                    else if (b.exists("user", "email", mail)) {
+                        println("Error: El email ya está registrado");
+                    }
+                    else if (b.exists("user", "username", user)) {
+                        println("Error: El nombre de usuario ya existe");
+                    }
+                    else {
+                        b.signup(mail, user, pass1);
+                        this.username = user;
+                        this.email = mail;
+                        gui.currentScreen = GUI.SCREEN.MAIN;
+                    }
+                }
+
                 gui.tfsignup1.isPressed(this);
                 gui.tfsignup2.isPressed(this);
                 gui.tfsignup3.isPressed(this);
@@ -338,7 +396,7 @@ public class Main extends PApplet {
                 if (gui.s1.mouseOverButton(this)) gui.currentScreen = GUI.SCREEN.SETTINGS;
                 if (gui.m1.mouseOverButton(this)) gui.currentScreen = GUI.SCREEN.SCENESELECTOR;
                 if (gui.m2.mouseOverButton(this)) {gui.currentScreen = GUI.SCREEN.OCVIEWER; Sounds.emit(6);}
-                if (gui.m3.mouseOverButton(this)) gui.currentScreen = GUI.SCREEN.PRELOGIN;
+                if (gui.m3.mouseOverButton(this)) gui.currentScreen = GUI.SCREEN.PRELOGIN; username = null; email = null;
             }
             else if (gui.currentScreen == GUI.SCREEN.QNA) {
                 if (gui.exit.mouseOverButton(this)) gui.currentScreen = GUI.SCREEN.MAIN;
@@ -371,6 +429,7 @@ public class Main extends PApplet {
                                 scene.selPage = 0;
                                 sceneEditorInitialized = false;
                             }
+                            break;
                         }
                     }
                 }
@@ -1122,7 +1181,6 @@ public class Main extends PApplet {
         }
     }
 
-
     public void updateInfoSearchArr(String str) {
         if (str == null) str = "";
         String searchStr = str.toLowerCase().trim();
@@ -1182,7 +1240,6 @@ public class Main extends PApplet {
         searchSelects = tempList.toArray(new SelectSlab[0]);
     }
 
-
     private float round(float value, int decimals) {
         float factor = (float) Math.pow(10, decimals);
         return Math.round(value * factor) / factor;
@@ -1240,5 +1297,9 @@ public class Main extends PApplet {
         gui.tfRed.text = Languages.translate("R", l);
         gui.tfGreen.text = Languages.translate("G", l);
         gui.tfBlue.text = Languages.translate("B", l);
+    }
+    public boolean isValidEmail(String email) {
+        String emailRegex = "^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,7}$";
+        return email.matches(emailRegex);
     }
 }

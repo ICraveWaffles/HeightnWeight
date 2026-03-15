@@ -94,6 +94,7 @@ public class Database {
         return values;
     }
 
+
     public void insert(String objectName, String attributeNames, String values){
 
         String q = "INSERT INTO " + objectName +
@@ -105,6 +106,17 @@ public class Database {
         catch(Exception e){
             System.out.println(e);
         }
+    }
+
+    public void signup (String email, String username, String password){
+        String values = "'" + email + "', " +
+                "'" + username + "', " +
+                "'" + password + "', " +
+                "0, " +
+                "1";
+        insert("user", "email, username, password, nScreenshots, lang", values);
+
+        System.out.println("Registro intentado para: " + username);
     }
 
     public void update(String objectName, String attributeName, String newValue, String primaryKey, String primaryKeyValue){
@@ -144,5 +156,18 @@ public class Database {
         catch(Exception e){
             System.out.println(e);
         }
+    }
+
+    public boolean exists(String tabla, String columna, String valor) {
+        String q = "SELECT COUNT(*) AS total FROM " + tabla + " WHERE " + columna + " = '" + valor + "'";
+        try {
+            java.sql.ResultSet rs = query.executeQuery(q);
+            if (rs.next()) {
+                return rs.getInt("total") > 0;
+            }
+        } catch (Exception e) {
+            System.out.println("Error al verificar duplicados: " + e);
+        }
+        return false;
     }
 }
