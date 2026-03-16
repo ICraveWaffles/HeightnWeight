@@ -552,18 +552,16 @@ public class GUI {
                 }
             }
         }
-        if (scene.nObjects == 0 && scene.sel == Scene.scInstance.DISPLAY){
+        if (scene.nObjects == 0 && scene.sel == Scene.scInstance.DISPLAY) {
             p5.textFont(Fonts.getThisFont(2));
-            p5.text(Languages.translate("NOOC1", this.lang == LANG.ENG?1:2), 15, 120);
-            p5.text(Languages.translate("NOOC2", this.lang == LANG.ENG?1:2), 15, 150);
-        } else if (!(scene.stands[scene.currentObject] instanceof OC)&& scene.sel== Scene.scInstance.DISPLAY) {
-            p5.textFont(Fonts.getThisFont(2));
-            p5.text(Languages.translate("STAND1", this.lang == LANG.ENG?1:2), 15, 120);
-            p5.text(Languages.translate("STAND2", this.lang == LANG.ENG?1:2), 15, 150);
+            p5.text(Languages.translate("NOOC1", this.lang == LANG.ENG ? 1 : 2), 15, 120);
+            p5.text(Languages.translate("NOOC2", this.lang == LANG.ENG ? 1 : 2), 15, 150);
 
+        } else if (scene.currentObject >= 0 && !(scene.stands[scene.currentObject] instanceof OC) && scene.sel == Scene.scInstance.DISPLAY) {
+            p5.textFont(Fonts.getThisFont(2));
+            p5.text(Languages.translate("STAND1", this.lang == LANG.ENG ? 1 : 2), 15, 120);
+            p5.text(Languages.translate("STAND2", this.lang == LANG.ENG ? 1 : 2), 15, 150);
         }
-        p5.fill(Colors.getThisColor(8));
-        p5.text(scene.uniqueID, 1000, 500);
         p5.popStyle();
     }
 

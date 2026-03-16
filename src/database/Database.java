@@ -130,6 +130,32 @@ public class Database {
         System.out.println("Escena creada para: " + email);
     }
 
+    public void newOC(long uniqueID, int ID, String email) {
+        String name = "Zwolf";
+        float tHeight = 1.83f;
+        float bmi = 25.0f;
+        float age = 45.0f;
+        int r = 127;
+        int g = 127;
+        int bValue = 127;
+
+        // Eliminamos el "0, " para que coincida con la lista de columnas (10 valores)
+        String values = ID + ", " +
+                uniqueID + ", " +
+                "'" + name + "', " +
+                tHeight + ", " +
+                bmi + ", " +
+                age + ", " +
+                r + ", " +
+                g + ", " +
+                bValue + ", " +
+                "'" + email + "'";
+
+        insert("oc", "ID, UniqueID, Name, tHeight, BMI, age, r, g, b, User_email", values);
+
+        System.out.println("OC " + name + " creado con éxito para: " + email);
+    }
+
     public void update(String objectName, String attributeName, String newValue, String primaryKey, String primaryKeyValue){
 
         String q = "UPDATE " + objectName +
@@ -145,10 +171,8 @@ public class Database {
     }
 
     public void delete(String objectName, String primaryKey, String primaryKeyValue){
-
         String q = "DELETE FROM " + objectName +
                 " WHERE " + primaryKey + " = '" + primaryKeyValue + "'";
-
         try{
             query.executeUpdate(q);
         }

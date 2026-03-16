@@ -103,7 +103,7 @@ public class Main extends PApplet {
                 pushStyle();
                 textFont(Fonts.getThisFont(0));
                 textAlign(CENTER);
-                text(username + email, 1720, 40);
+                text(username, 1720, 40);
                 popStyle();
             }
             case QNA -> gui.drawQNA(this);
@@ -505,6 +505,9 @@ public class Main extends PApplet {
                             if (!gui.tfsced[i].mouseOverTextField(this) && gui.tfsced[i].selected) {
                                 gui.tfsced[i].selected = false;
                                 updateCalculatedValues();
+                                if (scene != null && scene.nObjects > 0 && scene.currentObject != -1 && scene.stands[scene.currentObject] instanceof OC pHolder) {
+                                    updateOCBases(pHolder);
+                                }
                             }
                         }
                     }
@@ -551,8 +554,8 @@ public class Main extends PApplet {
                         }
 
                         if (gui.rsced0.mouseOverButton(this)) gui.cPickOn = !gui.cPickOn;
-                        if (gui.sced1.mouseOverButton(this)) instanceOC();
-                        if (gui.sced2.mouseOverButton(this)) scene.sel = Scene.scInstance.OCSELECT;
+                        if (gui.sced1.mouseOverButton(this)) {instanceOC();}
+                        if (gui.sced2.mouseOverButton(this) && nAllOCs != 0) scene.sel = Scene.scInstance.OCSELECT;
 
                         if (gui.sced4.enabled && gui.sced4.mouseOverButton(this)) {
                             Sounds.emit(4);
@@ -759,6 +762,10 @@ public class Main extends PApplet {
                                 gui.tfsced[i].selected = false;
                             }
                             updateCalculatedValues();
+
+                            if (scene != null && scene.nObjects > 0 && scene.currentObject != -1 && scene.stands[scene.currentObject] instanceof OC pHolder) {
+                                updateOCBases(pHolder);
+                            }
                         }
                     }
                 }
@@ -862,6 +869,9 @@ public class Main extends PApplet {
     public void mouseReleased() {
         if (gui.currentScreen == GUI.SCREEN.SCENEEDITOR) {
             updateCalculatedValues();
+            if (scene != null && scene.nObjects > 0 && scene.currentObject != -1 && scene.stands[scene.currentObject] instanceof OC pHolder) {
+                updateOCBases(pHolder);
+            }
             if (!firstClick) firstClick = true;
             if (gui.cPickOn){
                 gui.cPick.mouseReleased();
@@ -893,6 +903,8 @@ public class Main extends PApplet {
         }
 
         if (index == -1) return;
+
+        b.delete("oc", "UniqueID", String.valueOf(oc.uniqueID));
 
         for (Scene s : scenes) {
             if (s == null) continue;
@@ -1111,6 +1123,16 @@ public class Main extends PApplet {
         }
     }
 
+    private void updateOCBases(OC oc){
+        b.update("oc", "Name", oc.name, "UniqueID", String.valueOf(oc.uniqueID));
+        b.update("oc", "tHeight", String.valueOf(oc.tHeight), "UniqueID", String.valueOf(oc.uniqueID));
+        b.update("oc", "BMI", String.valueOf(oc.BMI), "UniqueID", String.valueOf(oc.uniqueID));
+        b.update("oc", "age", String.valueOf(oc.age), "UniqueID", String.valueOf(oc.uniqueID));
+        b.update("oc", "r", String.valueOf(oc.r), "UniqueID", String.valueOf(oc.uniqueID));
+        b.update("oc", "g", String.valueOf(oc.g), "UniqueID", String.valueOf(oc.uniqueID));
+        b.update("oc", "b", String.valueOf(oc.b), "UniqueID", String.valueOf(oc.uniqueID));
+    }
+
     public void changeTFValues(OC pHolder) {
         if (!gui.tfsced[0].selected) gui.tfsced[0].text = pHolder.name;
         if (!gui.tfsced[1].selected) gui.tfsced[1].text = String.valueOf(pHolder.tHeight);
@@ -1126,6 +1148,7 @@ public class Main extends PApplet {
 
     public void instanceOC() {
         OC pHolder = new OC(nAllOCs);
+        b.newOC(pHolder.uniqueID, nAllOCs, email);
         setZwolfDefaults(pHolder);
         pHolder.name = "Zwolf";
         changeTFValues(pHolder);
