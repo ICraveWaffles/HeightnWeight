@@ -39,11 +39,7 @@ public class Main extends PApplet {
     public void settings() {
         fullScreen();
         smooth(100);
-
-
         allOCs = new OC[0];
-        scenes.add(new Scene(0));
-        scene = scenes.getFirst();
     }
 
     public void setup() {
@@ -107,7 +103,7 @@ public class Main extends PApplet {
                 pushStyle();
                 textFont(Fonts.getThisFont(0));
                 textAlign(CENTER);
-                text(username, 1720, 40);
+                text(username + email, 1720, 40);
                 popStyle();
             }
             case QNA -> gui.drawQNA(this);
@@ -258,10 +254,10 @@ public class Main extends PApplet {
                     background(255,0,0);
                     if (gui.delAll.yes.mouseOverButton(this)) {
                         gui.delAll.yes.x = 675 + random(-1, 1);
-                        gui.delAll.yes.y = 600 + random(-1, 1);
+                        gui.delAll.yes.y = 660 + random(-1, 1);
                     } else {
                         gui.delAll.yes.x = 675;
-                        gui.delAll.yes.y = 600;
+                        gui.delAll.yes.y = 660;
                     }
                     gui.delAll.display(this, "", gui.lang == LANG.ESP?2:1);
                 }
@@ -272,7 +268,7 @@ public class Main extends PApplet {
                         gui.delDelAll.yes.y = 660 + random(-2, 2);
                     } else {
                         gui.delDelAll.yes.x = 675;
-                        gui.delDelAll.yes.y = 600;
+                        gui.delDelAll.yes.y = 660;
                     }
                     gui.delDelAll.display(this, "", gui.lang == LANG.ESP?2:1);
                 }
@@ -325,20 +321,20 @@ public class Main extends PApplet {
                     gui.currentScreen = GUI.SCREEN.PRELOGIN;
                 }
                 if (gui.login.mouseOverButton(this)) {
-                    if (gui.tflogin2.text.equals(b.getInfo("user", "password", "email", gui.tflogin1.text))) {
-                        username = b.getInfo("user", "username", "email", gui.tflogin1.text);
-                        email = gui.tflogin1.text;
-                        print (username);
-                        print (email);
+                    String input = gui.tflogin1.text;
+                    String pass = gui.tflogin2.text;
+
+                    if (pass.equals(b.getInfo("user", "password", "email", input))) {
+                        username = b.getInfo("user", "username", "email", input);
+                        email = input;
                         gui.currentScreen = GUI.SCREEN.MAIN;
                     }
-                    else if (gui.tflogin2.text.equals(b.getInfo("user", "password", "username", gui.tflogin1.text))) {
-                        username = gui.tflogin1.text;
-                        email = b.getInfo("user", "password", "username", gui.tflogin1.text);
-                        print (username);
-                        print (email);
+                    else if (pass.equals(b.getInfo("user", "password", "username", input))) {
+                        username = input;
+                        email = b.getInfo("user", "email", "username", input);
                         gui.currentScreen = GUI.SCREEN.MAIN;
-                    } else {
+                    }
+                    else {
                         print("INCORRECT PASSWORD");
                     }
                 }
@@ -396,7 +392,7 @@ public class Main extends PApplet {
                 if (gui.s1.mouseOverButton(this)) gui.currentScreen = GUI.SCREEN.SETTINGS;
                 if (gui.m1.mouseOverButton(this)) gui.currentScreen = GUI.SCREEN.SCENESELECTOR;
                 if (gui.m2.mouseOverButton(this)) {gui.currentScreen = GUI.SCREEN.OCVIEWER; Sounds.emit(6);}
-                if (gui.m3.mouseOverButton(this)) gui.currentScreen = GUI.SCREEN.PRELOGIN; username = null; email = null;
+                if (gui.m3.mouseOverButton(this)) {gui.currentScreen = GUI.SCREEN.PRELOGIN; username = null; email = null;}
             }
             else if (gui.currentScreen == GUI.SCREEN.QNA) {
                 if (gui.exit.mouseOverButton(this)) gui.currentScreen = GUI.SCREEN.MAIN;
@@ -416,11 +412,17 @@ public class Main extends PApplet {
                         if (gui.scenes.get(i).state != STATE.NULL) {
                             Sounds.emit(6);
                             if (gui.scenes.get(i).state == STATE.PLUS) {
-                                scenes.add(new Scene(scenes.size()));
+
+                                Scene newSc = new Scene(scenes.size());
+                                scenes.add(newSc);
+                                b.newScene(newSc.uniqueID, newSc.ID, email);
                                 gui.scenes.get(i).state = STATE.NORM;
                                 scenes.get(i).name = gui.scenes.get(i).token;
                                 gui.scenes.get(i + 1).state = STATE.PLUS;
-                                gui.scenes.get(scenes.size()).updateSceneButton(scenes.size());
+                                gui.scenes.get(scenes.size() - 1).updateSceneButton(scenes.size() - 1);
+                                if (scenes.size() < gui.scenes.size()) {
+                                    gui.scenes.get(scenes.size()).updateSceneButton(scenes.size());
+                                }
                             } else {
                                 scenes.get(i).name = gui.scenes.get(i).token;
                                 scene = scenes.get(i);
@@ -950,9 +952,10 @@ public class Main extends PApplet {
 
     public void copyScene(){
         Sounds.emit(17);
-        Scene newsc = new Scene(this.scene);
-        scenes.add(newsc);
-        this.scene = newsc;
+        Scene newSc = new Scene(this.scene);
+        scenes.add(newSc);
+        b.newScene(newSc.uniqueID, newSc.ID, email);
+        this.scene = newSc;
         for (int i = 0; i < scenes.size();i++){
             scenes.get(i).ID = i;
         }
@@ -974,11 +977,13 @@ public class Main extends PApplet {
         scenes.remove(index);
         gui.scenes.remove(index);
 
+        b.delete("scene", "UniqueID", String.valueOf(sc.uniqueID));
+
         for (int i = index; i < scenes.size(); i++) {
             scenes.get(i).ID = i;
             gui.scenes.get(i).updateSceneButton(i);
         }
-        gui.scenes.get(scenes.size()).updateSceneButton(scenes.size());
+
         refactorSceneButtons();
     }
 

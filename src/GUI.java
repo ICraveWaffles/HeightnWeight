@@ -72,8 +72,8 @@ public class GUI {
         nav3 = new cButton(p5, ">",1005, 45, 75, 3, 7, 7);
         nav4 = new cButton(p5, ">>",1095, 45, 75, 3, 7, 7);
 
-        tfsignup1 = new TextField(p5, "USERNAME", 960, 180, 810, 90, false);
-        tfsignup2 = new TextField(p5, "EMAIL", 960, 300, 810, 90, false);
+        tfsignup1 = new TextField(p5, "EMAIL", 960, 180, 810, 90, false);
+        tfsignup2 = new TextField(p5, "USERNAME", 960, 300, 810, 90, false);
         tfsignup3 = new TextField(p5, "PASSWORD (1)", 960, 540, 810, 90, false);
         tfsignup4 = new TextField(p5, "PASSWORD (2)", 960, 660, 810, 90, false);
 
@@ -118,8 +118,7 @@ public class GUI {
                     b.ID = buttonIndex;
 
                     if (buttonIndex != 0) b.state = STATE.NULL;
-                    if (buttonIndex == 1) b.state = STATE.PLUS;
-                    if (buttonIndex == 0) b.state = STATE.NORM;
+                    if (buttonIndex == 0) b.state = STATE.PLUS;
 
                     scenes.add(b);
 
@@ -398,6 +397,7 @@ public class GUI {
 
         p5.background(Colors.getThisColor(1));
 
+
         rsced0.display(p5,lang == LANG.ENG);
         rsced1.display(p5,lang == LANG.ENG);
         rsced2.display(p5,lang == LANG.ENG);
@@ -562,6 +562,8 @@ public class GUI {
             p5.text(Languages.translate("STAND2", this.lang == LANG.ENG?1:2), 15, 150);
 
         }
+        p5.fill(Colors.getThisColor(8));
+        p5.text(scene.uniqueID, 1000, 500);
         p5.popStyle();
     }
 

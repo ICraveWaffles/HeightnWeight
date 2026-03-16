@@ -119,6 +119,17 @@ public class Database {
         System.out.println("Registro intentado para: " + username);
     }
 
+    public void newScene(long uniqueID, int ID, String email) {
+        String values = uniqueID + ", " +
+                ID + ", " +
+                "0, " +
+                "'" + email + "'";
+
+        insert("scene", "UniqueID, ID, currentObject, User_email", values);
+
+        System.out.println("Escena creada para: " + email);
+    }
+
     public void update(String objectName, String attributeName, String newValue, String primaryKey, String primaryKeyValue){
 
         String q = "UPDATE " + objectName +
