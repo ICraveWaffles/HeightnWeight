@@ -95,15 +95,14 @@ public class Database {
     }
 
 
-    public void insert(String objectName, String attributeNames, String values){
+    public void insert(String objectName, String attributeNames, String values) {
 
         String q = "INSERT INTO " + objectName +
                 " (" + attributeNames + ") VALUES (" + values + ")";
 
-        try{
+        try {
             query.executeUpdate(q);
-        }
-        catch(Exception e){
+        } catch (Exception e) {
             System.out.println(e);
         }
     }
@@ -139,7 +138,6 @@ public class Database {
         int g = 127;
         int bValue = 127;
 
-        // Eliminamos el "0, " para que coincida con la lista de columnas (10 valores)
         String values = ID + ", " +
                 uniqueID + ", " +
                 "'" + name + "', " +
@@ -170,6 +168,32 @@ public class Database {
         }
     }
 
+    public void updateStandPos(int nuevaPos, long sceneID, long standID) {
+
+        String q = "UPDATE " + "scene_has_stand" +
+                " SET Pos = " + nuevaPos +
+                " WHERE Scene_UniqueID = " + sceneID +
+                " AND Stand_UniqueID = " + standID;
+        try {
+            query.executeUpdate(q);
+        } catch(Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void updateOCPos(int nuevaPos, long sceneID, long standID) {
+
+        String q = "UPDATE " + "oc_has_scene" +
+                " SET Pos = " + nuevaPos +
+                " WHERE Scene_UniqueID = " + sceneID +
+                " AND OC_UniqueID = " + standID;
+        try {
+            query.executeUpdate(q);
+        } catch(Exception e) {
+            e.printStackTrace();
+        }
+    }
+
     public void delete(String objectName, String primaryKey, String primaryKeyValue){
         String q = "DELETE FROM " + objectName +
                 " WHERE " + primaryKey + " = '" + primaryKeyValue + "'";
@@ -181,8 +205,27 @@ public class Database {
         }
     }
 
-    public void close(){
+    public void deleteStandFromScene(String sceneID, String standID) {
+        String q = "DELETE FROM scene_has_stand WHERE Scene_UniqueID = " + sceneID +
+                " AND Stand_UniqueID = " + standID;
+        try {
+            query.executeUpdate(q);
+        } catch(Exception e) {
+            e.printStackTrace();
+        }
+    }
 
+    public void deleteOCFromScene(String sceneID, String ocID) {
+        String q = "DELETE FROM oc_has_scene WHERE Scene_UniqueID = " + sceneID +
+                " AND OC_UniqueID = " + ocID;
+        try {
+            query.executeUpdate(q);
+        } catch(Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void close(){
         try{
             if(connection != null){
                 connection.close();
