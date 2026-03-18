@@ -205,6 +205,24 @@ public class Database {
         }
     }
 
+    public void deleteDirect(String table, String userColumn, String email) {
+        String q = "DELETE FROM " + table + " WHERE " + userColumn + " = '" + email + "'";
+        try {
+            query.executeUpdate(q);
+        } catch (Exception e) {
+            System.out.println("Error en " + table + ": " + e.getMessage());
+        }
+    }
+
+    public void deleteLinked(String junctionTable, String junctionCol, String parentTable, String parentIdCol, String userCol, String email) {
+        String q = "DELETE FROM " + junctionTable + " WHERE " + junctionCol + " IN (SELECT " + parentIdCol + " FROM " + parentTable + " WHERE " + userCol + " = '" + email + "')";
+        try {
+            query.executeUpdate(q);
+        } catch (Exception e) {
+            System.out.println("Error en relación " + junctionTable + ": " + e.getMessage());
+        }
+    }
+
     public void deleteStandFromScene(String sceneID, String standID) {
         String q = "DELETE FROM scene_has_stand WHERE Scene_UniqueID = " + sceneID +
                 " AND Stand_UniqueID = " + standID;

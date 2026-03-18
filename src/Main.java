@@ -255,10 +255,10 @@ public class Main extends PApplet {
                     background(255,0,0);
                     if (gui.delAll.yes.mouseOverButton(this)) {
                         gui.delAll.yes.x = 675 + random(-1, 1);
-                        gui.delAll.yes.y = 660 + random(-1, 1);
+                        gui.delAll.yes.y = 600 + random(-1, 1);
                     } else {
                         gui.delAll.yes.x = 675;
-                        gui.delAll.yes.y = 660;
+                        gui.delAll.yes.y = 600;
                     }
                     gui.delAll.display(this, "", gui.lang == LANG.ESP?2:1);
                 }
@@ -266,10 +266,10 @@ public class Main extends PApplet {
                     background(127, 0, 0);
                     if (gui.delDelAll.yes.mouseOverButton(this)) {
                         gui.delDelAll.yes.x = 675 + random(-2, 2);
-                        gui.delDelAll.yes.y = 660 + random(-2, 2);
+                        gui.delDelAll.yes.y = 600 + random(-2, 2);
                     } else {
                         gui.delDelAll.yes.x = 675;
-                        gui.delDelAll.yes.y = 660;
+                        gui.delDelAll.yes.y = 600;
                     }
                     gui.delDelAll.display(this, "", gui.lang == LANG.ESP?2:1);
                 }
@@ -355,8 +355,8 @@ public class Main extends PApplet {
                 if (gui.exit.mouseOverButton(this)) {gui.currentScreen = GUI.SCREEN.PRELOGIN;}
 
                 if (gui.signup.mouseOverButton(this)) {
-                    String mail = gui.tfsignup1.text;
-                    String user = gui.tfsignup2.text;
+                    String user = gui.tfsignup1.text;
+                    String mail = gui.tfsignup2.text;
                     String pass1 = gui.tfsignup3.text;
                     String pass2 = gui.tfsignup4.text;
 
@@ -1016,6 +1016,9 @@ public class Main extends PApplet {
         scenes.add(newSc);
         b.newScene(newSc.uniqueID, newSc.ID, email);
         this.scene = newSc;
+        for (int i = 0; i < scene.nObjects;i++){
+            b.insert("oc_has_scene", "OC_UniqueID, Scene_UniqueID, Pos", scene.stands[i].uniqueID + ", " + scene.uniqueID + ", " + i);
+        }
         for (int i = 0; i < scenes.size();i++){
             scenes.get(i).ID = i;
         }
@@ -1037,13 +1040,21 @@ public class Main extends PApplet {
         scenes.remove(index);
         gui.scenes.remove(index);
 
+        scene = sc;
+        for (int i = 0; i < scene.nObjects;i++) {
+            Stand toDelete = scene.stands[scene.currentObject];
+            if (toDelete instanceof OC) {
+                b.deleteOCFromScene(String.valueOf(scene.uniqueID), String.valueOf(toDelete.uniqueID));
+            } else {
+                b.deleteStandFromScene(String.valueOf(scene.uniqueID), String.valueOf(toDelete.uniqueID));
+            }
+        }
         b.delete("scene", "UniqueID", String.valueOf(sc.uniqueID));
 
         for (int i = index; i < scenes.size(); i++) {
             scenes.get(i).ID = i;
             gui.scenes.get(i).updateSceneButton(i);
         }
-
         refactorSceneButtons();
     }
 
@@ -1056,21 +1067,35 @@ public class Main extends PApplet {
         }
     }
 
+    public void clearDatabase() {
+        b.deleteLinked("oc_has_scene", "Scene_UniqueID", "scene", "UniqueID", "User_email", email);
+        b.deleteLinked("scene_has_stand", "Scene_UniqueID", "scene", "UniqueID", "User_email", email);
+        b.deleteDirect("scene", "User_email", email);
+        b.deleteDirect("oc", "User_email", email);
+    }
+
     public void reset() {
+        clearDatabase();
+
         allOCs = new OC[0];
         scenes = new ArrayList<>();
         infos = new InfoSlab[0];
         selects = new SelectSlab[0];
         nAllOCs = 0;
+
         for (int i = 1; i < gui.scenes.size(); i++) {
             if (gui.scenes.get(i).state != STATE.NULL) {
                 gui.scenes.get(i).state = STATE.NULL;
                 gui.scenes.get(i).text = "{}";
             }
         }
-        gui.scenes.getFirst().state = STATE.PLUS;
-        gui.scenes.getFirst().text = "{}";
+
+        if (!gui.scenes.isEmpty()) {
+            gui.scenes.getFirst().state = STATE.PLUS;
+            gui.scenes.getFirst().text = "{}";
+        }
     }
+
 
     public void updateCalculatedValues() {
         if (scene != null && scene.nObjects > 0 && scene.currentObject != -1 && scene.stands[scene.currentObject] instanceof OC) {
