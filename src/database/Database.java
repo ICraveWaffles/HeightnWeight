@@ -1,6 +1,8 @@
 package database;
 
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Database {
 
@@ -55,7 +57,6 @@ public class Database {
 
     public int getRowCount(String objectName){
         String q = "SELECT COUNT(*) AS num FROM " + objectName;
-
         try{
             ResultSet rs = query.executeQuery(q);
             rs.next();
@@ -64,24 +65,34 @@ public class Database {
         catch(Exception e){
             System.out.println(e);
         }
-
         return 0;
+    }
+
+    public int getColCount(String objectName){
+        try {
+            String q = "SELECT count(*) as n FROM information_schema.columns WHERE table_name ='"+ objectName +"' AND table_schema='"+databaseName+"'";
+            System.out.println(q);
+            ResultSet rs = query.executeQuery( q);
+            rs.next();
+            int numCols = rs.getInt("n");
+            return numCols;
+        }
+        catch(Exception e) {
+            System.out.println(e);
+            return 0;
+        }
     }
 
     public String[] getColumnValues(String objectName, String attributeName){
         int rowCount = getRowCount(objectName);
         String[] values = new String[rowCount];
-
         String q = "SELECT " + attributeName +
                 " FROM " + objectName;
 
         System.out.println(q);
-
         try{
             ResultSet rs = query.executeQuery(q);
-
             int index = 0;
-
             while(rs.next()){
                 values[index] = rs.getString(attributeName);
                 index++;
@@ -94,7 +105,29 @@ public class Database {
         return values;
     }
 
+    public String[][] getAllScenes() {
+        int nc = 4;
 
+        List<String[]> rows = new ArrayList<>();
+
+        try {
+            String q = "SELECT * FROM " + "scene";
+            ResultSet rs = query.executeQuery(q);
+
+            while (rs.next()) {
+                String[] row = new String[nc];
+                row[0] = rs.getString(1);
+                row[1] = rs.getString(2);
+                row[2] = rs.getString(3);
+                row[3] = rs.getString(4);
+
+                rows.add(row);
+            }
+        } catch (Exception e) {
+            System.err.println("Error al recuperar escenas: " + e.getMessage());
+        }
+        return rows.toArray(new String[0][nc]);
+    }
     public void insert(String objectName, String attributeNames, String values) {
 
         String q = "INSERT INTO " + objectName +
@@ -112,7 +145,7 @@ public class Database {
                 "'" + username + "', " +
                 "'" + password + "', " +
                 "0, " +
-                "1";
+                "2";
         insert("user", "email, username, password, nScreenshots, lang", values);
 
         System.out.println("Registro intentado para: " + username);

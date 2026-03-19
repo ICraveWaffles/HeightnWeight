@@ -15,7 +15,6 @@ public class Main extends PApplet {
     boolean sceneEditorInitialized = false;
     public Slider selectedSl;
     public int scedPage = 0;
-    Stand banana, cabinet, door;
     public ArrayList<Scene> scenes = new ArrayList<>();
     public Scene scene;
     public Stand[] allStands = new Stand[3];
@@ -47,6 +46,7 @@ public class Main extends PApplet {
         b = new Database("admin", "12345", "ocbase");
         b.connect();
 
+
         fonts = new Fonts(this);
         gui = new GUI(this);
         try {
@@ -63,8 +63,7 @@ public class Main extends PApplet {
         gui.slSced[4].setEnabled(false);
         bLogo = loadImage("data/ocblack.png");
         wLogo = loadImage("data/ocwhite.png");
-
-
+        /*
         for (int i = 1; i < 4;i++){
             allStands[i-1] = new Stand();
             allStands[i-1].uniqueID = -i;
@@ -76,6 +75,7 @@ public class Main extends PApplet {
         allStands[0].pic = loadImage("data/Bananana.png");;
         allStands[1].pic = loadImage("data/gabinett.png");;
         allStands[2].pic = loadImage("data/door.jpg");
+         */
     }
 
 
@@ -329,16 +329,16 @@ public class Main extends PApplet {
                     if (pass.equals(b.getInfo("user", "password", "email", input))) {
                         username = b.getInfo("user", "username", "email", input);
                         email = input;
+                        retrieve(email);
                         gui.currentScreen = GUI.SCREEN.MAIN;
-
                         gui.tflogin1.text = gui.tflogin1.trueText;
                         gui.tflogin2.text = gui.tflogin2.trueText;
                     }
                     else if (pass.equals(b.getInfo("user", "password", "username", input))) {
                         username = input;
                         email = b.getInfo("user", "email", "username", input);
+                        retrieve(email);
                         gui.currentScreen = GUI.SCREEN.MAIN;
-
                         gui.tflogin1.text = gui.tflogin1.trueText;
                         gui.tflogin2.text = gui.tflogin2.trueText;
                     }
@@ -1377,6 +1377,30 @@ public class Main extends PApplet {
     public boolean isValidEmail(String email) {
         String emailRegex = "^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,7}$";
         return email.matches(emailRegex);
+    }
+    public void retrieve(String email) {
+        int lang = Integer.parseInt(b.getInfo("user", "lang", "email", email));
+        gui.lang = (lang == 1 ? LANG.ENG : LANG.ESP);
+        translateEverything();
+
+        ArrayList<Scene> tempSc = new ArrayList<>();
+        String[][] allSceneData = b.getAllScenes();
+
+        for (int i = 0; i < allSceneData.length; i++) {
+
+            if (allSceneData[i][3].equals(email)) {
+
+                int id = Integer.parseInt(allSceneData[i][1]);
+                long uniqueId = Long.parseLong(allSceneData[i][0]);
+
+                Scene nextSc = new Scene(id, uniqueId);
+                tempSc.add(nextSc);
+
+                gui.scenes.get(i).state = STATE.NORM;
+                gui.scenes.get(i + 1).state = STATE.PLUS;
+            }
+        }
+        scenes = tempSc;
     }
 
 
