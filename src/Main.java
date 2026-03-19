@@ -424,7 +424,7 @@ public class Main extends PApplet {
                 if (gui.nav1.mouseOverButton(this) && gui.nav1.enabled) {gui.page = 0;Sounds.emit(2);}
                 if (gui.nav2.mouseOverButton(this) && gui.nav2.enabled && gui.page > 0) {gui.page--;Sounds.emit(3);}
                 if (gui.nav3.mouseOverButton(this) && gui.nav3.enabled && gui.page < 9) {gui.page++;Sounds.emit(4);}
-                if (gui.nav4.mouseOverButton(this) && gui.nav4.enabled) {gui.page = 9; Sounds.emit(5);}
+                if (gui.nav4.mouseOverButton(this) && gui.nav4.enabled) {gui.page = scenes.size()/15; Sounds.emit(5);}
 
                 for (int i = 15 * gui.page; i < Math.min(15 * (gui.page + 1), gui.scenes.size()); i++) {
                     if (gui.scenes.get(i).mouseOverButton(this)) {
