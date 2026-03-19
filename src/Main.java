@@ -2,6 +2,7 @@ import database.Database;
 import processing.core.PApplet;
 import processing.core.PImage;
 import java.util.ArrayList;
+import java.util.Comparator;
 
 
 public class Main extends PApplet {
@@ -63,7 +64,6 @@ public class Main extends PApplet {
         gui.slSced[4].setEnabled(false);
         bLogo = loadImage("data/ocblack.png");
         wLogo = loadImage("data/ocwhite.png");
-        /*
         for (int i = 1; i < 4;i++){
             allStands[i-1] = new Stand();
             allStands[i-1].uniqueID = -i;
@@ -75,7 +75,6 @@ public class Main extends PApplet {
         allStands[0].pic = loadImage("data/Bananana.png");;
         allStands[1].pic = loadImage("data/gabinett.png");;
         allStands[2].pic = loadImage("data/door.jpg");
-         */
     }
 
 
@@ -404,7 +403,15 @@ public class Main extends PApplet {
                 if (gui.s1.mouseOverButton(this)) gui.currentScreen = GUI.SCREEN.SETTINGS;
                 if (gui.m1.mouseOverButton(this)) gui.currentScreen = GUI.SCREEN.SCENESELECTOR;
                 if (gui.m2.mouseOverButton(this)) {gui.currentScreen = GUI.SCREEN.OCVIEWER; Sounds.emit(6);}
-                if (gui.m3.mouseOverButton(this)) {gui.currentScreen = GUI.SCREEN.PRELOGIN; username = null; email = null; }
+                if (gui.m3.mouseOverButton(this)) {
+                    gui.currentScreen = GUI.SCREEN.PRELOGIN;
+                    username = null;
+                    email = null;
+                    scenes = new ArrayList<>();
+                    allOCs = new OC[0];
+                    infos = new InfoSlab[0];
+                    selects = new SelectSlab[0];
+                }
             }
             else if (gui.currentScreen == GUI.SCREEN.QNA) {
                 if (gui.exit.mouseOverButton(this)) gui.currentScreen = GUI.SCREEN.MAIN;
@@ -830,19 +837,19 @@ public class Main extends PApplet {
             }
         }
         if (gui.currentScreen == GUI.SCREEN.SCENEEDITOR){
-                boolean isTfOn = false;
+            boolean isTfOn = false;
 
-                for (int i = 0; i < gui.tfsced.length; i++) {
-                    if (gui.tfsced[i].selected) {
-                        print(i + " ");
-                        isTfOn = true;
-                    }
-                }
-                print(isTfOn);
-
-                if (gui.tfSelectSearch.selected) {
+            for (int i = 0; i < gui.tfsced.length; i++) {
+                if (gui.tfsced[i].selected) {
+                    print(i + " ");
                     isTfOn = true;
                 }
+            }
+            print(isTfOn);
+
+            if (gui.tfSelectSearch.selected) {
+                isTfOn = true;
+            }
             if (!isTfOn) {
                 int index = -1;
                 if (key >= '1' && key <= '9') index = key - '1';
@@ -852,9 +859,9 @@ public class Main extends PApplet {
                         scene.addObject(allStands[index]);
                         b.insert("scene_has_stand", "Scene_UniqueID, Stand_UniqueID, Pos", String.valueOf(scene.uniqueID) + ", " + String.valueOf(-(key - 48)) + ", " + String.valueOf(scene.currentObject));
                     }
-                    }
+                }
             }
-            }
+        }
     }
 
     public void mouseDragged() {
@@ -1169,7 +1176,7 @@ public class Main extends PApplet {
             ((OC)scene.stands[scene.currentObject]).b = (int) gui.slSced[9].v;
         }
     }
-    
+
     private void updateOCBases(OC oc){
         b.update("oc", "Name", oc.name, "UniqueID", String.valueOf(oc.uniqueID));
         b.update("oc", "tHeight", String.valueOf(oc.tHeight), "UniqueID", String.valueOf(oc.uniqueID));
@@ -1374,34 +1381,44 @@ public class Main extends PApplet {
         gui.tfGreen.text = Languages.translate("G", l);
         gui.tfBlue.text = Languages.translate("B", l);
     }
+
     public boolean isValidEmail(String email) {
         String emailRegex = "^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,7}$";
         return email.matches(emailRegex);
     }
+
     public void retrieve(String email) {
+        for (int i = 0; i < gui.scenes.size(); i++) {
+            gui.scenes.get(i).state = STATE.NULL;
+        }
+
         int lang = Integer.parseInt(b.getInfo("user", "lang", "email", email));
         gui.lang = (lang == 1 ? LANG.ENG : LANG.ESP);
         translateEverything();
 
         ArrayList<Scene> tempSc = new ArrayList<>();
         String[][] allSceneData = b.getAllScenes();
+        int userSceneCount = 0;
 
         for (int i = 0; i < allSceneData.length; i++) {
+            if (allSceneData[i][3] != null && allSceneData[i][3].equals(email)) {
+                tempSc.add(new Scene(Integer.parseInt(allSceneData[i][1]), Long.parseLong(allSceneData[i][0])));
 
-            if (allSceneData[i][3].equals(email)) {
-
-                int id = Integer.parseInt(allSceneData[i][1]);
-                long uniqueId = Long.parseLong(allSceneData[i][0]);
-
-                Scene nextSc = new Scene(id, uniqueId);
-                tempSc.add(nextSc);
-
-                gui.scenes.get(i).state = STATE.NORM;
-                gui.scenes.get(i + 1).state = STATE.PLUS;
+                if (userSceneCount < gui.scenes.size()) {
+                    gui.scenes.get(userSceneCount).state = STATE.NORM;
+                    if (userSceneCount + 1 < gui.scenes.size()) {
+                        gui.scenes.get(userSceneCount + 1).state = STATE.PLUS;
+                    }
+                }
+                userSceneCount++;
             }
         }
-        scenes = tempSc;
+
+        if (userSceneCount == 0 && !gui.scenes.isEmpty()) {
+            gui.scenes.get(0).state = STATE.PLUS;
+        }
+
+        tempSc.sort(Comparator.comparingInt(s -> s.ID));
+        this.scenes = tempSc;
     }
-
-
 }

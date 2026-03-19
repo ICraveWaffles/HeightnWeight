@@ -35,4 +35,8 @@ public class Stand {
         this.ID = i;
     }
 
+    public int getID() {
+        return this.ID;
+    }
+
 }

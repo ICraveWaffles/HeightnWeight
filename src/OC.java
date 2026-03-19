@@ -13,6 +13,8 @@ public class OC extends Stand {
     int g;
     int b;
 
+
+
     public OC(int ID) {
         this.ID = ID;
         Random random = new Random();
@@ -64,6 +66,24 @@ public class OC extends Stand {
 
         if (bhratio < 0.01f) bhratio = 0.01f;
         this.bhratio = bhratio;
+
+        this.r = r;
+        this.g = g;
+        this.b = b;
+    }
+
+    public OC(int ID, long uniqueID, String name, float tHeight, float BMI, float age, int r, int g, int b) {
+
+        this.ID = ID;
+        this.uniqueID = uniqueID;
+        this.name = name;
+        this.tHeight = tHeight;
+        this.BMI = BMI;
+        this.weight = BMI*tHeight*tHeight;
+        this.tWidth = (float) (height * Math.pow(BMI, 0.7979f))/81.906f;
+
+        this.age = age;
+        this.bhratio = 4.0f + 4.0f / (1.0f + (float)Math.exp(-0.0741f * age));
 
         this.r = r;
         this.g = g;

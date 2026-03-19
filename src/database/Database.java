@@ -128,6 +128,36 @@ public class Database {
         }
         return rows.toArray(new String[0][nc]);
     }
+
+    public String[][] getAllOCs() {
+        int nc = 10;
+
+        List<String[]> rows = new ArrayList<>();
+
+        try {
+            String q = "SELECT * FROM " + "oc";
+            ResultSet rs = query.executeQuery(q);
+
+            while (rs.next()) {
+                String[] row = new String[nc];
+                row[0] = rs.getString(1);
+                row[1] = rs.getString(2);
+                row[2] = rs.getString(3);
+                row[3] = rs.getString(4);
+                row[4] = rs.getString(5);
+                row[5] = rs.getString(6);
+                row[6] = rs.getString(7);
+                row[7] = rs.getString(8);
+                row[8] = rs.getString(9);
+                row[9] = rs.getString(10);
+                rows.add(row);
+            }
+        } catch (Exception e) {
+            System.err.println("Error al recuperar ocs: " + e.getMessage());
+        }
+        return rows.toArray(new String[0][nc]);
+    }
+
     public void insert(String objectName, String attributeNames, String values) {
 
         String q = "INSERT INTO " + objectName +
