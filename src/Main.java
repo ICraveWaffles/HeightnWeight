@@ -1145,7 +1145,7 @@ public class Main extends PApplet {
         if (!gui.tfsced[6].selected) gui.tfsced[6].setText(String.format("%.0f", gui.slSced[6].v));
 
         if (selectedSl == gui.slSced[5]) {
-            float ratio = constrain(gui.slSced[5].v, 4.01f, 7.99f);
+            float ratio = constrain(gui.slSced[5].v, 6.01f, 7.99f);
             gui.slSced[6].v = (float)Math.log((ratio - 4.0f) / (8.0f - ratio)) / 0.0741f;
         } else if (selectedSl == gui.slSced[6]) {
             float age = gui.slSced[6].v;
@@ -1391,34 +1391,27 @@ public class Main extends PApplet {
         for (int i = 0; i < gui.scenes.size(); i++) {
             gui.scenes.get(i).state = STATE.NULL;
         }
+            int lang = Integer.parseInt(b.getInfo("user", "lang", "email", email));
+            gui.lang = (lang == 1 ? LANG.ENG : LANG.ESP);
+            translateEverything();
 
-        int lang = Integer.parseInt(b.getInfo("user", "lang", "email", email));
-        gui.lang = (lang == 1 ? LANG.ENG : LANG.ESP);
-        translateEverything();
+            ArrayList<Scene> tempSc = new ArrayList<>();
+            String[][] allSceneData = b.getAllScenes();
 
-        ArrayList<Scene> tempSc = new ArrayList<>();
-        String[][] allSceneData = b.getAllScenes();
-        int userSceneCount = 0;
+            for (int i = 0; i < allSceneData.length; i++) {
 
-        for (int i = 0; i < allSceneData.length; i++) {
-            if (allSceneData[i][3] != null && allSceneData[i][3].equals(email)) {
-                tempSc.add(new Scene(Integer.parseInt(allSceneData[i][1]), Long.parseLong(allSceneData[i][0])));
+                if (allSceneData[i][3].equals(email)) {
 
-                if (userSceneCount < gui.scenes.size()) {
-                    gui.scenes.get(userSceneCount).state = STATE.NORM;
-                    if (userSceneCount + 1 < gui.scenes.size()) {
-                        gui.scenes.get(userSceneCount + 1).state = STATE.PLUS;
-                    }
+                    int id = Integer.parseInt(allSceneData[i][1]);
+                    long uniqueId = Long.parseLong(allSceneData[i][0]);
+
+                    Scene nextSc = new Scene(id, uniqueId);
+                    tempSc.add(nextSc);
+
+                    gui.scenes.get(i).state = STATE.NORM;
+                    gui.scenes.get(i + 1).state = STATE.PLUS;
                 }
-                userSceneCount++;
             }
+            scenes = tempSc;
         }
-
-        if (userSceneCount == 0 && !gui.scenes.isEmpty()) {
-            gui.scenes.get(0).state = STATE.PLUS;
-        }
-
-        tempSc.sort(Comparator.comparingInt(s -> s.ID));
-        this.scenes = tempSc;
-    }
 }
