@@ -33,6 +33,24 @@ public class OC extends Stand {
         this.g = 127;
         this.b = 127;
 
+    }
+
+    public OC(int ID, long UniqueID) {
+        this.ID = ID;;
+        this.uniqueID = UniqueID;
+        this.name = "Zwolf";
+
+        this.tHeight = 1.828f;
+        this.BMI = 25f;
+        this.weight = (float) Math.pow(this.tHeight, 2) * this.BMI;
+        this.tWidth = (float) Math.pow(this.BMI, 0.7979f) / 81.906f;
+
+        this.age = 45;
+        this.bhratio = 7.725f;
+
+        this.r = 127;
+        this.g = 127;
+        this.b = 127;
 
     }
 

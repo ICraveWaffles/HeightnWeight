@@ -170,6 +170,7 @@ public class Database {
         }
     }
 
+
     public void signup (String email, String username, String password){
         String values = "'" + email + "', " +
                 "'" + username + "', " +
