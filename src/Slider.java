@@ -34,12 +34,6 @@ public class Slider {
     public float getValue() { return v; }
     public void setValue(float val) { v = PApplet.constrain(val, minV, maxV); }
     public void setEnabled(boolean e) { enabled = e; }
-    public boolean isEnabled() { return enabled; }
-
-    public void setLog(boolean isLog) {
-        this.log = isLog;
-        if (this.log && this.minV <= 0) this.minV = 0.0001f;
-    }
 
     public void display(PApplet p5) {
         p5.pushStyle();
@@ -73,13 +67,13 @@ public class Slider {
 
     public boolean mouseOnSlider(PApplet p5, Scene scene) {
         if (scene.sel != Scene.scInstance.OCSELECT) {
-            return p5.mouseX > x - w / 2f - 20 && p5.mouseX < x + w / 2f + 5 && p5.mouseY > y - h - 5 && p5.mouseY < y + h + 5;
+            return p5.mouseX > x - w / 2f - 20 && p5.mouseX < x + w / 2f + 20 && p5.mouseY > y - h - 5 && p5.mouseY < y + h + 5;
         }
         else return false;
     }
 
     public boolean mouseOnSlider(PApplet p5) {
-        return p5.mouseX > x - w / 2f - 20 && p5.mouseX < x + w / 2f + 5 && p5.mouseY > y - h - 5 && p5.mouseY < y + h + 5;
+        return p5.mouseX > x - w / 2f - 20 && p5.mouseX < x + w / 2f + 20 && p5.mouseY > y - h - 5 && p5.mouseY < y + h + 5;
     }
 
     public void updateSlider(PApplet p5) {

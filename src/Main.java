@@ -101,8 +101,8 @@ public class Main extends PApplet {
                 }
                 pushStyle();
                 textFont(Fonts.getThisFont(0));
-                textAlign(CENTER);
-                text(username, 1720, 40);
+                textAlign(RIGHT);
+                text(username, 1910, 40);
                 popStyle();
             }
             case QNA -> gui.drawQNA(this);
@@ -504,8 +504,10 @@ public class Main extends PApplet {
                     if (gui.rsced2.mouseOverButton(this)){
                         gui.phase = 0;
                         PImage ss = get(scene.scX, scene.scY, scene.scW, scene.scH);
-                        ss.save(scene.name+captures+".png");
-                        captures++;
+                        String count = b.getInfo("user", "nScreenshots", "email", email);
+                        int nextCount = Integer.parseInt(count) + 1;
+                        ss.save(scene.name + count + ".png");
+                        b.update("user", "nScreenshots", String.valueOf(nextCount), "email", email);
                     }
                     if (gui.rsced3.mouseOverButton(this)) copyScene();
                     if (gui.delSc.on) {
@@ -1196,15 +1198,6 @@ public class Main extends PApplet {
         b.insert("oc_has_scene", "OC_UniqueID, Scene_UniqueID, Pos",String.valueOf(pHolder.uniqueID) + ", " + String.valueOf(scene.uniqueID) + ", " + (scene.nObjects-1));
     }
 
-    public void instanceZwolf() {
-        OC pHolder = new OC(nAllOCs);
-        setZwolfDefaults(pHolder);
-        pHolder.ID = -1;
-        pHolder.name = "Zwolf" + pHolder.ID;
-        changeTFValues(pHolder);
-        scene.addObject(pHolder);
-    }
-
     private void setZwolfDefaults(OC pHolder) {
         gui.slSced[1].v = 1.83f;
         gui.slSced[2].v = (float) Math.pow(1.83f, 2) * 25;
@@ -1297,11 +1290,6 @@ public class Main extends PApplet {
         searchSelects = tempList;
     }
 
-    private float round(float value, int decimals) {
-        float factor = (float) Math.pow(10, decimals);
-        return Math.round(value * factor) / factor;
-    }
-
     public void translateEverything() {
         int l = (gui.lang == LANG.ESP) ? 2 : 1;
 
@@ -1366,11 +1354,11 @@ public class Main extends PApplet {
             gui.scenes.get(i).state = STATE.NULL;
         }
         gui.scenes.getFirst().state = STATE.PLUS;
+
         scenes.clear();
         allOCs.clear();
         infos.clear();
         selects.clear();
-
 
         int lang = Integer.parseInt(b.getInfo("user", "lang", "email", email));
         gui.lang = (lang == 1 ? LANG.ENG : LANG.ESP);
@@ -1378,22 +1366,32 @@ public class Main extends PApplet {
 
         ArrayList<Scene> tempSc = new ArrayList<>();
         String[][] allSceneData = b.getAllScenes();
+
         if (allSceneData != null) {
+
+            java.util.TreeMap<Integer, Long> sortedScenes = new java.util.TreeMap<>();
+
             for (int i = 0; i < allSceneData.length; i++) {
                 if (allSceneData[i][3].equals(email)) {
                     int id = Integer.parseInt(allSceneData[i][1]);
                     long uniqueId = Long.parseLong(allSceneData[i][0]);
+                    sortedScenes.put(id, uniqueId);
+                }
+            }
 
-                    Scene nextSc = new Scene(id, uniqueId);
-                    tempSc.add(nextSc);
-
-                    if (i < gui.scenes.size()) {
-                        gui.scenes.get(i).state = STATE.NORM;
-                        if (i + 1 < gui.scenes.size()) {
-                            gui.scenes.get(i + 1).state = STATE.PLUS;
-                        }
+            int count = 0;
+            for (java.util.Map.Entry<Integer, Long> entry : sortedScenes.entrySet()) {
+                int id = entry.getKey();
+                long uniqueId = entry.getValue();
+                Scene nextSc = new Scene(id, uniqueId);
+                tempSc.add(nextSc);
+                if (count < gui.scenes.size()) {
+                    gui.scenes.get(count).state = STATE.NORM;
+                    if (count + 1 < gui.scenes.size()) {
+                        gui.scenes.get(count + 1).state = STATE.PLUS;
                     }
                 }
+                count++;
             }
         }
         scenes = tempSc;
@@ -1428,5 +1426,55 @@ public class Main extends PApplet {
             }
         }
         defragment();
+
+        String[][] OCSc = b.getOCinScenes();
+        String[][] StandSc = b.getStandinScene();
+
+        for (int i = 0; i < scenes.size(); i++) {
+            Scene currentScene = scenes.get(i);
+            String sIDStr = String.valueOf(currentScene.uniqueID);
+
+            java.util.TreeMap<Integer, Stand> sortedStands = new java.util.TreeMap<>();
+
+            if (OCSc != null) {
+                for (int j = 0; j < OCSc.length; j++) {
+                    if (OCSc[j][1].equals(sIDStr)) {
+                        int pos = Integer.parseInt(OCSc[j][2]);
+                        long ocID = Long.parseLong(OCSc[j][0]);
+                        OC foundOC = OCwhere(ocID);
+                        if (foundOC != null) sortedStands.put(pos, foundOC);
+                    }
+                }
+            }
+
+            if (StandSc != null) {
+                for (int j = 0; j < StandSc.length; j++) {
+                    if (StandSc[j][0].equals(sIDStr)) {
+                        int pos = Integer.parseInt(StandSc[j][2]);
+                        long stID = Long.parseLong(StandSc[j][1]);
+                        Stand foundProp = StandWhere(stID);
+                        if (foundProp != null) sortedStands.put(pos, foundProp);
+                    }
+                }
+            }
+
+            currentScene.stands = new Stand[0];
+            currentScene.nObjects = 0;
+
+            for (Stand s : sortedStands.values()) {
+                currentScene.addObject(s);
+            }
+        }
+    }
+
+    private OC OCwhere(long uniqueID){
+        for (int i = 0; i < allOCs.size();i++){
+            if (allOCs.get(i).uniqueID == uniqueID) return allOCs.get(i);
+        }
+        return null;
+    }
+
+    private Stand StandWhere(long ID){
+        return allStands[(int) (-ID -1)];
     }
 }

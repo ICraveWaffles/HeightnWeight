@@ -28,7 +28,6 @@ public class Database {
                     password
             );
             query = connection.createStatement();
-            System.out.print("Successfully connected to database");
             connected = true;
         }
         catch (Exception e){
@@ -42,8 +41,6 @@ public class Database {
                     " FROM " + objectName +
                     " WHERE " + primaryKey + " = '" + primaryKeyValue + "'";
 
-            System.out.println(q);
-
             ResultSet rs = query.executeQuery(q);
             rs.next();
 
@@ -53,56 +50,6 @@ public class Database {
             System.out.println(e);
         }
         return null;
-    }
-
-    public int getRowCount(String objectName){
-        String q = "SELECT COUNT(*) AS num FROM " + objectName;
-        try{
-            ResultSet rs = query.executeQuery(q);
-            rs.next();
-            return rs.getInt("num");
-        }
-        catch(Exception e){
-            System.out.println(e);
-        }
-        return 0;
-    }
-
-    public int getColCount(String objectName){
-        try {
-            String q = "SELECT count(*) as n FROM information_schema.columns WHERE table_name ='"+ objectName +"' AND table_schema='"+databaseName+"'";
-            System.out.println(q);
-            ResultSet rs = query.executeQuery( q);
-            rs.next();
-            int numCols = rs.getInt("n");
-            return numCols;
-        }
-        catch(Exception e) {
-            System.out.println(e);
-            return 0;
-        }
-    }
-
-    public String[] getColumnValues(String objectName, String attributeName){
-        int rowCount = getRowCount(objectName);
-        String[] values = new String[rowCount];
-        String q = "SELECT " + attributeName +
-                " FROM " + objectName;
-
-        System.out.println(q);
-        try{
-            ResultSet rs = query.executeQuery(q);
-            int index = 0;
-            while(rs.next()){
-                values[index] = rs.getString(attributeName);
-                index++;
-            }
-        }
-        catch(Exception e){
-            System.out.println(e);
-        }
-
-        return values;
     }
 
     public String[][] getAllScenes() {
@@ -158,6 +105,52 @@ public class Database {
         return rows.toArray(new String[0][nc]);
     }
 
+    public String[][] getOCinScenes() {
+        int nc = 3;
+
+        List<String[]> rows = new ArrayList<>();
+
+        try {
+            String q = "SELECT * FROM " + "oc_has_scene";
+            ResultSet rs = query.executeQuery(q);
+
+            while (rs.next()) {
+                String[] row = new String[nc];
+                row[0] = rs.getString(1);
+                row[1] = rs.getString(2);
+                row[2] = rs.getString(3);
+
+                rows.add(row);
+            }
+        } catch (Exception e) {
+            System.err.println("Error al recuperar escenas: " + e.getMessage());
+        }
+        return rows.toArray(new String[0][nc]);
+    }
+
+    public String[][] getStandinScene() {
+        int nc = 3;
+
+        List<String[]> rows = new ArrayList<>();
+
+        try {
+            String q = "SELECT * FROM " + "scene_has_stand";
+            ResultSet rs = query.executeQuery(q);
+
+            while (rs.next()) {
+                String[] row = new String[nc];
+                row[0] = rs.getString(1);
+                row[1] = rs.getString(2);
+                row[2] = rs.getString(3);
+
+                rows.add(row);
+            }
+        } catch (Exception e) {
+            System.err.println("Error al recuperar escenas: " + e.getMessage());
+        }
+        return rows.toArray(new String[0][nc]);
+    }
+
     public void insert(String objectName, String attributeNames, String values) {
 
         String q = "INSERT INTO " + objectName +
@@ -178,8 +171,6 @@ public class Database {
                 "0, " +
                 "2";
         insert("user", "email, username, password, nScreenshots, lang", values);
-
-        System.out.println("Registro intentado para: " + username);
     }
 
     public void newScene(long uniqueID, int ID, String email) {
@@ -190,7 +181,6 @@ public class Database {
 
         insert("scene", "UniqueID, ID, currentObject, User_email", values);
 
-        System.out.println("Escena creada para: " + email);
     }
 
     public void newOC(long uniqueID, int ID, String email) {
@@ -214,8 +204,6 @@ public class Database {
                 "'" + email + "'";
 
         insert("oc", "ID, UniqueID, Name, tHeight, BMI, age, r, g, b, User_email", values);
-
-        System.out.println("OC " + name + " creado con éxito para: " + email);
     }
 
     public void update(String objectName, String attributeName, String newValue, String primaryKey, String primaryKeyValue){
@@ -307,17 +295,6 @@ public class Database {
         }
     }
 
-    public void close(){
-        try{
-            if(connection != null){
-                connection.close();
-            }
-        }
-        catch(Exception e){
-            System.out.println(e);
-        }
-    }
-
     public boolean exists(String tabla, String columna, String valor) {
         String q = "SELECT COUNT(*) AS total FROM " + tabla + " WHERE " + columna + " = '" + valor + "'";
         try {
@@ -329,5 +306,16 @@ public class Database {
             System.out.println("Error al verificar duplicados: " + e);
         }
         return false;
+    }
+
+    public void close(){
+        try{
+            if(connection != null){
+                connection.close();
+            }
+        }
+        catch(Exception e){
+            System.out.println(e);
+        }
     }
 }

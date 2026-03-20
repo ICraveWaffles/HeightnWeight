@@ -5,8 +5,6 @@ public class HueSlider {
     float x,y,w,h;
     float minV,maxV,v;
 
-    int color;
-
     public HueSlider(PApplet p5,float x,float y,float w,float h){
         this.x=x;
         this.y=y;
@@ -20,10 +18,6 @@ public class HueSlider {
 
     public float getValue(){
         return v;
-    }
-
-    public void setColor(int c){
-        this.color=c;
     }
 
     public void display(PApplet p5){
@@ -56,10 +50,7 @@ public class HueSlider {
 
     public boolean mouseOnSlider(PApplet p5){
 
-        return (p5.mouseX>x &&
-                p5.mouseX<x+w &&
-                p5.mouseY>=y &&
-                p5.mouseY<=y+h);
+        return (p5.mouseX>x-20 && p5.mouseX<x+w+20 && p5.mouseY>=y && p5.mouseY<=y+h);
     }
 
     public void updateSlider(PApplet p5){

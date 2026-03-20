@@ -31,10 +31,6 @@ public class cButton {
         this.enabled = b;
     }
 
-    public boolean isEnabled(){
-        return  this.enabled;
-    }
-
     public void display(PApplet p5){
         p5.pushStyle();
         p5.rectMode(p5.CENTER);

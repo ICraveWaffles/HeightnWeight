@@ -43,7 +43,6 @@ public class Sounds {
         } catch (UnsupportedAudioFileException |
                  IOException |
                  LineUnavailableException e) {
-            e.printStackTrace();
             return null;
         }
     }

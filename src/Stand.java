@@ -11,15 +11,6 @@ public class Stand {
     float tWidth, ttWidth, tHeight;
     PImage pic;
 
-    Stand (String name,float tWidth, float tHeight, PImage pic){
-        this.uniqueID = System.nanoTime();
-        this.name = name;
-        this.tWidth = tWidth;
-        this.ttWidth = tWidth;
-        this.tHeight = tHeight;
-        this.pic = pic;
-    }
-
     public Stand() {
 
     }
@@ -29,14 +20,6 @@ public class Stand {
         p5.rectMode(p5.LEFT);
         p5.image(pic, x,y, width, height);
         p5.popStyle();
-    }
-
-    public void setID(int i){
-        this.ID = i;
-    }
-
-    public int getID() {
-        return this.ID;
     }
 
 }
