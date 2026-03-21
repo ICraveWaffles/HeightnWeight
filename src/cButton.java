@@ -2,7 +2,6 @@ import processing.core.PApplet;
 import java.awt.*;
 import java.awt.datatransfer.*;
 
-
 public class cButton {
 
     public float x, y, d;

@@ -9,9 +9,9 @@ public class Colors {
 
     public static void instanceColors(PApplet p5) {
         isNight = true; 
-        colors = new int[9];
-        nightMode = new int[9];
-        dayMode = new int[9];
+        colors = new int[10];
+        nightMode = new int[10];
+        dayMode = new int[10];
         nightMode[0] = p5.color(0xFF414141);
         nightMode[1] = p5.color(0xFF534559);
         nightMode[2] = p5.color(0xFFD9D9D9);
@@ -21,6 +21,8 @@ public class Colors {
         nightMode[6] = p5.color(0xFF000000);
         nightMode[7] = p5.color(0xFFFFFFFF);
         nightMode[8] = p5.color(0xFFFF0000);
+        nightMode[9] = p5.color(0xFF00FF00);
+
 
         dayMode[0] = p5.color(0xFFBEBEBE);
         dayMode[1] = p5.color(0xFFB2FF91);
@@ -31,6 +33,7 @@ public class Colors {
         dayMode[6] = p5.color(0xFFFFFFFF);
         dayMode[7] = p5.color(0xFF000000);
         dayMode[8] = p5.color(0xFFFF0000);
+        dayMode[9] = p5.color(0xFF00FF00);
 
         colors = nightMode;
     }

@@ -41,3 +41,24 @@ NOOC1;This scene is empty!;¡Esta escena está vacía!
 NOOC2;Add or create a new OC now!;¡Añade o crea un personaje ahora!
 STAND1;A Stand is currently selected!;Un Estante está seleccionado!
 STAND2;You may not edit Stands;Los Estantes no se pueden editar.
+LOG_GOOD;Welcome back!;¡Bienvenido de nuevo!
+LOG_BAD;Error, wrong data;Error, datos incorrectos
+LOGOUT_OK;Logged out successfully;Sesión cerrada con éxito
+SIGNUP_MT;Error, empty fields;Error, campos de texto vacíos
+SIGNUP_BAD;Error, E-mail format not valid;Error, formato de E-mail inválido
+SIGNUP_ALT;Error, usernames may not contain '@';Error, los nombres no pueden contener '@'
+SIGNUP_=/=;Error, passwords don't match;Error, las contraseñas no coinciden
+SIGNUP_EMAIL;Error, E-mail already registered;Error, este email ya está registrado
+SIGNUP_NAME;Error, username already taken;Error, nombre de usuario ya registrado
+SIGNUP_GOOD;New account created!;¡Nueva cuenta creada!
+SCENE_NEW;New scene created;Nueva escena creada
+SCENE_DEL;Scene deleted;Escena eliminada
+SCENE_COPIED;Scene copied;Escena copiada
+SS_SAVED;Screenshot saved!;¡Captura guardada!
+OC_INST;Character instanced;Personaje instanciado
+OC_PUT;Character added;Personaje añadido
+OBJ_DEL;Object removed;Objeto eliminado
+OC_DEL;Character deleted;Personaje eliminado
+LANG_SET;Language updated;Idioma actualizado
+THEME_SET;Theme updated;Tema actualizado
+RESET_OK;Database cleared and resetted;Base de datos vaciada y reseteada

@@ -40,6 +40,8 @@ public class GUI {
     boolean gridon, cPickOn;
 
     public enum SCREEN { PRELOGIN, LOGIN, SIGNUP, MAIN, QNA, SETTINGS,  SCENESELECTOR, SCENEEDITOR, OCVIEWER }
+    Notification preloginN, loginN, signupN, mainN, qnaN, settingsN, sceneselectN, scedN, ocviewerN;
+
 
     public SCREEN currentScreen;
     float phase;
@@ -104,6 +106,17 @@ public class GUI {
         slGreen = new Slider (p5, "G", 225,960, 375, 12, 0, 255 , 127);
         slBlue = new Slider (p5, "B", 225,1050, 375, 12, 0, 255 , 127);
 
+        preloginN = new Notification();
+        loginN = new Notification();
+        signupN = new Notification();
+        mainN = new Notification();
+        qnaN = new Notification();
+        settingsN = new Notification();
+        sceneselectN = new Notification();
+        scedN = new Notification();
+        ocviewerN = new Notification();
+
+
         int buttonIndex = 0;
 
         for (int h = 0; h < 30; h++) {
@@ -163,59 +176,6 @@ public class GUI {
         phase = 255 * PApplet.sin(p5.frameCount*0.1f);
     }
 
-    public void drawLogo(PApplet p5, int y) {
-
-        p5.pushStyle();
-
-        p5.noStroke();
-        p5.textAlign(p5.CENTER, p5.CENTER);
-        p5.textFont(Fonts.getThisFont(0));
-        p5.fill(Colors.getThisColor(7));
-        p5.circle(960, y, 255);
-
-        p5.fill(Colors.getThisColor(6));
-        p5.text("OCBox", 960, y);
-
-        p5.popStyle();
-    }
-
-    public void drawStartButton(PApplet p5, float x, float y, String s) {
-
-        p5.pushStyle();
-
-        p5.noStroke();
-        p5.rectMode(p5.CENTER);
-        p5.textAlign(p5.CENTER, p5.CENTER);
-
-        p5.textFont(Fonts.getThisFont(1));
-        p5.fill(Colors.getThisColor(4));
-
-        p5.rect(x, y, 900, 105, 7);
-        p5.fill(Colors.getThisColor(7));
-        p5.text(s, x, y);
-
-        p5.popStyle();
-    }
-
-
-    public void drawTextField(PApplet p5, int y, String s) {
-        p5.pushStyle();
-
-        p5.rectMode(p5.CENTER);
-        p5.textAlign(p5.CENTER, p5.CENTER);
-        p5.textFont(Fonts.getThisFont(2));
-
-        p5.fill(Colors.getThisColor(5));
-        p5.stroke(Colors.getThisColor(6));
-        p5.strokeWeight(1);
-
-        p5.rect(960, y, 810, 90, 3);
-        p5.fill(Colors.getThisColor(6));
-        p5.text(s, 960, y);
-
-        p5.popStyle();
-    }
-
     public void drawPRELOGIN(PApplet p5, PImage l) {
 
         p5.pushStyle();
@@ -227,6 +187,7 @@ public class GUI {
 
         plog1.display(p5,lang == LANG.ENG);
         plog2.display(p5,lang == LANG.ENG);
+        preloginN.display(p5);
 
         p5.popStyle();
     }
@@ -246,7 +207,9 @@ public class GUI {
         tflogin1.display(p5);
         tflogin2.display(p5);
         login.display(p5,lang == LANG.ENG);
+        loginN.display(p5);
         exit.display(p5,lang == LANG.ENG);
+
 
         p5.popStyle();
     }
@@ -269,6 +232,7 @@ public class GUI {
         tfsignup4.display(p5);
 
         signup.display(p5,lang == LANG.ENG);
+        signupN.display(p5);
         exit.display(p5,lang == LANG.ENG);
 
         p5.popStyle();
@@ -293,6 +257,7 @@ public class GUI {
 
         q1.display(p5);
         s1.display(p5);
+        mainN.display(p5);
 
         p5.popStyle();
     }
@@ -313,6 +278,7 @@ public class GUI {
 
         q2.display(p5);
         q3.display(p5);
+        qnaN.display(p5);
 
         p5.fill(Colors.getThisColor(6));
         p5.textFont(Fonts.getThisFont(0));
@@ -359,6 +325,7 @@ public class GUI {
         sLang.display(p5,lang == LANG.ENG);
         nuke.display(p5,lang == LANG.ENG);
         exit.display(p5,lang == LANG.ENG);
+        settingsN.display(p5);
 
         p5.popStyle();
     }
@@ -384,6 +351,7 @@ public class GUI {
         }
 
         exit.display(p5,lang == LANG.ENG);
+        sceneselectN.display(p5);
 
         p5.popStyle();
     }
@@ -417,6 +385,7 @@ public class GUI {
         sced3.display(p5);
         sced4.display(p5);
         sced5.display(p5);
+        scedN.display(p5);
 
         if (scene.nObjects != 0) {
             if (scene.sel != Scene.scInstance.OCSELECT) {
@@ -562,6 +531,7 @@ public class GUI {
             p5.text(Languages.translate("STAND1", this.lang == LANG.ENG ? 1 : 2), 15, 120);
             p5.text(Languages.translate("STAND2", this.lang == LANG.ENG ? 1 : 2), 15, 150);
         }
+        scedN.display(p5);
         p5.popStyle();
     }
 
@@ -609,6 +579,7 @@ public class GUI {
         }
         tfInfoSearch.display(p5);
         exit.display(p5,lang == LANG.ENG);
+        ocviewerN.display(p5);
         p5.popStyle();
     }
 }

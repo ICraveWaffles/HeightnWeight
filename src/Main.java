@@ -62,7 +62,7 @@ public class Main extends PApplet {
         gui.slSced[2].setEnabled(false);
         gui.slSced[4].setEnabled(false);
         bLogo = loadImage("data/ocblack.png");
-        wLogo = loadImage("data/ocwhite.png");
+        wLogo = loadImage("data/ocyt.png");
         for (int i = 1; i < 4;i++){
             allStands[i-1] = new Stand();
             allStands[i-1].uniqueID = -i;
@@ -209,7 +209,7 @@ public class Main extends PApplet {
                     }
                 }
                 if (gui.delSc.on){
-                    background(Colors.getThisColor(8), 50);
+                    background(Colors.getThisColor(8), 0.5f);
                     gui.delSc.display(this, "", gui.lang == LANG.ESP? 2 : 1);
                 }
                 popStyle();
@@ -244,7 +244,7 @@ public class Main extends PApplet {
                 }
 
                 if (gui.delOC.on){
-                    background(Colors.getThisColor(8), 50);
+                    background(Colors.getThisColor(8), 0.5f);
                     gui.delOC.display(this, pendingDeleteOC.name, gui.lang == LANG.ESP? 2 : 1);
                 }
             }
@@ -319,7 +319,6 @@ public class Main extends PApplet {
             else if (gui.currentScreen == GUI.SCREEN.LOGIN) {
                 if (gui.exit.mouseOverButton(this)) {
                     gui.currentScreen = GUI.SCREEN.PRELOGIN;
-
                 }
                 if (gui.login.mouseOverButton(this)) {
                     String input = gui.tflogin1.text;
@@ -332,6 +331,7 @@ public class Main extends PApplet {
                         gui.currentScreen = GUI.SCREEN.MAIN;
                         gui.tflogin1.text = gui.tflogin1.trueText;
                         gui.tflogin2.text = gui.tflogin2.trueText;
+                        gui.mainN.trigger("LOG_GOOD", 960, 225, true, 0, (gui.lang == LANG.ESP? 2 : 1));
                     }
                     else if (pass.equals(b.getInfo("user", "password", "username", input))) {
                         username = input;
@@ -340,9 +340,10 @@ public class Main extends PApplet {
                         gui.currentScreen = GUI.SCREEN.MAIN;
                         gui.tflogin1.text = gui.tflogin1.trueText;
                         gui.tflogin2.text = gui.tflogin2.trueText;
+                        gui.mainN.trigger("LOG_GOOD", 960, 225, true, 0, (gui.lang == LANG.ESP? 2 : 1));
                     }
                     else {
-                        print("INCORRECT PASSWORD");
+                        gui.loginN.trigger("LOG_BAD", 960, 225, false, 0, (gui.lang == LANG.ESP? 2 : 1));
                     }
                 }
                 gui.tflogin1.isPressed(this);
@@ -354,28 +355,28 @@ public class Main extends PApplet {
                 if (gui.exit.mouseOverButton(this)) {gui.currentScreen = GUI.SCREEN.PRELOGIN;}
 
                 if (gui.signup.mouseOverButton(this)) {
-                    String user = gui.tfsignup1.text;
-                    String mail = gui.tfsignup2.text;
-                    String pass1 = gui.tfsignup3.text;
-                    String pass2 = gui.tfsignup4.text;
+                    String user = (gui.tfsignup1.text.equals(gui.tfsignup1.trueText)? "" : gui.tfsignup1.text);
+                    String mail = (gui.tfsignup2.text.equals(gui.tfsignup2.trueText)? "" : gui.tfsignup2.text);
+                    String pass1 = (gui.tfsignup3.text.equals(gui.tfsignup3.trueText)? "" : gui.tfsignup3.text);
+                    String pass2 = (gui.tfsignup4.text.equals(gui.tfsignup4.trueText)? "" : gui.tfsignup4.text);
 
                     if (mail.isEmpty() || user.isEmpty() || pass1.isEmpty()) {
-                        println("Error: Campos vacíos");
+                        gui.signupN.trigger("SIGNUP_MT", 960, 440, false, 0, (gui.lang == LANG.ESP? 2 : 1));
                     }
                     else if (!isValidEmail(mail)) {
-                        println("Error: El formato del E-mail no es válido.");
+                        gui.signupN.trigger("SIGNUP_BAD", 960, 440, false, 0, (gui.lang == LANG.ESP? 2 : 1));
                     }
                     else if (user.contains("@")) {
-                        println("Error: El nombre de usuario no puede contener '@'");
+                        gui.signupN.trigger("SIGNUP_ALT", 960, 440, false, 0, (gui.lang == LANG.ESP? 2 : 1));
                     }
                     else if (!pass1.equals(pass2)) {
-                        println("Error: Las contraseñas no coinciden");
+                        gui.signupN.trigger("SIGNUP_=/=", 960, 440, false, 0, (gui.lang == LANG.ESP? 2 : 1));
                     }
                     else if (b.exists("user", "email", mail)) {
-                        println("Error: El email ya está registrado");
+                        gui.signupN.trigger("SIGNUP_EMAIL", 960, 440, false, 0, (gui.lang == LANG.ESP? 2 : 1));
                     }
                     else if (b.exists("user", "username", user)) {
-                        println("Error: El nombre de usuario ya existe");
+                        gui.signupN.trigger("SIGNUP_NAME", 960, 440, false, 0, (gui.lang == LANG.ESP? 2 : 1));
                     }
                     else {
                         b.signup(mail, user, pass1);
@@ -386,9 +387,9 @@ public class Main extends PApplet {
                         gui.tfsignup2.text = gui.tfsignup2.trueText;
                         gui.tfsignup3.text = gui.tfsignup3.trueText;
                         gui.tfsignup4.text = gui.tfsignup4.trueText;
+                        gui.mainN.trigger("SIGNUP_GOOD", 960, 225, true, 0, (gui.lang == LANG.ESP? 2 : 1));
                     }
                 }
-
                 gui.tfsignup1.isPressed(this);
                 gui.tfsignup2.isPressed(this);
                 gui.tfsignup3.isPressed(this);
@@ -411,10 +412,13 @@ public class Main extends PApplet {
                     allOCs = new ArrayList<>();
                     infos = new ArrayList<>();
                     selects = new ArrayList<>();
+                    gui.preloginN.trigger("LOGOUT_OK", 960, 360, true, 0, (gui.lang == LANG.ESP? 2 : 1));
                 }
             }
             else if (gui.currentScreen == GUI.SCREEN.QNA) {
                 if (gui.exit.mouseOverButton(this)) gui.currentScreen = GUI.SCREEN.MAIN;
+                if (gui.q2.mouseOverButton(this)) gui.qnaN.trigger("Link copied!", 960, 225, true, 0, (gui.lang == LANG.ESP? 2 : 1));
+                if (gui.q3.mouseOverButton(this)) gui.qnaN.trigger("¡Enlace copiado!", 960, 225, true, 0, (gui.lang == LANG.ESP? 2 : 1));
             }
             else if (gui.currentScreen == GUI.SCREEN.SCENESELECTOR) {
                 if (gui.exit.mouseOverButton(this)) {
@@ -442,6 +446,7 @@ public class Main extends PApplet {
                                 if (scenes.size() < gui.scenes.size()) {
                                     gui.scenes.get(scenes.size()).updateSceneButton(scenes.size());
                                 }
+                                gui.sceneselectN.trigger("SCENE_NEW", 400, 32, true, 0, (gui.lang == LANG.ESP? 2 : 1));
                             } else {
                                 scenes.get(i).name = gui.scenes.get(i).token;
                                 scene = scenes.get(i);
@@ -500,7 +505,9 @@ public class Main extends PApplet {
                         scene = null;
                         firstClick = false;
                     }
-                    if (gui.rsced1.mouseOverButton(this)) gui.gridon = !gui.gridon;
+                    if (gui.rsced1.mouseOverButton(this)) {
+                        gui.gridon = !gui.gridon;
+                    }
                     if (gui.rsced2.mouseOverButton(this)){
                         gui.phase = 0;
                         PImage ss = get(scene.scX, scene.scY, scene.scW, scene.scH);
@@ -508,8 +515,12 @@ public class Main extends PApplet {
                         int nextCount = Integer.parseInt(count) + 1;
                         ss.save(scene.name + count + ".png");
                         b.update("user", "nScreenshots", String.valueOf(nextCount), "email", email);
+                        gui.scedN.trigger("SS_SAVED", 1600, 124, true, 0, (gui.lang == LANG.ESP? 2 : 1));
                     }
-                    if (gui.rsced3.mouseOverButton(this)) copyScene();
+                    if (gui.rsced3.mouseOverButton(this)) {
+                        copyScene();
+                        gui.scedN.trigger("SCENE_COPIED", 1600, 124, true, 0, (gui.lang == LANG.ESP? 2 : 1));
+                    }
                     if (gui.delSc.on) {
                         int result = gui.delSc.uSure(this);
 
@@ -518,7 +529,7 @@ public class Main extends PApplet {
                             Sounds.emit(9);
                             gui.currentScreen = GUI.SCREEN.SCENESELECTOR;
                             pendingDeleteSc = null;
-
+                            gui.sceneselectN.trigger("SCENE_DEL", 1520, 32, false, 0, (gui.lang == LANG.ESP? 2 : 1));
                         } else if (result == 2) {
                             pendingDeleteSc = null;
                         }
@@ -581,8 +592,12 @@ public class Main extends PApplet {
                         } else {
                             gui.tfSelectSearch.isPressed(this);
                         }
-                        if (gui.rsced0.mouseOverButton(this)) gui.cPickOn = !gui.cPickOn;
-                        if (gui.sced1.mouseOverButton(this)) {instanceOC();}
+                        if (gui.rsced0.mouseOverButton(this)) {
+                            gui.cPickOn = !gui.cPickOn;
+                        }
+                        if (gui.sced1.mouseOverButton(this)) {
+                            instanceOC();
+                        }
                         if (gui.sced2.mouseOverButton(this) && nAllOCs != 0) scene.sel = Scene.scInstance.OCSELECT;
 
                         if (gui.sced4.enabled && gui.sced4.mouseOverButton(this)) {
@@ -648,6 +663,7 @@ public class Main extends PApplet {
                                         changeTFValues(pHolder);
                                     }
                                 }
+                                gui.scedN.trigger("OBJ_DEL", 1600, 124, false, 0, (gui.lang == LANG.ESP? 2 : 1));
                             }
                         }
                     }
@@ -680,6 +696,7 @@ public class Main extends PApplet {
                             updateInfoSearchArr(gui.tfInfoSearch.text);
                         }
                         pendingDeleteOC = null;
+                        gui.ocviewerN.trigger("OC_DEL", 1520, 32, false, 0, (gui.lang == LANG.ESP? 2 : 1));
                     } else if (result == 2) {
                         pendingDeleteOC = null;
                     }
@@ -703,10 +720,12 @@ public class Main extends PApplet {
                         gui.sLang.toggle();
                         gui.lang = (gui.lang == LANG.ESP) ? LANG.ENG : LANG.ESP;
                         translateEverything();
+                        gui.settingsN.trigger("LANG_SET", 960, 225, true, 0, (gui.lang == LANG.ESP? 2 : 1));
                     }
                     if (gui.sCol.mouseOverButton(this)) {
                         gui.sCol.toggle();
                         Colors.switchMode();
+                        gui.settingsN.trigger("THEME_SET", 960, 225, true, 0, (gui.lang == LANG.ESP? 2 : 1));
                     }
                 }
 
@@ -716,6 +735,7 @@ public class Main extends PApplet {
                     if (result == 1) {
                         Sounds.emit(16);
                         reset();
+                        gui.settingsN.trigger("RESET_OK", 960, 225, false, 0, (gui.lang == LANG.ESP? 2 : 1));
                     } else if (result == 2){
                         gui.delDelAll.on = false;
                         gui.delDelAll.yes.y -= 40;
@@ -932,6 +952,7 @@ public class Main extends PApplet {
         SelectSlab newSelect = new SelectSlab(this, oc);
         selects.add(newSelect);
         selects.get(nAllOCs).isEnabled = false;
+        gui.scedN.trigger("OC_INST", 1600, 124, true, 0, (gui.lang == LANG.ESP? 2 : 1));
         nAllOCs++;
     }
 
@@ -1221,6 +1242,7 @@ public class Main extends PApplet {
     }
 
     public void addThisOC(OC pHolder) {
+        gui.scedN.trigger("OC_PUT", 1600, 124, true, 0, (gui.lang == LANG.ESP? 2 : 1));
         scene.addObject(pHolder);
         updateSlidersFromOC(pHolder);
         gui.tfName.text = (pHolder.name);
