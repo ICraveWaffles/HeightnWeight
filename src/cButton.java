@@ -8,10 +8,10 @@ public class cButton {
     public int fillColor, strokeColor;
     public int fillColorOver, fillColorDisabled;
 
-    String bText;
-    int cText;
+    public String bText;
+    public int cText;
     public boolean enabled;
-    boolean lastPress = false;
+    public boolean lastPress = false;
 
     public cButton(PApplet p5, String text, float x, float y, float d, int f, int s, int t){
         this.bText = text;

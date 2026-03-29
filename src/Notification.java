@@ -2,12 +2,12 @@ import processing.core.PApplet;
 
 public class Notification {
 
-    String msg;
-    int x, y, size;
-    boolean good;
-    float phase;
-    float dy;
-    boolean on;
+    public String msg;
+    public int x, y, size;
+    public boolean good;
+    public float phase;
+    public float dy;
+    public boolean on;
 
     public Notification() {
         this.on = false;

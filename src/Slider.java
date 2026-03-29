@@ -3,12 +3,12 @@ import processing.core.PApplet;
 public class Slider {
 
     public String token;
-    String s;
-    float x, y, w, h;
-    float minV, maxV, v;
+    public String s;
+    public float x, y, w, h;
+    public float minV, maxV, v;
     public boolean light;
-    public boolean log; // Ahora esta variable determinará el comportamiento
-    boolean enabled = true;
+    public boolean log;
+    public boolean enabled = true;
 
     public Slider(PApplet p5, String s, float x, float y, float w, float h, float minV, float maxV, float val, boolean light, boolean isLog) {
         this.token = s;

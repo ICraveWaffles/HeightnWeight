@@ -3,25 +3,25 @@ import java.util.Random;
 
 public class Scene {
 
-    String name;
-    Stand[] stands;
+    public String name;
+    public Stand[] stands;
     public int nObjects;
-    int currentObject;
+    public int currentObject;
 
-    enum scInstance {DISPLAY, OCSELECT}
-    scInstance sel;
+    public enum scInstance {DISPLAY, OCSELECT}
+    public scInstance sel;
 
-    int selPage = 0;
-    int ID;
-    final long uniqueID;
+    public int selPage = 0;
+    public int ID;
+    public final long uniqueID;
 
-    float pixelSize;
-    float scale;
+    public float pixelSize;
+    public float scale;
 
-    final int scH = 900;
-    final int scW = 1395;
-    final int scX = 510;
-    final int scY = 165;
+    public final int scH = 900;
+    public final int scW = 1395;
+    public final int scX = 510;
+    public final int scY = 165;
 
     public Scene(int ID) {
         Random random = new Random();

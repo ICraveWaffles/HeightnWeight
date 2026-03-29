@@ -4,12 +4,12 @@ import processing.core.PImage;
 public class Stand {
 
     public int ID;
-    long uniqueID;
-    String name;
-    float x, y;
-    float width, height;
-    float tWidth, ttWidth, tHeight;
-    PImage pic;
+    public long uniqueID;
+    public String name;
+    public float x, y;
+    public float width, height;
+    public float tWidth, tHeight;
+    public PImage pic;
 
     public Stand() {
 

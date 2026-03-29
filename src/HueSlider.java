@@ -2,8 +2,8 @@ import processing.core.PApplet;
 
 public class HueSlider {
 
-    float x,y,w,h;
-    float minV,maxV,v;
+    public float x,y,w,h;
+    public float minV,maxV,v;
 
     public HueSlider(PApplet p5,float x,float y,float w,float h){
         this.x=x;
@@ -21,7 +21,6 @@ public class HueSlider {
     }
 
     public void display(PApplet p5){
-
         p5.pushStyle();
 
         p5.rect(x,y,w,h,7.5f);

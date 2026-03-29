@@ -3,16 +3,16 @@ import static processing.core.PConstants.BACKSPACE;
 
 public class TextField {
 
-    int x, y, h, w;
-    int bgColor, fgColor, selectedColor, borderColor;
-    int borderWeight = 1;
-    String token;
-    String text = "";
-    String trueText;
-    int textSize = 30;
-    boolean selected = false;
-    boolean enabled = true;
-    boolean intOnly = false;
+    public int x, y, h, w;
+    public int bgColor, fgColor, selectedColor, borderColor;
+    public int borderWeight = 1;
+    public String token;
+    public String text = "";
+    public String trueText;
+    public int textSize = 30;
+    public boolean selected = false;
+    public boolean enabled = true;
+    public boolean intOnly;
 
     public TextField(PApplet p5, String token, int x, int y, int w, int h, boolean intOnly) {
         this.x = x;
@@ -55,7 +55,6 @@ public class TextField {
     }
 
     public void keyPressed(char key, int keyCode) {
-
         if (!enabled || !selected) return;
 
         if (keyCode == BACKSPACE) {

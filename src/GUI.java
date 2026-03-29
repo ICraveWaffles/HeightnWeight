@@ -13,13 +13,13 @@ public class GUI {
     rButton login;
     rButton m1, m2, m3;
     cButton q1, s1, q2, q3;
-    public rSwitch sLang, sCol;
+    rSwitch sLang, sCol;
 
     HSBColorPicker cPick;
 
     cButton[] navigation = new cButton[4];
     cButton nav1, nav2, nav3, nav4;
-    public ArrayList<rButton> scenes = new ArrayList<>();
+    ArrayList<rButton> scenes = new ArrayList<>();
     rButton exit;
     rButton nuke;
 
@@ -39,11 +39,11 @@ public class GUI {
     int page;
     boolean gridon, cPickOn;
 
-    public enum SCREEN { PRELOGIN, LOGIN, SIGNUP, MAIN, QNA, SETTINGS,  SCENESELECTOR, SCENEEDITOR, OCVIEWER }
+    enum SCREEN { PRELOGIN, LOGIN, SIGNUP, MAIN, QNA, SETTINGS,  SCENESELECTOR, SCENEEDITOR, OCVIEWER }
     Notification preloginN, loginN, signupN, mainN, qnaN, settingsN, sceneselectN, scedN, ocviewerN;
 
 
-    public SCREEN currentScreen;
+    SCREEN currentScreen;
     float phase;
 
     public GUI(PApplet p5) {
@@ -116,7 +116,6 @@ public class GUI {
         scedN = new Notification();
         ocviewerN = new Notification();
 
-
         int buttonIndex = 0;
 
         for (int h = 0; h < 30; h++) {
@@ -177,7 +176,6 @@ public class GUI {
     }
 
     public void drawPRELOGIN(PApplet p5, PImage l) {
-
         p5.pushStyle();
 
         p5.imageMode(p5.CENTER);
@@ -193,7 +191,6 @@ public class GUI {
     }
 
     public void drawLOGIN(PApplet p5) {
-
         p5.pushStyle();
 
         p5.background(Colors.getThisColor(2));
@@ -215,7 +212,6 @@ public class GUI {
     }
 
     public void drawSIGNUP(PApplet p5) {
-
         p5.pushStyle();
 
         p5.background(Colors.getThisColor(2));
@@ -239,7 +235,6 @@ public class GUI {
     }
 
     public void drawMAIN(PApplet p5, PImage l) {
-
         p5.pushStyle();
 
         p5.background(Colors.getThisColor(1));
@@ -262,9 +257,7 @@ public class GUI {
         p5.popStyle();
     }
 
-
     public void drawQNA(PApplet p5) {
-
         p5.pushStyle();
 
         p5.background(Colors.getThisColor(1));
@@ -294,7 +287,6 @@ public class GUI {
     }
 
     public void drawSETTINGS(PApplet p5) {
-
         p5.pushStyle();
 
         p5.background(Colors.getThisColor(1));
@@ -331,7 +323,6 @@ public class GUI {
     }
 
     public void drawSCENESELECTOR(PApplet p5){
-
         p5.pushStyle();
 
         p5.background(Colors.getThisColor(1));
@@ -357,7 +348,6 @@ public class GUI {
     }
 
     public void drawSCENEEDITOR(PApplet p5, Scene scene) {
-
         p5.pushStyle();
 
         p5.textAlign(p5.LEFT, p5.CENTER);
@@ -536,7 +526,6 @@ public class GUI {
     }
 
     public void drawOCVIEWER(PApplet p5){
-
         p5.pushStyle();
         p5.background(Colors.getThisColor(1));
         p5.textFont(Fonts.getThisFont(1));

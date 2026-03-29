@@ -2,8 +2,8 @@ import processing.core.PApplet;
 
 public class rSwitch extends rButton {
 
-    String textOn;
-    String textOff;
+    public String textOn;
+    public String textOff;
     public boolean on;
 
     public rSwitch(PApplet p5, String textOn, String textOff,

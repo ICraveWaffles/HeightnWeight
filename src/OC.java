@@ -3,15 +3,15 @@ import java.util.Random;
 
 public class OC extends Stand {
 
-    float weight;
-    float BMI;
+    public float weight;
+    public float BMI;
 
-    float bhratio;
-    float age;
+    public float bhratio;
+    public float age;
 
-    int r;
-    int g;
-    int b;
+    public int r;
+    public int g;
+    public int b;
 
 
 

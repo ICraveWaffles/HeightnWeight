@@ -2,11 +2,11 @@ import processing.core.PApplet;
 
 public class InfoSlab {
 
-    int page;
-    OC oc;
-    int ID;
+    public int page;
+    public OC oc;
+    public int ID;
     public int x;
-    rButton delete;
+    public rButton delete;
 
     public InfoSlab(OC oc, PApplet p5) {
 
@@ -28,7 +28,6 @@ public class InfoSlab {
     }
 
     public void display(PApplet p5) {
-
         p5.pushStyle();
 
         p5.textFont(Fonts.getThisFont((oc.name.length() < 12) ? 1 : 2));

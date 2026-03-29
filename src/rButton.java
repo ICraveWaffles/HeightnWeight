@@ -15,7 +15,6 @@ public class rButton {
     STATE state;
     boolean lastPress = false;
 
-
     public rButton(PApplet p5,String token, float x, float y, float w, float h, int f, int s, int t){
         this.token = token;
         this.text = Languages.translate(this.token, 2);

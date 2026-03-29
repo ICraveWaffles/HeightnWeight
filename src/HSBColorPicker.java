@@ -3,25 +3,24 @@ import processing.core.PImage;
 
 public class HSBColorPicker {
 
-    float x, y, w, h;
-    HueSlider hueSlider;
+    public float x, y, w, h;
+    public HueSlider hueSlider;
 
-    float saturationValue = 0;
-    float brightnessValue = 0;
-    float hueValue;
+    public float saturationValue = 0;
+    public float brightnessValue = 0;
+    public float hueValue;
 
     public int selectedColor;
-    float xClick, yClick;
+    public float xClick, yClick;
 
-    boolean draggingSlider = false;
-    boolean draggingPicker = false;
-    final float pickerYOffset = 120;
+    public boolean draggingSlider = false;
+    public boolean draggingPicker = false;
+    public final float pickerYOffset = 120;
 
-    PImage pickerImage;
-    boolean pickerDirty = true;
+    public PImage pickerImage;
+    public boolean pickerDirty = true;
 
     public HSBColorPicker(PApplet p5, float x, float y, float w, float h) {
-
         this.x = x;
         this.y = y;
         this.w = w;
@@ -38,7 +37,6 @@ public class HSBColorPicker {
     }
 
     public void display(PApplet p5) {
-
         p5.pushStyle();
 
         hueSlider.display(p5);

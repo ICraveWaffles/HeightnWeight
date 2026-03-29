@@ -6,13 +6,13 @@ import java.util.ArrayList;
 
 public class Main extends PApplet {
 
-    Database b;
-    String username;
-    String email;
+    public Database b;
+    public String username;
+    public String email;
 
-    Fonts fonts;
-    GUI gui;
-    boolean sceneEditorInitialized = false;
+    public Fonts fonts;
+    public GUI gui;
+    public boolean sceneEditorInitialized = false;
     public Slider selectedSl;
     public int scedPage = 0;
     public ArrayList<Scene> scenes = new ArrayList<>();
@@ -26,11 +26,11 @@ public class Main extends PApplet {
 
     public boolean firstClick = false;
     public int nAllOCs = 0;
-    PImage bLogo;
-    PImage wLogo;
+    public PImage bLogo;
+    public PImage wLogo;
     public int captures = 0;
-    OC pendingDeleteOC = null;
-    Scene pendingDeleteSc = null;
+    public OC pendingDeleteOC = null;
+    public Scene pendingDeleteSc = null;
 
     public static void main(String[] args) {
         PApplet.main("Main");
@@ -1439,6 +1439,8 @@ public class Main extends PApplet {
                     loadedOC.r = Integer.parseInt(b.getInfo("oc", "r", "UniqueID", String.valueOf(uniqueId)));
                     loadedOC.g = Integer.parseInt(b.getInfo("oc", "g", "UniqueID", String.valueOf(uniqueId)));
                     loadedOC.b = Integer.parseInt(b.getInfo("oc", "b", "UniqueID", String.valueOf(uniqueId)));
+
+                    loadedOC.tWidth = (float) (loadedOC.tHeight * Math.pow(loadedOC.BMI, 0.7979) / 81.906);
 
                     allOCs.add(loadedOC);
                     infos.add(new InfoSlab(loadedOC, this));

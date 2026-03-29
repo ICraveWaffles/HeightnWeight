@@ -2,12 +2,12 @@ import processing.core.PApplet;
 
 public class SelectSlab {
 
-    OC oc;
-    boolean isEnabled;
-    boolean isSearched;
-    int page;
-    int ID;
-    int y;
+    public OC oc;
+    public boolean isEnabled;
+    public boolean isSearched;
+    public int page;
+    public int ID;
+    public int y;
 
     public SelectSlab(PApplet p5, OC oc) {
 
