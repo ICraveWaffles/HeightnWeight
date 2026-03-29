@@ -6,11 +6,11 @@ public class rSwitch extends rButton {
     public String textOff;
     public boolean on;
 
-    public rSwitch(PApplet p5, String textOn, String textOff,
+    public rSwitch(String textOn, String textOff,
                    float x, float y, float w, float h,
                    int f, int s, int t) {
 
-        super(p5, textOn, x, y, w, h, f, s, t);
+        super(textOn, x, y, w, h, f, s, t);
         this.textOn = textOn;
         this.textOff = textOff;
         this.on = true;

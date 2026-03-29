@@ -13,7 +13,7 @@ public class cButton {
     public boolean enabled;
     public boolean lastPress = false;
 
-    public cButton(PApplet p5, String text, float x, float y, float d, int f, int s, int t){
+    public cButton(String text, float x, float y, float d, int f, int s, int t){
         this.bText = text;
         this.x = x;
         this.y = y;

@@ -52,27 +52,27 @@ public class GUI {
         lang = LANG.ESP;
         Colors.instanceColors(p5);
 
-        plog1 = new rButton(p5, "PLOG1", 960, 660, 900, 105, 4, 7, 7);
-        plog2 = new rButton(p5, "PLOG2", 960, 810, 900, 105, 4, 7, 7);
+        plog1 = new rButton("PLOG1", 960, 660, 900, 105, 4, 7, 7);
+        plog2 = new rButton("PLOG2", 960, 810, 900, 105, 4, 7, 7);
 
-        login = new rButton(p5, "LOGIN",960, 652, 450, 150, 3, 7,7);
-        signup = new rButton(p5, "SIGNUP",960, 848, 450, 150, 3, 7,7);
+        login = new rButton("LOGIN",960, 652, 450, 150, 3, 7,7);
+        signup = new rButton("SIGNUP",960, 848, 450, 150, 3, 7,7);
 
-        m1 = new rButton(p5, "M1",960, 510, 960, 90, 3, 7,7);
-        m2 = new rButton(p5, "M2",960, 660, 960, 90, 3, 7,7);
-        m3 = new rButton(p5, "M3",960, 810, 960, 90, 3, 7,7);
+        m1 = new rButton("M1",960, 510, 960, 90, 3, 7,7);
+        m2 = new rButton("M2",960, 660, 960, 90, 3, 7,7);
+        m3 = new rButton("M3",960, 810, 960, 90, 3, 7,7);
 
-        q1 = new cButton(p5, "?", 45, 45, 75, 3, 7,7);
-        s1 = new cButton(p5, "O", 45, 135, 75, 3,7,7);
+        q1 = new cButton("?", 45, 45, 75, 3, 7,7);
+        s1 = new cButton("O", 45, 135, 75, 3,7,7);
 
-        sLang = new rSwitch(p5, "ES", "EN", 1260, 540, 150,60,4, 7,7);
-        sCol = new rSwitch(p5, "N", "D", 1260, 630, 150,60,4, 7,7);
-        nuke = new rButton(p5, "RESET", 960, 735, 750, 90, 7,6,6);
+        sLang = new rSwitch("ES", "EN", 1260, 540, 150,60,4, 7,7);
+        sCol = new rSwitch("N", "D", 1260, 630, 150,60,4, 7,7);
+        nuke = new rButton("RESET", 960, 735, 750, 90, 7,6,6);
 
-        nav1 = new cButton(p5, "<<",825, 45, 75, 3, 7, 7);
-        nav2 = new cButton(p5, "<",915, 45, 75, 3, 7, 7);
-        nav3 = new cButton(p5, ">",1005, 45, 75, 3, 7, 7);
-        nav4 = new cButton(p5, ">>",1095, 45, 75, 3, 7, 7);
+        nav1 = new cButton("<<",825, 45, 75, 3, 7, 7);
+        nav2 = new cButton("<",915, 45, 75, 3, 7, 7);
+        nav3 = new cButton(">",1005, 45, 75, 3, 7, 7);
+        nav4 = new cButton(">>",1095, 45, 75, 3, 7, 7);
 
         tfsignup1 = new TextField(p5, "EMAIL", 960, 180, 810, 90, false);
         tfsignup2 = new TextField(p5, "USERNAME", 960, 300, 810, 90, false);
@@ -125,7 +125,7 @@ public class GUI {
                     int x = i * 375 + 180;
                     int y = j * 318 + 300;
 
-                    rButton b = new rButton(p5, "{}", x, y, 300, 270, 4, 7, 6);
+                    rButton b = new rButton("{}", x, y, 300, 270, 4, 7, 6);
 
                     b.ID = buttonIndex;
 
@@ -147,19 +147,19 @@ public class GUI {
         slSced[1]=slHeight; slSced[2]=slWeight; slSced[3]=slBMI; slSced[4]=slWidth;
         slSced[5]=slBHRatio; slSced[6]=slAge; slSced[7]=slRed; slSced[8]=slGreen; slSced[9]=slBlue;
 
-        rsced0 = new rButton (p5, "COLORPICK", 1392, 48, 90, 90,3,7,7);
-        rsced1 = new rButton (p5, "GRID", 1680, 48, 90, 90,3,7,7);
-        rsced2 = new rButton (p5, "SCREENSHOT", 1776, 48, 90, 90,3,7,7);
-        rsced3 = new rButton (p5, "COPY", 1488, 48, 90, 90,3,7,7);
-        rsced4 = new rButton (p5, "DEL", 1584, 48, 90, 90,3,7,7);
+        rsced0 = new rButton("COLORPICK", 1392, 48, 90, 90,3,7,7);
+        rsced1 = new rButton("GRID", 1680, 48, 90, 90,3,7,7);
+        rsced2 = new rButton("SCREENSHOT", 1776, 48, 90, 90,3,7,7);
+        rsced3 = new rButton("COPY", 1488, 48, 90, 90,3,7,7);
+        rsced4 = new rButton("DEL", 1584, 48, 90, 90,3,7,7);
 
-        exit = new rButton(p5, "EXIT", 1872, 48, 90, 90, 3, 7,7 );
+        exit = new rButton("EXIT", 1872, 48, 90, 90, 3, 7,7 );
 
-        sced1 = new cButton(p5,"+",45, 42,75, 3,7,7);
-        sced2 = new cButton(p5,"*",135, 42,75, 3,7,7);
-        sced3 = new cButton(p5,"<",225, 42, 75, 3,7,7);
-        sced4 = new cButton(p5,">",315, 42, 75, 3,7,7);
-        sced5 = new cButton(p5,"X",405, 42, 75, 3,7,7);
+        sced1 = new cButton("+",45, 42,75, 3,7,7);
+        sced2 = new cButton("*",135, 42,75, 3,7,7);
+        sced3 = new cButton("<",225, 42, 75, 3,7,7);
+        sced4 = new cButton(">",315, 42, 75, 3,7,7);
+        sced5 = new cButton("X",405, 42, 75, 3,7,7);
 
         cPick = new HSBColorPicker(p5,940, -87, 384, 96);
 
@@ -168,8 +168,8 @@ public class GUI {
         delAll = new Popup(p5, "DELALL");
         delDelAll = new Popup (p5, "USURE??");
 
-        q2 = new cButton(p5, "ENGLINK", 600, 480, 45, 3,7,7);
-        q3 = new cButton(p5, "ESPLINK", 600, 600, 45, 3,7,7);
+        q2 = new cButton("ENGLINK", 600, 480, 45, 3,7,7);
+        q3 = new cButton("ESPLINK", 600, 600, 45, 3,7,7);
 
         page = 0; gridon = true; cPickOn = false;
         phase = 255 * PApplet.sin(p5.frameCount*0.1f);
@@ -526,6 +526,7 @@ public class GUI {
     }
 
     public void drawOCVIEWER(PApplet p5){
+
         p5.pushStyle();
         p5.background(Colors.getThisColor(1));
         p5.textFont(Fonts.getThisFont(1));
