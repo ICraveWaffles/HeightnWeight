@@ -11,8 +11,8 @@ public class Popup {
         this.msg = msg;
         this.on = false;
 
-        this.yes = new rButton(p5,"YES",675,600,150,60,3,7,7);
-        this.no  = new rButton(p5,"NO",1245,600,150,60,3,7,7);
+        this.yes = new rButton("YES",675,600,150,60,3,7,7);
+        this.no  = new rButton("NO",1245,600,150,60,3,7,7);
     }
 
     public void activate(){

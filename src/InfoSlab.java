@@ -17,7 +17,6 @@ public class InfoSlab {
         this.x = 720 + ((ID - 1) - page * 5) * 300;
 
         this.delete = new rButton(
-                p5,
                 "OUT",
                 525 + ((oc.ID - 1) * 300),
                 840,
