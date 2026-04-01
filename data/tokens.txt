@@ -24,7 +24,7 @@ WIDTH;Width[m];Anchura[m]
 BHRATIO;Head/Body;Cabeza/Cuerpo
 AGE;Av.Age[years];Edad[años]
 RESET;RESET EVERYTHING;BORRAR TODO
-OUT;DELETE;BORRAR
+DELETE;DELETE;BORRAR
 OCS;OCs:;Personajes:
 TALL;Tallest:;Más alto:
 YES;YES;SÍ

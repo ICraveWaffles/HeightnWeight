@@ -58,18 +58,17 @@ public class cButton {
 
     public boolean mouseOverButton(PApplet p5){
         boolean over = p5.dist(this.x, this.y, p5.mouseX, p5.mouseY) <= this.d/2;
-        if (bText.contains("LINK")&&over){
-            if (bText.contains("ES")){
-                copyLink("Insert Spanish Link Here");
-            } else if (bText.contains("EN")) {
-                copyLink("Insert English Link Here");
-            } else if (bText.contains("RICK")){
-                copyLink("https://www.youtube.com/watch?v=iik25wqIuFo&list=RDiik25wqIuFo&start_radio=1");
-            }
-        }
-
         if (over && enabled && p5.mousePressed && !lastPress) {
             Sounds.emit(0);
+            if (bText.contains("LINK")){
+                if (bText.contains("ES")){
+                    copyLink("Insert Spanish Link Here");
+                } else if (bText.contains("EN")) {
+                    copyLink("Insert English Link Here");
+                } else if (bText.contains("RICK")){
+                    copyLink("https://www.youtube.com/watch?v=iik25wqIuFo");
+                }
+            }
         }
 
         lastPress = p5.mousePressed;

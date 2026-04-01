@@ -719,6 +719,7 @@ public class Main extends PApplet {
                     if (gui.sLang.mouseOverButton(this)) {
                         gui.sLang.toggle();
                         gui.lang = (gui.lang == LANG.ESP) ? LANG.ENG : LANG.ESP;
+                        b.update("user", "lang", (gui.lang == LANG.ESP)? "2":"1", "email", email);
                         translateEverything();
                         gui.settingsN.trigger("LANG_SET", 960, 225, true, 0, (gui.lang == LANG.ESP? 2 : 1));
                     }
@@ -1286,7 +1287,7 @@ public class Main extends PApplet {
         }
         searchInfos = tempList;
     }
-
+    
     public void updateSelectSearchArr(String str) {
         if (str == null) str = "";
         String searchStr = str.toLowerCase().trim();
@@ -1363,6 +1364,11 @@ public class Main extends PApplet {
         gui.tfRed.text = Languages.translate("R", l);
         gui.tfGreen.text = Languages.translate("G", l);
         gui.tfBlue.text = Languages.translate("B", l);
+
+
+        for (int i = 0; i < nAllOCs;i++){
+            infos.get(i).delete.text = Languages.translate("DELETE", l);
+        }
     }
 
     public boolean isValidEmail(String email) {
