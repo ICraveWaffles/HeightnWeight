@@ -13,6 +13,16 @@ public class cButton {
     public boolean enabled;
     public boolean lastPress = false;
 
+    /**
+     * Constructor de botones redondos.
+     * @param text tóken del botón.
+     * @param x posición x del botón.
+     * @param y posición y del botón.
+     * @param d diámetro del botón.
+     * @param f color del centro del botón.
+     * @param s color del borde del botón.
+     * @param t color del texto del botón.
+     */
     public cButton(String text, float x, float y, float d, int f, int s, int t){
         this.bText = text;
         this.x = x;
@@ -56,6 +66,11 @@ public class cButton {
         p5.popStyle();
     }
 
+    /**
+     * Método que detecta si el botón está siendo pulsado, y copia un enlace si el texto del botón contiene "LINK".
+     * @param p5 PApplet necesario para realizar la acción.
+     * @return true si está pulsado, false si no.
+     */
     public boolean mouseOverButton(PApplet p5){
         boolean over = p5.dist(this.x, this.y, p5.mouseX, p5.mouseY) <= this.d/2;
         if (over && enabled && p5.mousePressed && !lastPress) {

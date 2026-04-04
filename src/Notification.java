@@ -14,6 +14,15 @@ public class Notification {
         this.phase = 0;
     }
 
+    /**
+     * Método que activa la notificación de una pantalla
+     * @param msg mensaje de texto.
+     * @param x posición x del mensaje.
+     * @param y posición y del mensaje.
+     * @param good determina el color de la notificación (Rojo si false, verde si true).
+     * @param size tamaño de la tipografía
+     * @param lang
+     */
     public void trigger(String msg, int x, int y, boolean good, int size, int lang) {
         this.msg = Languages.translate(msg, lang);
         this.x = x;

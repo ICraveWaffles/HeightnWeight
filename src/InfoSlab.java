@@ -8,6 +8,11 @@ public class InfoSlab {
     public int x;
     public rButton delete;
 
+    /**
+     * Constructor de la clase InfoSlab
+     * @param oc OC al cual corresponde el InfoSlab
+     * @param p5 PApplet en desuso.
+     */
     public InfoSlab(OC oc, PApplet p5) {
 
         this.oc = oc;

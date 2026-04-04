@@ -12,9 +12,19 @@ public class TextField {
     public int textSize = 30;
     public boolean selected = false;
     public boolean enabled = true;
-    public boolean intOnly;
+    public boolean numOnly;
 
-    public TextField(PApplet p5, String token, int x, int y, int w, int h, boolean intOnly) {
+    /**
+     * Constructor de TextField.
+     * @param p5 PApplet necesario para la creación del campo de texto.
+     * @param token tóken del campo de texto.
+     * @param x posición x del campo de texto.
+     * @param y posición y del campo de texto.
+     * @param w anchura del campo de texto.
+     * @param h altura del campo de texto.
+     * @param numOnly si sólo acepta valores numéricos.
+     */
+    public TextField(PApplet p5, String token, int x, int y, int w, int h, boolean numOnly) {
         this.x = x;
         this.y = y;
         this.w = w;
@@ -26,7 +36,7 @@ public class TextField {
         this.fgColor = p5.color(32, 127, 127);
         this.selectedColor = p5.color(255, 255, 255);
         this.borderColor = p5.color(127, 255, 255);
-        this.intOnly = intOnly;
+        this.numOnly = numOnly;
     }
 
     public void display(PApplet p5) {
@@ -67,7 +77,7 @@ public class TextField {
         boolean isNumber = (key >= '0' && key <= '9');
         boolean isSymbol = "!@#$%^&*()-_+=[]{};:'\"\\|,.<>/?`~·".indexOf(key) >= 0;
 
-        if (intOnly) {
+        if (numOnly) {
             if (isNumber || key == '.' || key == ',') addText(key);
         } else {
             if (isLetter || isNumber || isSymbol || key == ' ') addText(key);
@@ -83,7 +93,7 @@ public class TextField {
 
         boolean written = false;
 
-        if (intOnly) {
+        if (numOnly) {
 
             if (c == '.') c = ',';
 
@@ -92,7 +102,7 @@ public class TextField {
             if (c == ',' && text.contains(",")) return;
         }
 
-        if (intOnly && text.equals("0") && c != ',') {
+        if (numOnly && text.equals("0") && c != ',') {
             text = String.valueOf(c);
             written = true;
         } else if (text.length() < (w / (textSize * 0.6))) {

@@ -6,6 +6,11 @@ public class Popup {
     public boolean on;
     public String msg;
 
+    /**
+     * Constructor de la clase Popup.
+     * @param p5 PApplet en desuso.
+     * @param msg aviso.
+     */
     public Popup(PApplet p5, String msg){
 
         this.msg = msg;
@@ -18,7 +23,11 @@ public class Popup {
     public void activate(){
         this.on=!this.on;
     }
-
+    /**
+     * Devuelve qué botón ha sido pulsado.
+     * @param p5 PApplet necesario para utilizar el método.
+     * @return 1 si se pulsa el botón de "Sí", 2 si se pulsa el de "No", y 0 si no ocurre nada.
+     */
     public int uSure(PApplet p5){
 
         if(yes.mouseOverButton(p5)){

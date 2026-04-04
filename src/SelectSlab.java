@@ -8,7 +8,11 @@ public class SelectSlab {
     public int page;
     public int ID;
     public int y;
-
+    /**
+     * Constructor de la clase SelectSlab
+     * @param oc OC al cual corresponde el SelectSlab
+     * @param p5 PApplet en desuso.
+     */
     public SelectSlab(PApplet p5, OC oc) {
 
         this.oc = oc;

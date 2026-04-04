@@ -14,7 +14,17 @@ public class rButton {
     public boolean enabled;
     STATE state;
     boolean lastPress = false;
-
+    /**
+     * Constructor de botones rectangulares.
+     * @param token tóken del botón.
+     * @param x posición x del botón.
+     * @param y posición y del botón.
+     * @param w grosor del botón.
+     * @param h altura del botón.
+     * @param f color del centro del botón.
+     * @param s color del borde del botón.
+     * @param t color del texto del botón.
+     */
     public rButton(
             String token, float x, float y, float w, float h, int f, int s, int t){
         this.token = token;

@@ -13,6 +13,12 @@ public class Languages {
         }
     }
 
+    /**
+     * Método que traduce el token de un elemento de la GUI a una lengua específica.
+     * @param token token de un elemento de la GUI.
+     * @param lang valor que equivale a la columna de data[][].
+     * @return traducción encontrada.
+     */
     public static String translate(String token, int lang) {
         if (data == null) return token;
 

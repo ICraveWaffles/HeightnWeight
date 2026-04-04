@@ -277,6 +277,9 @@ public class Main extends PApplet {
         if (scene != null) scene.designLayout();
     }
 
+    /**
+     * Pone los valores por defecto a los deslizadores y campos de texto del editor de escenas cuando se entra al mismo para evitar nullPointerException
+     */
     public void initializeSceneEditorValues() {
         for (int i = 0; i < gui.slSced.length; i++) {
             if (gui.slSced[i] != null && gui.tfsced[i] != null) {
@@ -290,7 +293,9 @@ public class Main extends PApplet {
         }
         updateCalculatedValues();
     }
-
+    /**
+     * Pone los valores del OC seleccionado anteriormente de la escena a los deslizadores y campos de texto del editor de escenas.
+     */
     public void redoSceneEditorValues() {
         if (scene.currentObject != -1) {
             if (scene.stands[scene.currentObject] instanceof OC){
@@ -944,7 +949,10 @@ public class Main extends PApplet {
             selectedSl = null;
         }
     }
-
+    /**
+     * Añade un OC recién creado a la base de datos interna (addOCs) y a la externa.
+     * @param oc OC recién creado.
+     */
     public void addNewOCtoBase(OC oc) {
         oc.ID = nAllOCs;
         allOCs.add(oc);
@@ -957,6 +965,10 @@ public class Main extends PApplet {
         nAllOCs++;
     }
 
+    /**
+     * Elimina un OC determinado de la base de datos y todas las escenas que lo contienen, tanto interna como externa.
+     * @param oc OC determinado.
+     */
     public void deleteOCfromBase(OC oc) {
         int index = allOCs.indexOf(oc);
         if (index == -1) return;
@@ -1011,6 +1023,9 @@ public class Main extends PApplet {
         }
     }
 
+    /**
+     * Actualiza la posición (índices) de todos los OCs, InfoSlabs y SelectSlabs.
+     */
     public void defragment() {
         for (int i = 0; i < nAllOCs; i++) {
 
@@ -1029,6 +1044,9 @@ public class Main extends PApplet {
         }
     }
 
+    /**
+     * Copia la escena actual, manteniéndose en el editor de escenas.
+     */
     public void copyScene(){
         Sounds.emit(17);
         Scene newSc = new Scene(this.scene);
@@ -1048,7 +1066,10 @@ public class Main extends PApplet {
             gui.scenes.get(scenes.size()).updateSceneButton(scenes.size());
         }
     }
-
+    /**
+     * Elimina una escena concreta.
+     * @param sc una escena concreta.
+     */
     public void deleteScene(Scene sc) {
         int index = -1;
         for (int i = 0; i < scenes.size(); i++) {
@@ -1087,13 +1108,18 @@ public class Main extends PApplet {
         }
     }
 
+    /**
+     * Elimina toda la información del usuario actual (email) de la base de datos externa.
+     */
     public void clearDatabase() {
         b.deleteLinked("oc_has_scene", "Scene_UniqueID", "scene", "UniqueID", "User_email", email);
         b.deleteLinked("scene_has_stand", "Scene_UniqueID", "scene", "UniqueID", "User_email", email);
         b.deleteDirect("scene", "User_email", email);
         b.deleteDirect("oc", "User_email", email);
     }
-
+    /**
+     * Elimina toda la información del usuario actual (email).
+     */
     public void reset() {
         clearDatabase();
 
@@ -1115,7 +1141,9 @@ public class Main extends PApplet {
             gui.scenes.getFirst().text = "{}";
         }
     }
-
+    /**
+     * Actualiza y pondera los valores de los OCs durante su uso en el editor de escenas.
+     */
     public void updateCalculatedValues() {
         if (scene != null && scene.nObjects > 0 && scene.currentObject != -1 && scene.stands[scene.currentObject] instanceof OC) {
             try {
@@ -1208,7 +1236,9 @@ public class Main extends PApplet {
         if (!gui.tfsced[8].selected) gui.tfsced[8].text = String.valueOf(pHolder.g);
         if (!gui.tfsced[9].selected) gui.tfsced[9].text = String.valueOf(pHolder.b);
     }
-
+    /**
+     * Instancia un OC por defecto
+     */
     public void instanceOC() {
         OC pHolder = new OC(nAllOCs);
         b.newOC(pHolder.uniqueID, nAllOCs, email);
@@ -1242,6 +1272,10 @@ public class Main extends PApplet {
         pHolder.b = (int) gui.slSced[9].v;
     }
 
+    /**
+     * Añade un OC concreto de la base dentro de la escena actual.
+     * @param pHolder un OC concreto.
+     */
     public void addThisOC(OC pHolder) {
         gui.scedN.trigger("OC_PUT", 1600, 124, true, 0, (gui.lang == LANG.ESP? 2 : 1));
         scene.addObject(pHolder);
@@ -1249,7 +1283,9 @@ public class Main extends PApplet {
         gui.tfName.text = (pHolder.name);
         changeTFValues(pHolder);
     }
-
+    /**
+     * Comprueba si cada OC está dentro de la escena actual, para desactivar su select correspondiente si está.
+     */
     public void checkSelectStatus() {
         for (int i = 0; i < nAllOCs; i++) {
             boolean found = false;
@@ -1262,7 +1298,10 @@ public class Main extends PApplet {
             selects.get(i).isEnabled = !found;
         }
     }
-
+    /**
+     * Filtra el ArrayList "infos" para mostrar solo los que contengan el texto str.
+     * @param str
+     */
     public void updateInfoSearchArr(String str) {
         if (str == null) str = "";
         String searchStr = str.toLowerCase().trim();
@@ -1287,7 +1326,10 @@ public class Main extends PApplet {
         }
         searchInfos = tempList;
     }
-    
+    /**
+     * Filtra el ArrayList "selects" para mostrar solo los que contengan el texto str.
+     * @param str
+     */
     public void updateSelectSearchArr(String str) {
         if (str == null) str = "";
         String searchStr = str.toLowerCase().trim();
@@ -1312,7 +1354,9 @@ public class Main extends PApplet {
         }
         searchSelects = tempList;
     }
-
+    /**
+     * Traduce todos los elementos de la interfície gráfica en función de la lengua actual 'l'.
+     */
     public void translateEverything() {
         int l = (gui.lang == LANG.ESP) ? 2 : 1;
 
@@ -1371,11 +1415,19 @@ public class Main extends PApplet {
         }
     }
 
+    /**
+     * Revisa si el email a registrar cumple si tiene la estructura "Texto.Texto@Texto.Texto"
+     * @param email el email a registrar
+     * @return si el email a registrar tiene la estructura "Texto.Texto@Texto.Texto".
+     */
     public boolean isValidEmail(String email) {
         String emailRegex = "^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,7}$";
         return email.matches(emailRegex);
     }
-
+    /**
+     * Coge toda la información de la base de datos externa de un usuario (email) y la transforma en los datos de la base de datos interna.
+     * @param email el email del usuario.
+     */
     public void retrieve(String email) {
 
         for (int i = 0; i < gui.scenes.size(); i++) {

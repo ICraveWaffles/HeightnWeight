@@ -13,8 +13,10 @@ public class OC extends Stand {
     public int g;
     public int b;
 
-
-
+    /**
+     * Constructor de la clase OC para OCs completamente nuevos.
+     * @param ID posición del OC.
+     */
     public OC(int ID) {
         this.ID = ID;
         Random random = new Random();
@@ -34,9 +36,13 @@ public class OC extends Stand {
         this.b = 127;
 
     }
-
+    /**
+     * Constructor de la clase OC para el método retrieve(String email) de la clase main.
+     * @param ID
+     * @param UniqueID
+     */
     public OC(int ID, long UniqueID) {
-        this.ID = ID;;
+        this.ID = ID;
         this.uniqueID = UniqueID;
         this.name = "Zwolf";
 
@@ -54,6 +60,10 @@ public class OC extends Stand {
 
     }
 
+    /**
+     * Constructor que copia un OC determinado.
+     * @param other un OC determinado.
+     */
     public OC(OC other) {
         this.tHeight = other.tHeight;
         this.weight = other.weight;
@@ -65,7 +75,6 @@ public class OC extends Stand {
         this.g = other.g;
         this.b = other.b;
     }
-
 
     public OC(String name, float tHeight, float BMI, float weight, float tWidth,
               float age, float bhratio, int r, int g, int b) {

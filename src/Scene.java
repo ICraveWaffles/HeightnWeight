@@ -23,6 +23,10 @@ public class Scene {
     public final int scX = 510;
     public final int scY = 165;
 
+    /**
+     * Constructor de la clase Scene para escenas completamente nuevas.
+     * @param ID posición de la escena.
+     */
     public Scene(int ID) {
         Random random = new Random();
         this.ID = ID;
@@ -33,7 +37,11 @@ public class Scene {
         this.sel = Scene.scInstance.DISPLAY;
         this.selPage = 0;
     }
-
+    /**
+     * Constructor de la clase String para el método retrieve(String email) de la clase main.
+     * @param ID
+     * @param uniqueID
+     */
     public Scene(int ID, long uniqueID) {
         this.ID = ID;
         this.uniqueID = uniqueID;
@@ -44,6 +52,10 @@ public class Scene {
         this.selPage = 0;
     }
 
+    /**
+     * Constructor que copia una escena concreta.
+     * @param sc una escena concreta.
+     */
     public Scene(Scene sc) {
         Random random = new Random();
         this.name = sc.name;

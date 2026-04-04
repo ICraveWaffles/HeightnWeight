@@ -175,6 +175,11 @@ public class GUI {
         phase = 255 * PApplet.sin(p5.frameCount*0.1f);
     }
 
+    /**
+     * Método que dibuja la pantalla PRELOGIN.
+     * @param p5 PApplet necesario para realizar la acción.
+     * @param l imagen del logotipo, en blanco o negro dependiendo de la paleta de colores.
+     */
     public void drawPRELOGIN(PApplet p5, PImage l) {
         p5.pushStyle();
 
@@ -233,7 +238,11 @@ public class GUI {
 
         p5.popStyle();
     }
-
+    /**
+     * Método que dibuja la pantalla MAIN.
+     * @param p5 PApplet necesario para realizar la acción.
+     * @param l imagen del logotipo, en blanco o negro dependiendo de la paleta de colores.
+     */
     public void drawMAIN(PApplet p5, PImage l) {
         p5.pushStyle();
 
@@ -346,7 +355,11 @@ public class GUI {
 
         p5.popStyle();
     }
-
+    /**
+     * Método que dibuja la pantalla SCENEEDITOR.
+     * @param p5 PApplet necesario para realizar la acción.
+     * @param scene Escena actual visualizada.
+     */
     public void drawSCENEEDITOR(PApplet p5, Scene scene) {
         p5.pushStyle();
 

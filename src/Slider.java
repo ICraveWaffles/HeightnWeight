@@ -9,7 +9,19 @@ public class Slider {
     public boolean light;
     public boolean log;
     public boolean enabled = true;
-
+    /**
+     * Constructor de la clase Slider.
+     * @param p5 PApplet en desuso.
+     * @param s texto del deslizador.
+     * @param x posición x del deslizador.
+     * @param y posición y del deslizador.
+     * @param w anchura del deslizador.
+     * @param h altura del deslizador.
+     * @param minV valor mínimo del deslizador.
+     * @param maxV valor máximo del deslizador.
+     * @param val valor actual del deslizador.
+     * @param isLog determina si tendrá una escala logarítmica, para rangos altos.
+     */
     public Slider(PApplet p5, String s, float x, float y, float w, float h, float minV, float maxV, float val, boolean light, boolean isLog) {
         this.token = s;
         this.s = Languages.translate(token, 1);
